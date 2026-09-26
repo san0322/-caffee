@@ -31,6 +31,7 @@
   }
   button, input, select, textarea { font-family: inherit; }
 
+  /* Login Screen */
   #login-screen {
     position: fixed;
     inset: 0;
@@ -111,6 +112,7 @@
     display: none;
   }
 
+  /* Portal Layout */
   #portal-screen {
     display: none;
     width: 100%;
@@ -195,6 +197,7 @@
     font-weight: 700;
   }
 
+  /* Metric Stat Cards */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -222,6 +225,7 @@
     color: var(--mauve-dark);
   }
 
+  /* Section Containers */
   .section-box {
     background: var(--paper);
     border-radius: 16px;
@@ -286,6 +290,7 @@
     vertical-align: top;
   }
 
+  /* Dynamic Colored Status Select Dropdowns */
   .status-select {
     padding: 6px 12px;
     border-radius: 20px;
@@ -370,6 +375,7 @@
     color: #fff;
   }
 
+  /* Desktop Add-on Section Pinned on Top of Menu */
   .desktop-addon-wrap {
     background: #fff;
     border: 1px solid var(--grey-border);
@@ -402,6 +408,7 @@
     align-items: center;
   }
 
+  /* Menu Items Grid */
   .menu-management-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -504,6 +511,7 @@
     cursor: pointer;
   }
 
+  /* Feedback Grid */
   .feedback-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -542,6 +550,7 @@
     white-space: pre-wrap;
   }
 
+  /* Modals */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -642,6 +651,7 @@
 </head>
 <body>
 
+  <!-- 1. LOGIN SCREEN -->
   <div id="login-screen">
     <div class="login-card">
       <div class="login-brand">NGOPI DULU</div>
@@ -661,6 +671,7 @@
     </div>
   </div>
 
+  <!-- 2. PORTAL SYSTEM -->
   <div id="portal-screen">
     <aside class="sidebar">
       <div class="brand-badge">NGOPI DULU</div>
@@ -701,6 +712,7 @@
         </div>
       </section>
 
+      <!-- VIEW 1: Overview & Orders -->
       <section class="section-box" id="tab-orders">
         <div class="section-head">
           <h2 class="section-title">Order History Log</h2>
@@ -738,7 +750,9 @@
         </div>
       </section>
 
+      <!-- VIEW 2: Menu Manager -->
       <section class="section-box" id="tab-menu" style="display: none;">
+        <!-- PINNED ADD-ON MANAGEMENT AT TOP -->
         <div class="desktop-addon-wrap">
           <div class="section-head" style="margin-bottom: 8px;">
             <h3 class="section-title" style="font-size: 14px;">Add-on Customizations Available</h3>
@@ -753,6 +767,7 @@
         <div class="menu-management-grid" id="admin-menu-grid"></div>
       </section>
 
+      <!-- VIEW 3: Feedback Page -->
       <section class="section-box" id="tab-feedback" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Customer Feedback Inbox</h2>
@@ -765,6 +780,7 @@
         <div class="feedback-grid" id="feedback-container"></div>
       </section>
 
+      <!-- VIEW 4: Staff Order History Library -->
       <section class="section-box" id="tab-staff" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Order History Library</h2>
@@ -800,6 +816,7 @@
     </main>
   </div>
 
+  <!-- Detail Modal -->
   <div class="modal-overlay" id="detail-modal">
     <div class="modal-card">
       <h3 class="modal-title" id="modal-order-id">Order Details</h3>
@@ -818,6 +835,7 @@
     </div>
   </div>
 
+  <!-- Add Menu Modal -->
   <div class="modal-overlay" id="add-modal">
     <div class="modal-card">
       <h3 class="modal-title">Add Menu Item</h3>
@@ -858,6 +876,7 @@
     </div>
   </div>
 
+  <!-- Edit Menu Item Modal -->
   <div class="modal-overlay" id="edit-modal">
     <div class="modal-card">
       <h3 class="modal-title">Edit Menu Item</h3>
@@ -899,6 +918,7 @@
     </div>
   </div>
 
+  <!-- Add Add-on Modal -->
   <div class="modal-overlay" id="add-addon-modal">
     <div class="modal-card">
       <h3 class="modal-title">Create New Add-on</h3>
@@ -919,6 +939,7 @@
     </div>
   </div>
 
+  <!-- Edit Add-on Modal -->
   <div class="modal-overlay" id="edit-addon-modal">
     <div class="modal-card">
       <h3 class="modal-title">Edit Add-on</h3>
@@ -942,58 +963,58 @@
 
   <script>
     let currentUserRole = null;
-    const MENU_VERSION = 'v2_full';
 
+    // Complete Add-on list from the physical printed menu[cite: 5]
     const defaultAddons = [
-      { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
-      { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true },
-      { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true },
-      { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true },
-      { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true }
+      { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true }, //[cite: 5]
+      { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true }, //[cite: 5]
+      { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true }, //[cite: 5]
+      { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true }, //[cite: 5]
+      { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true } //[cite: 5]
     ];
 
+    // Complete Menu list with accurate prices from the physical printed menu[cite: 5]
     const defaultMenu = [
-      // Coffee Section
-      { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, addons: ['ao-2', 'ao-4'] },
-      { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-2'] },
-      { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, addons: ['ao-2'] },
+      // Coffee Section[cite: 5]
+      { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] }, //[cite: 5]
+      { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] }, //[cite: 5]
+      { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] }, //[cite: 5]
+      { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] }, //[cite: 5]
+      { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] }, //[cite: 5]
+      { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] }, //[cite: 5]
+      { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, addons: ['ao-2', 'ao-4'] }, //[cite: 5]
+      { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-2'] }, //[cite: 5]
+      { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] }, //[cite: 5]
+      { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, addons: ['ao-2'] }, //[cite: 5]
 
-      // Non-Coffee Section
-      { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
-      { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
-      { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-      { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-      { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-      { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+      // Non-Coffee Section[cite: 5]
+      { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] }, //[cite: 5]
+      { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] }, //[cite: 5]
+      { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] }, //[cite: 5]
 
-      // Matcha Section
-      { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, addons: [] },
+      // Matcha Section[cite: 5]
+      { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] }, //[cite: 5]
+      { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
 
-      // Soft Cookies Section
-      { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, addons: ['ao-5'] },
-      { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, addons: ['ao-5'] },
-      { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, addons: ['ao-5'] },
-      { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, addons: [] },
+      // Soft Cookies Section[cite: 5]
+      { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, addons: ['ao-5'] }, //[cite: 5]
+      { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, addons: ['ao-5'] }, //[cite: 5]
+      { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, addons: ['ao-5'] }, //[cite: 5]
 
-      // Bites Section
-      { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, addons: ['ao-5'] },
-      { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-      { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, addons: [] }
+      // Bites Section[cite: 5]
+      { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, addons: ['ao-5'] }, //[cite: 5]
+      { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] }, //[cite: 5]
+      { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, addons: [] } //[cite: 5]
     ];
 
     function getStorage(key, fallback) {
@@ -1011,17 +1032,15 @@
       } catch (e) {}
     }
 
-    // Dynamic reset to new full catalog if version outdated
-    if (localStorage.getItem('ngopi_version') !== MENU_VERSION) {
-      setStorage('ngopi_menu', defaultMenu);
-      setStorage('ngopi_addons', defaultAddons);
-      localStorage.setItem('ngopi_version', MENU_VERSION);
-    }
-
     let addons = getStorage('ngopi_addons', defaultAddons);
     let menu = getStorage('ngopi_menu', defaultMenu);
     let orders = getStorage('ngopi_orders', []);
     let feedbacks = getStorage('ngopi_feedback', []);
+
+    if (!localStorage.getItem('ngopi_addons')) setStorage('ngopi_addons', addons);
+    if (!localStorage.getItem('ngopi_menu')) setStorage('ngopi_menu', menu);
+    if (!localStorage.getItem('ngopi_orders')) setStorage('ngopi_orders', orders);
+    if (!localStorage.getItem('ngopi_feedback')) setStorage('ngopi_feedback', feedbacks);
 
     window.addEventListener('storage', (e) => {
       if (e.key === 'ngopi_orders') {
@@ -1299,6 +1318,7 @@
       }
     }
 
+    /* Add-on Management Handlers */
     function renderAddons() {
       const wrap = document.getElementById('admin-addon-grid');
       if (!wrap) return;
@@ -1406,6 +1426,7 @@
       closeEditAddonModal();
     }
 
+    /* Menu Manager Handlers */
     function renderMenu() {
       const grid = document.getElementById('admin-menu-grid');
       grid.innerHTML = menu.map(item => {
@@ -1559,6 +1580,7 @@
       closeEditModal();
     }
 
+    /* Feedback Handlers */
     function renderFeedbackList(list = feedbacks) {
       const container = document.getElementById('feedback-container');
       if (!container) return;
@@ -1581,10 +1603,10 @@
 
     function filterFeedback() {
       const q = document.getElementById('feedback-search').value.toLowerCase().trim();
-      const filtered = feedbacks.filter(f => 
-        (f.sender && f.sender.toLowerCase().includes(q)) || 
-        (f.message && f.message.toLowerCase().includes(q))
-      );
+      const filtered = feedbacks.filter(f => {
+        return (f.sender && f.sender.toLowerCase().includes(q)) || 
+               (f.message && f.message.toLowerCase().includes(q));
+      });
       renderFeedbackList(filtered);
     }
   </script>
