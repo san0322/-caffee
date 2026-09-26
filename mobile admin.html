@@ -614,6 +614,23 @@
     border: none;
   }
 
+  .modifier-row {
+    display: flex;
+    gap: 12px;
+    padding: 6px 8px;
+    background: #f7f5f4;
+    border: 1px solid var(--grey-border);
+    border-radius: 6px;
+    margin-bottom: 6px;
+  }
+  .modifier-opt {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 700;
+  }
+
   .addon-checklist-wrap {
     max-height: 110px;
     overflow-y: auto;
@@ -632,7 +649,7 @@
     font-size: 10.5px;
     font-weight: 600;
   }
-  .addon-check-item input[type="checkbox"] {
+  .addon-check-item input[type="checkbox"], .modifier-opt input[type="checkbox"] {
     accent-color: var(--mauve);
   }
 </style>
@@ -811,8 +828,17 @@
         <input type="url" id="new-item-img" required placeholder="https://...">
       </div>
 
+      <!-- Separated Modifiers Above Other Add-ons -->
       <div class="m-form-group">
-        <label>Select Add-ons to include</label>
+        <label>Standard Modifiers</label>
+        <div class="modifier-row">
+          <label class="modifier-opt"><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label>
+          <label class="modifier-opt"><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label>
+        </div>
+      </div>
+
+      <div class="m-form-group">
+        <label>Select Paid Add-ons</label>
         <div class="addon-checklist-wrap" id="new-item-addons-list"></div>
       </div>
 
@@ -852,8 +878,17 @@
         <input type="url" id="edit-item-img" required>
       </div>
 
+      <!-- Separated Modifiers Above Other Add-ons -->
       <div class="m-form-group">
-        <label>Select Add-ons to include</label>
+        <label>Standard Modifiers</label>
+        <div class="modifier-row">
+          <label class="modifier-opt"><input type="checkbox" id="edit-item-has-ice"> Ice Level</label>
+          <label class="modifier-opt"><input type="checkbox" id="edit-item-has-sugar"> Sugar Level</label>
+        </div>
+      </div>
+
+      <div class="m-form-group">
+        <label>Select Paid Add-ons</label>
         <div class="addon-checklist-wrap" id="edit-item-addons-list"></div>
       </div>
 
@@ -908,7 +943,7 @@
 
 <script>
   let currentUserRole = null;
-  const MENU_VERSION = 'v2_full';
+  const MENU_VERSION = 'v3_dynamic_options';
 
   const defaultAddons = [
     { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
@@ -919,38 +954,38 @@
   ];
 
   const defaultMenu = [
-    { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-    { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-    { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-    { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-    { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-    { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-    { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, addons: ['ao-2', 'ao-4'] },
-    { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-2'] },
-    { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-    { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, addons: ['ao-2'] },
-    { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
-    { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
-    { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-    { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-    { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
-    { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
-    { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
-    { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, addons: [] },
-    { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, addons: ['ao-5'] },
-    { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, addons: ['ao-5'] },
-    { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, addons: ['ao-5'] },
-    { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, addons: ['ao-5'] },
-    { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
-    { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, addons: [] }
+    { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2', 'ao-4'] },
+    { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2'] },
+    { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-2'] },
+    { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: [] },
+    { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] }
   ];
 
   function getStorage(key, fallback) {
@@ -1364,6 +1399,10 @@
         })
         .filter(Boolean);
 
+      const standardModNames = [];
+      if (item.hasIce) standardModNames.push('Ice Level');
+      if (item.hasSugar) standardModNames.push('Sugar Level');
+
       return `
         <div class="menu-m-card ${item.inStock ? '' : 'sold-out'}">
           <img class="menu-m-img" src="${item.img}" alt="${item.name}">
@@ -1371,6 +1410,7 @@
             <div class="menu-m-cat">${item.cat}</div>
             <div class="menu-m-title">${item.name}</div>
             <div class="menu-m-price">RM ${Number(item.price).toFixed(2)}</div>
+            ${standardModNames.length > 0 ? `<div style="font-size:8.5px; color:#444; margin-top:2px;"><b>Modifiers:</b> ${standardModNames.join(', ')}</div>` : ''}
             ${assignedAddonNames.length > 0 
               ? `<div class="menu-m-assigned-addons"><b>Add-ons:</b> ${assignedAddonNames.join(', ')}</div>` 
               : `<div class="menu-m-assigned-addons" style="color: #999;">No add-ons linked</div>`}
@@ -1428,6 +1468,8 @@
 
   function openAddModal() {
     renderAddonChecklist('new-item-addons-list', []);
+    document.getElementById('new-item-has-ice').checked = true;
+    document.getElementById('new-item-has-sugar').checked = true;
     document.getElementById('add-modal').classList.add('open');
   }
 
@@ -1441,6 +1483,8 @@
     const cat = document.getElementById('new-item-cat').value;
     const price = parseFloat(document.getElementById('new-item-price').value);
     const img = document.getElementById('new-item-img').value.trim();
+    const hasIce = document.getElementById('new-item-has-ice').checked;
+    const hasSugar = document.getElementById('new-item-has-sugar').checked;
 
     const checkedBoxes = document.querySelectorAll('#new-item-addons-list input[type="checkbox"]:checked');
     const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
@@ -1452,6 +1496,8 @@
       price,
       img,
       inStock: true,
+      hasIce,
+      hasSugar,
       addons: selectedAddonIds
     });
 
@@ -1470,6 +1516,8 @@
     document.getElementById('edit-item-cat').value = item.cat;
     document.getElementById('edit-item-price').value = item.price;
     document.getElementById('edit-item-img').value = item.img;
+    document.getElementById('edit-item-has-ice').checked = !!item.hasIce;
+    document.getElementById('edit-item-has-sugar').checked = !!item.hasSugar;
 
     renderAddonChecklist('edit-item-addons-list', item.addons || []);
     document.getElementById('edit-modal').classList.add('open');
@@ -1486,6 +1534,8 @@
     const cat = document.getElementById('edit-item-cat').value;
     const price = parseFloat(document.getElementById('edit-item-price').value);
     const img = document.getElementById('edit-item-img').value.trim();
+    const hasIce = document.getElementById('edit-item-has-ice').checked;
+    const hasSugar = document.getElementById('edit-item-has-sugar').checked;
 
     const checkedBoxes = document.querySelectorAll('#edit-item-addons-list input[type="checkbox"]:checked');
     const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
@@ -1496,6 +1546,8 @@
       item.cat = cat;
       item.price = price;
       item.img = img;
+      item.hasIce = hasIce;
+      item.hasSugar = hasSugar;
       item.addons = selectedAddonIds;
 
       setStorage('ngopi_menu', menu);
