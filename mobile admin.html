@@ -174,7 +174,7 @@
     cursor: pointer;
   }
 
-  /* Scrollable Content Container */
+  /* Scrollable Main Content */
   .mobile-scroll-body {
     flex: 1;
     overflow-y: auto;
@@ -182,7 +182,7 @@
     -webkit-overflow-scrolling: touch;
   }
 
-  /* Compact KPI Pill Row */
+  /* KPI Summary */
   .kpi-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -208,7 +208,7 @@
     margin-top: 2px;
   }
 
-  /* Action Bar (Search & Filter) */
+  /* Action Bar */
   .mobile-action-bar {
     display: flex;
     gap: 8px;
@@ -233,7 +233,85 @@
     font-weight: 600;
   }
 
-  /* Mobile Order Card List */
+  /* Section Header */
+  .m-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .m-section-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--mauve-dark);
+  }
+  .btn-addon-add-header {
+    background: var(--mauve);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* Add-on Container */
+  .addon-section-wrap {
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 14px;
+  }
+  .addon-mobile-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-height: 170px;
+    overflow-y: auto;
+  }
+  .addon-m-card {
+    background: var(--grey-opt);
+    border: 1px solid #e2dedc;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+  }
+  .addon-m-card.sold-out {
+    opacity: 0.6;
+    background: #eee;
+  }
+  .addon-m-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .addon-m-name {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .addon-m-price {
+    font-size: 10px;
+    font-weight: 800;
+    color: #444;
+  }
+  .addon-m-ctrls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  /* Order Cards */
   .order-card-feed {
     display: flex;
     flex-direction: column;
@@ -268,7 +346,6 @@
     color: #777;
   }
 
-  /* Shrunken Order Add-ons List */
   .order-items-wrap {
     display: flex;
     flex-direction: column;
@@ -377,20 +454,25 @@
     border-radius: 8px;
     object-fit: contain;
     background: #fafafa;
+    flex-shrink: 0;
   }
   .menu-m-info {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
   }
-  .menu-m-title { font-size: 11.5px; font-weight: 700; }
+  .menu-m-title { font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .menu-m-cat { font-size: 9px; color: #777; text-transform: uppercase; }
   .menu-m-price { font-size: 11px; font-weight: 800; }
+  .menu-m-assigned-addons { font-size: 8.5px; color: #5a3637; margin-top: 2px; line-height: 1.2; }
+  
   .menu-m-ctrls {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    flex-shrink: 0;
   }
   .btn-stock-m {
     padding: 4px 8px;
@@ -402,6 +484,16 @@
   }
   .btn-stock-m.in-stock { background: var(--good); color: #fff; }
   .btn-stock-m.out-of-stock { background: var(--bad); color: #fff; }
+  .btn-edit-m {
+    background: #eee;
+    border: 1px solid var(--grey-border);
+    color: var(--ink);
+    border-radius: 6px;
+    padding: 3px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    cursor: pointer;
+  }
   .btn-del-m {
     background: none;
     border: 1px solid var(--bad);
@@ -437,7 +529,7 @@
   .fb-m-sender { font-weight: 700; color: var(--mauve-dark); font-size: 11px; }
   .fb-m-body { font-size: 11px; color: #222; }
 
-  /* Bottom Navigation Bar */
+  /* Bottom Navigation */
   .bottom-nav {
     position: absolute;
     bottom: 0;
@@ -471,7 +563,7 @@
   .b-nav-icon { font-size: 15px; }
   .b-nav-label { font-size: 8.5px; text-transform: uppercase; }
 
-  /* Add Item Floating Action Button */
+  /* Floating Add Button */
   .fab-add {
     position: absolute;
     bottom: max(68px, calc(58px + env(safe-area-inset-bottom, 12px)));
@@ -492,7 +584,7 @@
     z-index: 85;
   }
 
-  /* Modal Dialogs */
+  /* Modals */
   .m-modal-overlay {
     position: fixed;
     inset: 0;
@@ -536,6 +628,28 @@
     font-weight: 700;
     cursor: pointer;
     border: none;
+  }
+
+  .addon-checklist-wrap {
+    max-height: 110px;
+    overflow-y: auto;
+    border: 1px solid var(--grey-border);
+    border-radius: 6px;
+    padding: 6px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background: #fafafa;
+  }
+  .addon-check-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .addon-check-item input[type="checkbox"] {
+    accent-color: var(--mauve);
   }
 </style>
 </head>
@@ -616,6 +730,18 @@
 
     <!-- TAB 2: MENU MANAGER (ADMIN) -->
     <section id="tab-menu" style="display: none;">
+      <!-- ADD-ON SECTION (PINNED ON TOP OF MENU ITEMS) -->
+      <div class="addon-section-wrap">
+        <div class="m-section-header">
+          <span class="m-section-title">Add-ons Available</span>
+          <button class="btn-addon-add-header" onclick="openAddonModal()">+ Add-on</button>
+        </div>
+        <div class="addon-mobile-feed" id="admin-addon-cards"></div>
+      </div>
+
+      <div class="m-section-header" style="margin-top: 6px;">
+        <span class="m-section-title">Menu Items</span>
+      </div>
       <div class="menu-mobile-feed" id="admin-menu-cards"></div>
     </section>
 
@@ -686,7 +812,7 @@
   </div>
 </div>
 
-<!-- Add Item Modal -->
+<!-- Add Menu Item Modal -->
 <div class="m-modal-overlay" id="add-modal">
   <div class="m-modal-card">
     <h3 class="m-modal-title">Add Menu Item</h3>
@@ -707,12 +833,18 @@
       </div>
       <div class="m-form-group">
         <label>Price (RM)</label>
-        <input type="number" step="0.5" id="new-item-price" required placeholder="15">
+        <input type="number" step="0.1" id="new-item-price" required placeholder="15">
       </div>
       <div class="m-form-group">
         <label>Image URL</label>
         <input type="url" id="new-item-img" required placeholder="https://...">
       </div>
+
+      <div class="m-form-group">
+        <label>Select Add-ons to include</label>
+        <div class="addon-checklist-wrap" id="new-item-addons-list"></div>
+      </div>
+
       <div class="m-modal-actions">
         <button type="button" class="btn-m-action" style="background: #eee;" onclick="closeAddModal()">Cancel</button>
         <button type="submit" class="btn-m-action" style="background: var(--mauve); color:#fff;">Save</button>
@@ -721,22 +853,145 @@
   </div>
 </div>
 
+<!-- Edit Menu Item Modal -->
+<div class="m-modal-overlay" id="edit-modal">
+  <div class="m-modal-card">
+    <h3 class="m-modal-title">Edit Menu Item</h3>
+    <form onsubmit="handleUpdateItem(event)">
+      <input type="hidden" id="edit-item-id">
+      <div class="m-form-group">
+        <label>Product Name</label>
+        <input type="text" id="edit-item-name" required>
+      </div>
+      <div class="m-form-group">
+        <label>Category</label>
+        <select id="edit-item-cat">
+          <option value="coffee">Coffee</option>
+          <option value="non-coffee">Non Coffee</option>
+          <option value="matcha">Matcha</option>
+          <option value="soft-cookies">Soft Cookies</option>
+          <option value="bites">Bites</option>
+        </select>
+      </div>
+      <div class="m-form-group">
+        <label>Price (RM)</label>
+        <input type="number" step="0.1" id="edit-item-price" required>
+      </div>
+      <div class="m-form-group">
+        <label>Image URL</label>
+        <input type="url" id="edit-item-img" required>
+      </div>
+
+      <div class="m-form-group">
+        <label>Select Add-ons to include</label>
+        <div class="addon-checklist-wrap" id="edit-item-addons-list"></div>
+      </div>
+
+      <div class="m-modal-actions">
+        <button type="button" class="btn-m-action" style="background: #eee;" onclick="closeEditModal()">Cancel</button>
+        <button type="submit" class="btn-m-action" style="background: var(--mauve); color:#fff;">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Add-on Modal -->
+<div class="m-modal-overlay" id="add-addon-modal">
+  <div class="m-modal-card">
+    <h3 class="m-modal-title">Create New Add-on</h3>
+    <form onsubmit="handleCreateAddon(event)">
+      <div class="m-form-group">
+        <label>Add-on Name</label>
+        <input type="text" id="new-addon-name" required placeholder="e.g. Extra Shot">
+      </div>
+      <div class="m-form-group">
+        <label>Price (RM)</label>
+        <input type="number" step="0.5" id="new-addon-price" required placeholder="3.00">
+      </div>
+      <div class="m-modal-actions">
+        <button type="button" class="btn-m-action" style="background: #eee;" onclick="closeAddonModal()">Cancel</button>
+        <button type="submit" class="btn-m-action" style="background: var(--mauve); color:#fff;">Create</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Add-on Modal -->
+<div class="m-modal-overlay" id="edit-addon-modal">
+  <div class="m-modal-card">
+    <h3 class="m-modal-title">Edit Add-on</h3>
+    <form onsubmit="handleUpdateAddon(event)">
+      <input type="hidden" id="edit-addon-id">
+      <div class="m-form-group">
+        <label>Add-on Name</label>
+        <input type="text" id="edit-addon-name" required>
+      </div>
+      <div class="m-form-group">
+        <label>Price (RM)</label>
+        <input type="number" step="0.5" id="edit-addon-price" required>
+      </div>
+      <div class="m-modal-actions">
+        <button type="button" class="btn-m-action" style="background: #eee;" onclick="closeEditAddonModal()">Cancel</button>
+        <button type="submit" class="btn-m-action" style="background: var(--mauve); color:#fff;">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script>
   let currentUserRole = null;
 
+  // Complete Add-on list from the physical printed menu
+  const defaultAddons = [
+    { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
+    { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true },
+    { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true },
+    { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true },
+    { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true }
+  ];
+
+  // Complete Menu list with accurate prices from the physical printed menu
   const defaultMenu = [
-    { id: 'c1', cat: 'coffee', name: 'Spanish latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', custom: true, inStock: true },
-    { id: 'c2', cat: 'coffee', name: 'Cinnamon latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', custom: true, inStock: true },
-    { id: 'c3', cat: 'coffee', name: 'Hazelnut latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', custom: true, inStock: true },
-    { id: 'c4', cat: 'coffee', name: 'Caramel latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', custom: true, inStock: true },
-    { id: 'c5', cat: 'coffee', name: 'Americano', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', custom: true, inStock: true },
-    { id: 'nc1', cat: 'non-coffee', name: 'Chocolate', price: 13.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', custom: true, inStock: false },
-    { id: 'nc2', cat: 'non-coffee', name: 'Vanilla Shake', price: 14.00, img: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200&q=60', custom: true, inStock: true },
-    { id: 'm1', cat: 'matcha', name: 'Matcha Latte', price: 12.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', custom: true, inStock: true },
-    { id: 'm2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', custom: true, inStock: true },
-    { id: 'ck1', cat: 'soft-cookies', name: 'Soft Cookies', price: 10.00, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', custom: false, inStock: true },
-    { id: 'ck2', cat: 'soft-cookies', name: 'S\'mores', price: 12.00, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', custom: false, inStock: true },
-    { id: 'b1', cat: 'bites', name: 'Red Velvet Cake', price: 12.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', custom: false, inStock: true }
+    // Coffee Section
+    { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, addons: ['ao-2', 'ao-4'] },
+    { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-2'] },
+    { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, addons: ['ao-2'] },
+
+    // Non-Coffee Section
+    { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+    { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+    { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+    { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+    { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+    { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+
+    // Matcha Section
+    { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, addons: [] },
+
+    // Soft Cookies Section
+    { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, addons: ['ao-5'] },
+    { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, addons: ['ao-5'] },
+    { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, addons: ['ao-5'] },
+
+    // Bites Section
+    { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, addons: ['ao-5'] },
+    { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+    { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, addons: [] }
   ];
 
   function getStorage(key, fallback) {
@@ -754,10 +1009,12 @@
     } catch (e) {}
   }
 
+  let addons = getStorage('ngopi_addons', defaultAddons);
   let menu = getStorage('ngopi_menu', defaultMenu);
   let orders = getStorage('ngopi_orders', []);
   let feedbacks = getStorage('ngopi_feedback', []);
 
+  if (!localStorage.getItem('ngopi_addons')) setStorage('ngopi_addons', addons);
   if (!localStorage.getItem('ngopi_menu')) setStorage('ngopi_menu', menu);
   if (!localStorage.getItem('ngopi_orders')) setStorage('ngopi_orders', orders);
   if (!localStorage.getItem('ngopi_feedback')) setStorage('ngopi_feedback', feedbacks);
@@ -773,6 +1030,11 @@
       menu = getStorage('ngopi_menu', defaultMenu);
       renderMenu();
       renderStats();
+    }
+    if (e.key === 'ngopi_addons') {
+      addons = getStorage('ngopi_addons', defaultAddons);
+      renderAddons();
+      renderMenu();
     }
     if (e.key === 'ngopi_feedback') {
       feedbacks = getStorage('ngopi_feedback', []);
@@ -823,6 +1085,7 @@
     renderStats();
     renderOrders('admin-order-cards');
     renderOrders('staff-order-cards');
+    renderAddons();
     renderMenu();
     renderFeedbacks();
   }
@@ -856,6 +1119,8 @@
       kpi.style.display = 'none';
       fab.style.display = 'flex';
       document.getElementById('b-nav-menu').classList.add('active');
+      renderAddons();
+      renderMenu();
     } else if (tab === 'feedback') {
       document.getElementById('tab-feedback').style.display = 'block';
       kpi.style.display = 'none';
@@ -1022,24 +1287,146 @@
     }
   }
 
-  function renderMenu() {
-    const wrap = document.getElementById('admin-menu-cards');
-    wrap.innerHTML = menu.map(item => `
-      <div class="menu-m-card ${item.inStock ? '' : 'sold-out'}">
-        <img class="menu-m-img" src="${item.img}" alt="${item.name}">
-        <div class="menu-m-info">
-          <div class="menu-m-cat">${item.cat}</div>
-          <div class="menu-m-title">${item.name}</div>
-          <div class="menu-m-price">RM ${Number(item.price).toFixed(2)}</div>
+  /* Add-on Manager Functions */
+  function renderAddons() {
+    const wrap = document.getElementById('admin-addon-cards');
+    if (!wrap) return;
+
+    if (addons.length === 0) {
+      wrap.innerHTML = `<div style="text-align: center; color: #888; font-size: 10px; padding: 12px;">No add-ons created.</div>`;
+      return;
+    }
+
+    wrap.innerHTML = addons.map(ao => `
+      <div class="addon-m-card ${ao.inStock ? '' : 'sold-out'}">
+        <div class="addon-m-left">
+          <span class="addon-m-name">${ao.name}</span>
+          <span class="addon-m-price">+RM ${Number(ao.price).toFixed(2)}</span>
         </div>
-        <div class="menu-m-ctrls">
-          <button class="btn-stock-m ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">
-            ${item.inStock ? 'In Stock' : 'Sold Out'}
+        <div class="addon-m-ctrls">
+          <button class="btn-stock-m ${ao.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleAddonStock('${ao.id}')">
+            ${ao.inStock ? 'In Stock' : 'Sold Out'}
           </button>
-          <button class="btn-del-m" onclick="deleteMenuItem('${item.id}')">Del</button>
+          <button class="btn-edit-m" onclick="openEditAddonModal('${ao.id}')">Edit</button>
+          <button class="btn-del-m" onclick="deleteAddon('${ao.id}')">Del</button>
         </div>
       </div>
     `).join('');
+  }
+
+  function toggleAddonStock(id) {
+    const target = addons.find(a => a.id === id);
+    if (target) {
+      target.inStock = !target.inStock;
+      setStorage('ngopi_addons', addons);
+      renderAddons();
+    }
+  }
+
+  function deleteAddon(id) {
+    if (confirm('Delete this add-on option?')) {
+      addons = addons.filter(a => a.id !== id);
+      menu.forEach(m => {
+        if (Array.isArray(m.addons)) {
+          m.addons = m.addons.filter(aoId => aoId !== id);
+        }
+      });
+      setStorage('ngopi_addons', addons);
+      setStorage('ngopi_menu', menu);
+      renderAddons();
+      renderMenu();
+    }
+  }
+
+  function openAddonModal() {
+    document.getElementById('add-addon-modal').classList.add('open');
+  }
+
+  function closeAddonModal() {
+    document.getElementById('add-addon-modal').classList.remove('open');
+    document.getElementById('new-addon-name').value = '';
+    document.getElementById('new-addon-price').value = '';
+  }
+
+  function handleCreateAddon(e) {
+    e.preventDefault();
+    const name = document.getElementById('new-addon-name').value.trim();
+    const price = parseFloat(document.getElementById('new-addon-price').value);
+
+    addons.push({
+      id: 'ao-' + Date.now(),
+      name,
+      price,
+      inStock: true
+    });
+
+    setStorage('ngopi_addons', addons);
+    renderAddons();
+    closeAddonModal();
+  }
+
+  function openEditAddonModal(id) {
+    const target = addons.find(a => a.id === id);
+    if (!target) return;
+    document.getElementById('edit-addon-id').value = target.id;
+    document.getElementById('edit-addon-name').value = target.name;
+    document.getElementById('edit-addon-price').value = target.price;
+    document.getElementById('edit-addon-modal').classList.add('open');
+  }
+
+  function closeEditAddonModal() {
+    document.getElementById('edit-addon-modal').classList.remove('open');
+  }
+
+  function handleUpdateAddon(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-addon-id').value;
+    const name = document.getElementById('edit-addon-name').value.trim();
+    const price = parseFloat(document.getElementById('edit-addon-price').value);
+
+    const target = addons.find(a => a.id === id);
+    if (target) {
+      target.name = name;
+      target.price = price;
+      setStorage('ngopi_addons', addons);
+      renderAddons();
+      renderMenu();
+    }
+    closeEditAddonModal();
+  }
+
+  /* Menu Item Manager Functions */
+  function renderMenu() {
+    const wrap = document.getElementById('admin-menu-cards');
+    wrap.innerHTML = menu.map(item => {
+      const assignedAddonNames = (item.addons || [])
+        .map(aId => {
+          const matched = addons.find(a => a.id === aId);
+          return matched ? matched.name : null;
+        })
+        .filter(Boolean);
+
+      return `
+        <div class="menu-m-card ${item.inStock ? '' : 'sold-out'}">
+          <img class="menu-m-img" src="${item.img}" alt="${item.name}">
+          <div class="menu-m-info">
+            <div class="menu-m-cat">${item.cat}</div>
+            <div class="menu-m-title">${item.name}</div>
+            <div class="menu-m-price">RM ${Number(item.price).toFixed(2)}</div>
+            ${assignedAddonNames.length > 0 
+              ? `<div class="menu-m-assigned-addons"><b>Add-ons:</b> ${assignedAddonNames.join(', ')}</div>` 
+              : `<div class="menu-m-assigned-addons" style="color: #999;">No add-ons linked</div>`}
+          </div>
+          <div class="menu-m-ctrls">
+            <button class="btn-stock-m ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">
+              ${item.inStock ? 'In Stock' : 'Sold Out'}
+            </button>
+            <button class="btn-edit-m" onclick="openEditItemModal('${item.id}')">Edit</button>
+            <button class="btn-del-m" onclick="deleteMenuItem('${item.id}')">Del</button>
+          </div>
+        </div>
+      `;
+    }).join('');
   }
 
   function toggleSoldOut(id) {
@@ -1061,9 +1448,31 @@
     }
   }
 
+  function renderAddonChecklist(containerId, selectedAddonIds = []) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    if (addons.length === 0) {
+      container.innerHTML = `<span style="font-size: 10px; color: #999;">No add-ons available. Create one first!</span>`;
+      return;
+    }
+
+    container.innerHTML = addons.map(ao => {
+      const isChecked = selectedAddonIds.includes(ao.id) ? 'checked' : '';
+      return `
+        <label class="addon-check-item">
+          <input type="checkbox" value="${ao.id}" ${isChecked}>
+          <span>${ao.name} (+RM ${Number(ao.price).toFixed(2)}) ${ao.inStock ? '' : '<span style="color:red;">(Sold Out)</span>'}</span>
+        </label>
+      `;
+    }).join('');
+  }
+
   function openAddModal() {
+    renderAddonChecklist('new-item-addons-list', []);
     document.getElementById('add-modal').classList.add('open');
   }
+
   function closeAddModal() {
     document.getElementById('add-modal').classList.remove('open');
   }
@@ -1075,14 +1484,17 @@
     const price = parseFloat(document.getElementById('new-item-price').value);
     const img = document.getElementById('new-item-img').value.trim();
 
+    const checkedBoxes = document.querySelectorAll('#new-item-addons-list input[type="checkbox"]:checked');
+    const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
+
     menu.push({
       id: 'item-' + Date.now(),
       cat,
       name,
       price,
       img,
-      custom: cat === 'coffee' || cat === 'non-coffee' || cat === 'matcha',
-      inStock: true
+      inStock: true,
+      addons: selectedAddonIds
     });
 
     setStorage('ngopi_menu', menu);
@@ -1091,8 +1503,55 @@
     closeAddModal();
   }
 
+  function openEditItemModal(id) {
+    const item = menu.find(m => m.id === id);
+    if (!item) return;
+
+    document.getElementById('edit-item-id').value = item.id;
+    document.getElementById('edit-item-name').value = item.name;
+    document.getElementById('edit-item-cat').value = item.cat;
+    document.getElementById('edit-item-price').value = item.price;
+    document.getElementById('edit-item-img').value = item.img;
+
+    renderAddonChecklist('edit-item-addons-list', item.addons || []);
+    document.getElementById('edit-modal').classList.add('open');
+  }
+
+  function closeEditModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+  }
+
+  function handleUpdateItem(e) {
+    e.preventDefault();
+    const id = document.getElementById('edit-item-id').value;
+    const name = document.getElementById('edit-item-name').value.trim();
+    const cat = document.getElementById('edit-item-cat').value;
+    const price = parseFloat(document.getElementById('edit-item-price').value);
+    const img = document.getElementById('edit-item-img').value.trim();
+
+    const checkedBoxes = document.querySelectorAll('#edit-item-addons-list input[type="checkbox"]:checked');
+    const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+    const item = menu.find(m => m.id === id);
+    if (item) {
+      item.name = name;
+      item.cat = cat;
+      item.price = price;
+      item.img = img;
+      item.addons = selectedAddonIds;
+
+      setStorage('ngopi_menu', menu);
+      renderMenu();
+      renderStats();
+    }
+    closeEditModal();
+  }
+
+  /* Feedback Handlers */
   function renderFeedbacks(list = feedbacks) {
     const wrap = document.getElementById('feedback-cards');
+    if (!wrap) return;
+
     if (list.length === 0) {
       wrap.innerHTML = `<div style="text-align: center; color: #888; font-size: 11px; padding: 24px;">No customer feedback yet.</div>`;
       return;
