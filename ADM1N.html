@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NGOPI DULU — Management Portal</title>
+<title>NGOPI DULU — Management Portal (Desktop)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -31,7 +31,6 @@
   }
   button, input, select, textarea { font-family: inherit; }
 
-  /* Login Screen */
   #login-screen {
     position: fixed;
     inset: 0;
@@ -112,7 +111,6 @@
     display: none;
   }
 
-  /* Portal System */
   #portal-screen {
     display: none;
     width: 100%;
@@ -197,7 +195,6 @@
     font-weight: 700;
   }
 
-  /* Metric Stat Cards */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -225,7 +222,6 @@
     color: var(--mauve-dark);
   }
 
-  /* Tables & Content Boxes */
   .section-box {
     background: var(--paper);
     border-radius: 16px;
@@ -290,7 +286,6 @@
     vertical-align: top;
   }
 
-  /* Dynamic Colored Status Select Dropdowns */
   .status-select {
     padding: 6px 12px;
     border-radius: 20px;
@@ -301,21 +296,9 @@
     outline: none;
     transition: all 0.2s;
   }
-  .status-select.status-preparing {
-    background: #FEF3C7;
-    color: #B45309;
-    border-color: #FCD34D;
-  }
-  .status-select.status-ready {
-    background: #DCFCE7;
-    color: #15803D;
-    border-color: #86EFAC;
-  }
-  .status-select.status-completed {
-    background: #DBEAFE;
-    color: #1D4ED8;
-    border-color: #93C5FD;
-  }
+  .status-select.status-preparing { background: #FEF3C7; color: #B45309; border-color: #FCD34D; }
+  .status-select.status-ready { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+  .status-select.status-completed { background: #DBEAFE; color: #1D4ED8; border-color: #93C5FD; }
 
   .item-list-cell {
     display: flex;
@@ -387,46 +370,38 @@
     color: #fff;
   }
 
-  /* Feedback Page Layout */
-  .feedback-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-  .feedback-card {
-    background: var(--grey-opt);
-    border-radius: 12px;
-    padding: 16px;
+  .desktop-addon-wrap {
+    background: #fff;
     border: 1px solid var(--grey-border);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
   }
-  .feedback-card-header {
+  .addon-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .addon-desk-card {
+    background: var(--grey-opt);
+    border: 1px solid #ddd8d5;
+    border-radius: 10px;
+    padding: 10px 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ddd8d5;
-    padding-bottom: 8px;
   }
-  .feedback-sender {
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--mauve-dark);
+  .addon-desk-card.sold-out {
+    opacity: 0.6;
+    background: #eee;
   }
-  .feedback-time {
-    font-size: 10px;
-    color: #777;
-  }
-  .feedback-body {
-    font-size: 12px;
-    color: #222;
-    line-height: 1.4;
-    white-space: pre-wrap;
+  .addon-desk-ctrls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
   }
 
-  /* Menu Cards */
   .menu-management-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -471,13 +446,19 @@
     font-size: 12px;
     font-weight: 700;
   }
+  .admin-item-addons-list {
+    font-size: 9px;
+    color: #5a3637;
+    margin: 3px 0;
+    line-height: 1.2;
+  }
   .admin-card-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     margin-top: 8px;
   }
   .btn-stock {
-    padding: 6px 12px;
+    padding: 6px 10px;
     border-radius: 6px;
     border: none;
     font-size: 10px;
@@ -487,6 +468,16 @@
   .btn-stock.in-stock { background: var(--good); color: #fff; }
   .btn-stock.out-of-stock { background: var(--bad); color: #fff; }
 
+  .btn-edit {
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #eae6e5;
+    border: 1px solid var(--grey-border);
+    color: var(--ink);
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+  }
   .btn-delete {
     padding: 6px 10px;
     border-radius: 6px;
@@ -513,7 +504,44 @@
     cursor: pointer;
   }
 
-  /* Modals */
+  .feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .feedback-card {
+    background: var(--grey-opt);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--grey-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .feedback-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd8d5;
+    padding-bottom: 8px;
+  }
+  .feedback-sender {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--mauve-dark);
+  }
+  .feedback-time {
+    font-size: 10px;
+    color: #777;
+  }
+  .feedback-body {
+    font-size: 12px;
+    color: #222;
+    line-height: 1.4;
+    white-space: pre-wrap;
+  }
+
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -532,6 +560,8 @@
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-height: 90vh;
+    overflow-y: auto;
   }
   .modal-title {
     font-size: 16px;
@@ -563,6 +593,28 @@
     margin-top: 20px;
   }
 
+  .addon-checklist-wrap {
+    max-height: 120px;
+    overflow-y: auto;
+    border: 1px solid var(--grey-border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #fafafa;
+  }
+  .addon-check-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .addon-check-item input[type="checkbox"] {
+    accent-color: var(--mauve);
+  }
+
   .detail-field {
     margin-bottom: 10px;
     font-size: 12px;
@@ -590,7 +642,6 @@
 </head>
 <body>
 
-  <!-- 1. LOGIN SCREEN -->
   <div id="login-screen">
     <div class="login-card">
       <div class="login-brand">NGOPI DULU</div>
@@ -610,7 +661,6 @@
     </div>
   </div>
 
-  <!-- 2. PORTAL SYSTEM -->
   <div id="portal-screen">
     <aside class="sidebar">
       <div class="brand-badge">NGOPI DULU</div>
@@ -651,7 +701,6 @@
         </div>
       </section>
 
-      <!-- VIEW 1: Overview & Orders -->
       <section class="section-box" id="tab-orders">
         <div class="section-head">
           <h2 class="section-title">Order History Log</h2>
@@ -689,15 +738,21 @@
         </div>
       </section>
 
-      <!-- VIEW 2: Menu Manager -->
       <section class="section-box" id="tab-menu" style="display: none;">
+        <div class="desktop-addon-wrap">
+          <div class="section-head" style="margin-bottom: 8px;">
+            <h3 class="section-title" style="font-size: 14px;">Add-on Customizations Available</h3>
+            <button class="btn-add-primary" style="padding: 6px 14px; font-size: 11px;" onclick="openAddonModal()">+ Add New Add-on</button>
+          </div>
+          <div class="addon-grid-container" id="admin-addon-grid"></div>
+        </div>
+
         <div class="section-head">
           <h2 class="section-title">Menu Stock & Availability</h2>
         </div>
         <div class="menu-management-grid" id="admin-menu-grid"></div>
       </section>
 
-      <!-- VIEW 3: Feedback Page -->
       <section class="section-box" id="tab-feedback" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Customer Feedback Inbox</h2>
@@ -710,7 +765,6 @@
         <div class="feedback-grid" id="feedback-container"></div>
       </section>
 
-      <!-- VIEW 4: Staff Order History Library -->
       <section class="section-box" id="tab-staff" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Order History Library</h2>
@@ -746,7 +800,6 @@
     </main>
   </div>
 
-  <!-- Detail Modal -->
   <div class="modal-overlay" id="detail-modal">
     <div class="modal-card">
       <h3 class="modal-title" id="modal-order-id">Order Details</h3>
@@ -765,11 +818,10 @@
     </div>
   </div>
 
-  <!-- Add Menu Modal -->
   <div class="modal-overlay" id="add-modal">
     <div class="modal-card">
       <h3 class="modal-title">Add Menu Item</h3>
-      <form id="add-menu-form" onsubmit="handleCreateItem(event)">
+      <form onsubmit="handleCreateItem(event)">
         <div class="form-group">
           <label>Product Name</label>
           <input type="text" id="new-item-name" required placeholder="e.g. Spanish Latte">
@@ -786,12 +838,18 @@
         </div>
         <div class="form-group">
           <label>Price (RM)</label>
-          <input type="number" step="0.5" id="new-item-price" required placeholder="15">
+          <input type="number" step="0.1" id="new-item-price" required placeholder="15">
         </div>
         <div class="form-group">
           <label>Image URL</label>
           <input type="url" id="new-item-img" required placeholder="https://images.unsplash.com/...">
         </div>
+
+        <div class="form-group">
+          <label>Select Add-ons to include</label>
+          <div class="addon-checklist-wrap" id="new-item-addons-list"></div>
+        </div>
+
         <div class="modal-actions">
           <button type="button" class="btn-delete" onclick="closeAddModal()">Cancel</button>
           <button type="submit" class="btn-add-primary">Save to Menu</button>
@@ -800,22 +858,142 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-card">
+      <h3 class="modal-title">Edit Menu Item</h3>
+      <form onsubmit="handleUpdateItem(event)">
+        <input type="hidden" id="edit-item-id">
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" id="edit-item-name" required>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="edit-item-cat">
+            <option value="coffee">Coffee</option>
+            <option value="non-coffee">Non Coffee</option>
+            <option value="matcha">Matcha</option>
+            <option value="soft-cookies">Soft Cookies</option>
+            <option value="bites">Bites</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Price (RM)</label>
+          <input type="number" step="0.1" id="edit-item-price" required>
+        </div>
+        <div class="form-group">
+          <label>Image URL</label>
+          <input type="url" id="edit-item-img" required>
+        </div>
+
+        <div class="form-group">
+          <label>Select Add-ons to include</label>
+          <div class="addon-checklist-wrap" id="edit-item-addons-list"></div>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-delete" onclick="closeEditModal()">Cancel</button>
+          <button type="submit" class="btn-add-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="add-addon-modal">
+    <div class="modal-card">
+      <h3 class="modal-title">Create New Add-on</h3>
+      <form onsubmit="handleCreateAddon(event)">
+        <div class="form-group">
+          <label>Add-on Name</label>
+          <input type="text" id="new-addon-name" required placeholder="e.g. Extra Shot">
+        </div>
+        <div class="form-group">
+          <label>Price (RM)</label>
+          <input type="number" step="0.5" id="new-addon-price" required placeholder="3.00">
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-delete" onclick="closeAddonModal()">Cancel</button>
+          <button type="submit" class="btn-add-primary">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="edit-addon-modal">
+    <div class="modal-card">
+      <h3 class="modal-title">Edit Add-on</h3>
+      <form onsubmit="handleUpdateAddon(event)">
+        <input type="hidden" id="edit-addon-id">
+        <div class="form-group">
+          <label>Add-on Name</label>
+          <input type="text" id="edit-addon-name" required>
+        </div>
+        <div class="form-group">
+          <label>Price (RM)</label>
+          <input type="number" step="0.5" id="edit-addon-price" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-delete" onclick="closeEditAddonModal()">Cancel</button>
+          <button type="submit" class="btn-add-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     let currentUserRole = null;
+    const MENU_VERSION = 'v2_full';
+
+    const defaultAddons = [
+      { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
+      { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true },
+      { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true },
+      { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true },
+      { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true }
+    ];
 
     const defaultMenu = [
-      { id: 'c1', cat: 'coffee', name: 'Spanish latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', custom: true, inStock: true },
-      { id: 'c2', cat: 'coffee', name: 'Cinnamon latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', custom: true, inStock: true },
-      { id: 'c3', cat: 'coffee', name: 'Hazelnut latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', custom: true, inStock: true },
-      { id: 'c4', cat: 'coffee', name: 'Caramel latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', custom: true, inStock: true },
-      { id: 'c5', cat: 'coffee', name: 'Americano', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', custom: true, inStock: true },
-      { id: 'nc1', cat: 'non-coffee', name: 'Chocolate', price: 13.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', custom: true, inStock: false },
-      { id: 'nc2', cat: 'non-coffee', name: 'Vanilla Shake', price: 14.00, img: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=200&q=60', custom: true, inStock: true },
-      { id: 'm1', cat: 'matcha', name: 'Matcha Latte', price: 12.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', custom: true, inStock: true },
-      { id: 'm2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', custom: true, inStock: true },
-      { id: 'ck1', cat: 'soft-cookies', name: 'Soft Cookies', price: 10.00, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', custom: false, inStock: true },
-      { id: 'ck2', cat: 'soft-cookies', name: 'S\'mores', price: 12.00, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', custom: false, inStock: true },
-      { id: 'b1', cat: 'bites', name: 'Red Velvet Cake', price: 12.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', custom: false, inStock: true }
+      // Coffee Section
+      { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+      { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+      { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+      { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+      { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+      { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+      { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, addons: ['ao-2', 'ao-4'] },
+      { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, addons: ['ao-2'] },
+      { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+      { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, addons: ['ao-2'] },
+
+      // Non-Coffee Section
+      { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+      { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+      { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+      { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+      { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, addons: [] },
+      { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, addons: ['ao-1'] },
+
+      // Matcha Section
+      { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, addons: ['ao-1', 'ao-2'] },
+      { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, addons: [] },
+
+      // Soft Cookies Section
+      { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, addons: ['ao-5'] },
+      { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, addons: ['ao-5'] },
+      { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, addons: ['ao-5'] },
+      { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, addons: [] },
+
+      // Bites Section
+      { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, addons: ['ao-5'] },
+      { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, addons: [] },
+      { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, addons: [] }
     ];
 
     function getStorage(key, fallback) {
@@ -833,13 +1011,17 @@
       } catch (e) {}
     }
 
+    // Dynamic reset to new full catalog if version outdated
+    if (localStorage.getItem('ngopi_version') !== MENU_VERSION) {
+      setStorage('ngopi_menu', defaultMenu);
+      setStorage('ngopi_addons', defaultAddons);
+      localStorage.setItem('ngopi_version', MENU_VERSION);
+    }
+
+    let addons = getStorage('ngopi_addons', defaultAddons);
     let menu = getStorage('ngopi_menu', defaultMenu);
     let orders = getStorage('ngopi_orders', []);
     let feedbacks = getStorage('ngopi_feedback', []);
-
-    if (!localStorage.getItem('ngopi_menu')) setStorage('ngopi_menu', menu);
-    if (!localStorage.getItem('ngopi_orders')) setStorage('ngopi_orders', orders);
-    if (!localStorage.getItem('ngopi_feedback')) setStorage('ngopi_feedback', feedbacks);
 
     window.addEventListener('storage', (e) => {
       if (e.key === 'ngopi_orders') {
@@ -850,8 +1032,13 @@
       }
       if (e.key === 'ngopi_menu') {
         menu = getStorage('ngopi_menu', defaultMenu);
-        renderMenuGrid();
+        renderMenu();
         renderStats();
+      }
+      if (e.key === 'ngopi_addons') {
+        addons = getStorage('ngopi_addons', defaultAddons);
+        renderAddons();
+        renderMenu();
       }
       if (e.key === 'ngopi_feedback') {
         feedbacks = getStorage('ngopi_feedback', []);
@@ -898,7 +1085,8 @@
       renderStats();
       renderOrderTable('admin-order-table-body', true);
       renderOrderTable('staff-order-table-body', true);
-      renderMenuGrid();
+      renderAddons();
+      renderMenu();
       renderFeedbackList();
     }
 
@@ -935,6 +1123,8 @@
         addBtn.style.display = 'block';
         title.textContent = 'Menu Stock Manager';
         document.querySelector('#nav-item-menu .nav-btn').classList.add('active');
+        renderAddons();
+        renderMenu();
       } else if (tab === 'feedback') {
         document.getElementById('tab-feedback').style.display = 'block';
         stats.style.display = 'none';
@@ -975,7 +1165,6 @@
       `).join('');
     }
 
-    // Status color class generator: Preparing=Yellow, Ready=Green, Completed=Blue
     function getStatusClass(status) {
       if (status === 'Preparing') return 'status-preparing';
       if (status === 'Ready') return 'status-ready';
@@ -1110,7 +1299,266 @@
       }
     }
 
-    // Feedback Management
+    function renderAddons() {
+      const wrap = document.getElementById('admin-addon-grid');
+      if (!wrap) return;
+
+      if (addons.length === 0) {
+        wrap.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; font-size: 11px; padding: 12px;">No add-ons created.</div>`;
+        return;
+      }
+
+      wrap.innerHTML = addons.map(ao => `
+        <div class="addon-desk-card ${ao.inStock ? '' : 'sold-out'}">
+          <div>
+            <div style="font-weight: 700; font-size: 12px;">${ao.name}</div>
+            <div style="font-weight: 800; font-size: 11px; color: #444; margin-top: 2px;">+RM ${Number(ao.price).toFixed(2)}</div>
+          </div>
+          <div class="addon-desk-ctrls">
+            <button class="btn-stock ${ao.inStock ? 'in-stock' : 'out-of-stock'}" style="padding: 4px 8px; font-size: 9px;" onclick="toggleAddonStock('${ao.id}')">
+              ${ao.inStock ? 'In Stock' : 'Sold Out'}
+            </button>
+            <button class="btn-edit" style="padding: 4px 8px; font-size: 9px;" onclick="openEditAddonModal('${ao.id}')">Edit</button>
+            <button class="btn-delete" style="padding: 4px 8px; font-size: 9px;" onclick="deleteAddon('${ao.id}')">Del</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleAddonStock(id) {
+      const target = addons.find(a => a.id === id);
+      if (target) {
+        target.inStock = !target.inStock;
+        setStorage('ngopi_addons', addons);
+        renderAddons();
+      }
+    }
+
+    function deleteAddon(id) {
+      if (confirm('Delete this add-on option?')) {
+        addons = addons.filter(a => a.id !== id);
+        menu.forEach(m => {
+          if (Array.isArray(m.addons)) {
+            m.addons = m.addons.filter(aoId => aoId !== id);
+          }
+        });
+        setStorage('ngopi_addons', addons);
+        setStorage('ngopi_menu', menu);
+        renderAddons();
+        renderMenu();
+      }
+    }
+
+    function openAddonModal() {
+      document.getElementById('add-addon-modal').classList.add('open');
+    }
+
+    function closeAddonModal() {
+      document.getElementById('add-addon-modal').classList.remove('open');
+      document.getElementById('new-addon-name').value = '';
+      document.getElementById('new-addon-price').value = '';
+    }
+
+    function handleCreateAddon(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-addon-name').value.trim();
+      const price = parseFloat(document.getElementById('new-addon-price').value);
+
+      addons.push({
+        id: 'ao-' + Date.now(),
+        name,
+        price,
+        inStock: true
+      });
+
+      setStorage('ngopi_addons', addons);
+      renderAddons();
+      closeAddonModal();
+    }
+
+    function openEditAddonModal(id) {
+      const target = addons.find(a => a.id === id);
+      if (!target) return;
+      document.getElementById('edit-addon-id').value = target.id;
+      document.getElementById('edit-addon-name').value = target.name;
+      document.getElementById('edit-addon-price').value = target.price;
+      document.getElementById('edit-addon-modal').classList.add('open');
+    }
+
+    function closeEditAddonModal() {
+      document.getElementById('edit-addon-modal').classList.remove('open');
+    }
+
+    function handleUpdateAddon(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-addon-id').value;
+      const name = document.getElementById('edit-addon-name').value.trim();
+      const price = parseFloat(document.getElementById('edit-addon-price').value);
+
+      const target = addons.find(a => a.id === id);
+      if (target) {
+        target.name = name;
+        target.price = price;
+        setStorage('ngopi_addons', addons);
+        renderAddons();
+        renderMenu();
+      }
+      closeEditAddonModal();
+    }
+
+    function renderMenu() {
+      const grid = document.getElementById('admin-menu-grid');
+      grid.innerHTML = menu.map(item => {
+        const assignedAddonNames = (item.addons || [])
+          .map(aId => {
+            const matched = addons.find(a => a.id === aId);
+            return matched ? matched.name : null;
+          })
+          .filter(Boolean);
+
+        return `
+          <div class="admin-menu-card ${item.inStock ? '' : 'sold-out'}">
+            <img class="admin-item-img" src="${item.img}" alt="${item.name}">
+            <div class="admin-item-info">
+              <div>
+                <div class="admin-item-cat">${item.cat}</div>
+                <div class="admin-item-title">${item.name}</div>
+                ${assignedAddonNames.length > 0 
+                  ? `<div class="admin-item-addons-list"><b>Add-ons:</b> ${assignedAddonNames.join(', ')}</div>` 
+                  : `<div class="admin-item-addons-list" style="color: #999;">No add-ons linked</div>`}
+              </div>
+              <div class="admin-item-price">RM ${Number(item.price).toFixed(2)}</div>
+              <div class="admin-card-actions">
+                <button class="btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">
+                  ${item.inStock ? 'Available' : 'Sold Out'}
+                </button>
+                <button class="btn-edit" onclick="openEditItemModal('${item.id}')">Edit</button>
+                <button class="btn-delete" onclick="deleteMenuItem('${item.id}')">Remove</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleSoldOut(id) {
+      const item = menu.find(m => m.id === id);
+      if (item) {
+        item.inStock = !item.inStock;
+        setStorage('ngopi_menu', menu);
+        renderMenu();
+        renderStats();
+      }
+    }
+
+    function deleteMenuItem(id) {
+      if (confirm('Are you sure you want to delete this menu item completely?')) {
+        menu = menu.filter(m => m.id !== id);
+        setStorage('ngopi_menu', menu);
+        renderMenu();
+        renderStats();
+      }
+    }
+
+    function renderAddonChecklist(containerId, selectedAddonIds = []) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      if (addons.length === 0) {
+        container.innerHTML = `<span style="font-size: 11px; color: #999;">No add-ons available. Create one first!</span>`;
+        return;
+      }
+
+      container.innerHTML = addons.map(ao => {
+        const isChecked = selectedAddonIds.includes(ao.id) ? 'checked' : '';
+        return `
+          <label class="addon-check-item">
+            <input type="checkbox" value="${ao.id}" ${isChecked}>
+            <span>${ao.name} (+RM ${Number(ao.price).toFixed(2)}) ${ao.inStock ? '' : '<span style="color:red;">(Sold Out)</span>'}</span>
+          </label>
+        `;
+      }).join('');
+    }
+
+    function openAddModal() {
+      renderAddonChecklist('new-item-addons-list', []);
+      document.getElementById('add-modal').classList.add('open');
+    }
+
+    function closeAddModal() {
+      document.getElementById('add-modal').classList.remove('open');
+    }
+
+    function handleCreateItem(e) {
+      e.preventDefault();
+      const name = document.getElementById('new-item-name').value.trim();
+      const cat = document.getElementById('new-item-cat').value;
+      const price = parseFloat(document.getElementById('new-item-price').value);
+      const img = document.getElementById('new-item-img').value.trim();
+
+      const checkedBoxes = document.querySelectorAll('#new-item-addons-list input[type="checkbox"]:checked');
+      const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+      menu.push({
+        id: 'item-' + Date.now(),
+        cat,
+        name,
+        price,
+        img,
+        inStock: true,
+        addons: selectedAddonIds
+      });
+
+      setStorage('ngopi_menu', menu);
+      renderMenu();
+      renderStats();
+      closeAddModal();
+    }
+
+    function openEditItemModal(id) {
+      const item = menu.find(m => m.id === id);
+      if (!item) return;
+
+      document.getElementById('edit-item-id').value = item.id;
+      document.getElementById('edit-item-name').value = item.name;
+      document.getElementById('edit-item-cat').value = item.cat;
+      document.getElementById('edit-item-price').value = item.price;
+      document.getElementById('edit-item-img').value = item.img;
+
+      renderAddonChecklist('edit-item-addons-list', item.addons || []);
+      document.getElementById('edit-modal').classList.add('open');
+    }
+
+    function closeEditModal() {
+      document.getElementById('edit-modal').classList.remove('open');
+    }
+
+    function handleUpdateItem(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-item-id').value;
+      const name = document.getElementById('edit-item-name').value.trim();
+      const cat = document.getElementById('edit-item-cat').value;
+      const price = parseFloat(document.getElementById('edit-item-price').value);
+      const img = document.getElementById('edit-item-img').value.trim();
+
+      const checkedBoxes = document.querySelectorAll('#edit-item-addons-list input[type="checkbox"]:checked');
+      const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+      const item = menu.find(m => m.id === id);
+      if (item) {
+        item.name = name;
+        item.cat = cat;
+        item.price = price;
+        item.img = img;
+        item.addons = selectedAddonIds;
+
+        setStorage('ngopi_menu', menu);
+        renderMenu();
+        renderStats();
+      }
+      closeEditModal();
+    }
+
     function renderFeedbackList(list = feedbacks) {
       const container = document.getElementById('feedback-container');
       if (!container) return;
@@ -1133,83 +1581,11 @@
 
     function filterFeedback() {
       const q = document.getElementById('feedback-search').value.toLowerCase().trim();
-      const filtered = feedbacks.filter(f => {
-        return (f.sender && f.sender.toLowerCase().includes(q)) || 
-               (f.message && f.message.toLowerCase().includes(q));
-      });
+      const filtered = feedbacks.filter(f => 
+        (f.sender && f.sender.toLowerCase().includes(q)) || 
+        (f.message && f.message.toLowerCase().includes(q))
+      );
       renderFeedbackList(filtered);
-    }
-
-    function renderMenuGrid() {
-      const grid = document.getElementById('admin-menu-grid');
-      grid.innerHTML = menu.map(item => `
-        <div class="admin-menu-card ${item.inStock ? '' : 'sold-out'}">
-          <img class="admin-item-img" src="${item.img}" alt="${item.name}">
-          <div class="admin-item-info">
-            <div>
-              <div class="admin-item-cat">${item.cat}</div>
-              <div class="admin-item-title">${item.name}</div>
-            </div>
-            <div class="admin-item-price">RM ${Number(item.price).toFixed(2)}</div>
-            <div class="admin-card-actions">
-              <button class="btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">
-                ${item.inStock ? 'Available' : 'Sold Out'}
-              </button>
-              <button class="btn-delete" onclick="deleteMenuItem('${item.id}')">Remove</button>
-            </div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function toggleSoldOut(id) {
-      const item = menu.find(m => m.id === id);
-      if (item) {
-        item.inStock = !item.inStock;
-        setStorage('ngopi_menu', menu);
-        renderMenuGrid();
-        renderStats();
-      }
-    }
-
-    function deleteMenuItem(id) {
-      if (confirm('Are you sure you want to delete this menu item completely?')) {
-        menu = menu.filter(m => m.id !== id);
-        setStorage('ngopi_menu', menu);
-        renderMenuGrid();
-        renderStats();
-      }
-    }
-
-    function openAddModal() {
-      document.getElementById('add-modal').classList.add('open');
-    }
-    function closeAddModal() {
-      document.getElementById('add-modal').classList.remove('open');
-      document.getElementById('add-menu-form').reset();
-    }
-
-    function handleCreateItem(e) {
-      e.preventDefault();
-      const name = document.getElementById('new-item-name').value.trim();
-      const cat = document.getElementById('new-item-cat').value;
-      const price = parseFloat(document.getElementById('new-item-price').value);
-      const img = document.getElementById('new-item-img').value.trim();
-
-      menu.push({
-        id: 'item-' + Date.now(),
-        cat,
-        name,
-        price,
-        img,
-        custom: cat === 'coffee' || cat === 'non-coffee' || cat === 'matcha',
-        inStock: true
-      });
-
-      setStorage('ngopi_menu', menu);
-      renderMenuGrid();
-      renderStats();
-      closeAddModal();
     }
   </script>
 </body>
