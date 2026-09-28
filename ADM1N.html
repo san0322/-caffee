@@ -111,6 +111,7 @@
     display: none;
   }
 
+  /* Portal Layout */
   #portal-screen {
     display: none;
     width: 100%;
@@ -195,11 +196,12 @@
     font-weight: 700;
   }
 
+  /* Metric Stat Cards */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
   .stat-card {
     background: var(--paper);
@@ -221,6 +223,33 @@
     font-weight: 700;
     color: var(--mauve-dark);
   }
+
+  /* Shift Controls Bar */
+  .shift-control-bar {
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .shift-status-tag {
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .btn-shift {
+    border: none;
+    border-radius: 10px;
+    padding: 10px 24px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-shift.open { background: var(--good); color: #fff; }
+  .btn-shift.close { background: var(--bad); color: #fff; }
 
   .section-box {
     background: var(--paper);
@@ -300,33 +329,6 @@
   .status-select.status-ready { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
   .status-select.status-completed { background: #DBEAFE; color: #1D4ED8; border-color: #93C5FD; }
 
-  .item-list-cell {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-  .order-item-title {
-    font-weight: 700;
-    font-size: 12px;
-    color: var(--ink);
-  }
-  .order-item-addons {
-    font-size: 9.5px;
-    color: #6c5a5a;
-    background: #f7f1f1;
-    padding: 2px 6px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-top: 1px;
-    font-weight: 500;
-  }
-  .order-req-note {
-    font-size: 10px;
-    font-style: italic;
-    color: #925353;
-    margin-top: 3px;
-  }
-
   .btn-dots {
     background: #eae6e5;
     border: none;
@@ -342,18 +344,9 @@
     color: var(--ink);
     transition: background 0.2s;
   }
-  .btn-dots:hover {
-    background: var(--mauve);
-    color: #fff;
-  }
+  .btn-dots:hover { background: var(--mauve); color: #fff; }
 
-  .reset-history-wrap {
-    margin-top: 20px;
-    padding-top: 16px;
-    border-top: 1px dashed var(--grey-border);
-    display: flex;
-    justify-content: flex-end;
-  }
+  .reset-history-wrap { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--grey-border); display: flex; justify-content: flex-end; }
   .btn-reset-danger {
     background: #fee2e2;
     color: var(--bad);
@@ -363,13 +356,10 @@
     font-size: 11.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
   }
-  .btn-reset-danger:hover {
-    background: var(--bad);
-    color: #fff;
-  }
+  .btn-reset-danger:hover { background: var(--bad); color: #fff; }
 
+  /* Desktop Add-on Ribbon */
   .desktop-addon-wrap {
     background: #fff;
     border: 1px solid var(--grey-border);
@@ -392,16 +382,9 @@
     justify-content: space-between;
     align-items: center;
   }
-  .addon-desk-card.sold-out {
-    opacity: 0.6;
-    background: #eee;
-  }
-  .addon-desk-ctrls {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
+  .addon-desk-card.sold-out { opacity: 0.6; background: #eee; }
 
+  /* Menu Items Grid */
   .menu-management-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -414,134 +397,51 @@
     display: flex;
     gap: 14px;
     border: 1px solid var(--grey-border);
-    position: relative;
   }
-  .admin-menu-card.sold-out {
-    opacity: 0.6;
-    background: #eee;
-  }
-  .admin-item-img {
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    border-radius: 8px;
-    object-fit: contain;
-  }
-  .admin-item-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .admin-item-title {
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .admin-item-cat {
-    font-size: 10px;
-    color: #666;
-    text-transform: uppercase;
-  }
-  .admin-item-price {
-    font-size: 12px;
-    font-weight: 700;
-  }
-  .admin-item-addons-list {
-    font-size: 9px;
-    color: #5a3637;
-    margin: 3px 0;
-    line-height: 1.2;
-  }
-  .admin-card-actions {
-    display: flex;
-    gap: 6px;
-    margin-top: 8px;
-  }
-  .btn-stock {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: none;
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-  }
+  .admin-menu-card.sold-out { opacity: 0.6; background: #eee; }
+  .admin-item-img { width: 70px; height: 70px; background: #fff; border-radius: 8px; object-fit: contain; }
+  .admin-item-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .admin-item-title { font-size: 13px; font-weight: 700; }
+  .admin-item-price { font-size: 12px; font-weight: 700; }
+  .admin-card-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .btn-stock { padding: 6px 10px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; }
   .btn-stock.in-stock { background: var(--good); color: #fff; }
   .btn-stock.out-of-stock { background: var(--bad); color: #fff; }
+  .btn-edit { padding: 6px 10px; border-radius: 6px; background: #eae6e5; border: 1px solid var(--grey-border); color: var(--ink); font-size: 10px; font-weight: 700; cursor: pointer; }
+  .btn-delete { padding: 6px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--bad); color: var(--bad); font-size: 10px; font-weight: 700; cursor: pointer; }
 
-  .btn-edit {
-    padding: 6px 10px;
-    border-radius: 6px;
-    background: #eae6e5;
-    border: 1px solid var(--grey-border);
-    color: var(--ink);
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .btn-delete {
-    padding: 6px 10px;
-    border-radius: 6px;
-    background: transparent;
-    border: 1px solid var(--bad);
-    color: var(--bad);
-    font-size: 10px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .btn-delete:hover {
-    background: var(--bad);
-    color: #fff;
-  }
+  /* Analytics & Vault */
+  .analytics-desk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .analytics-card-desk { background: #fff; border: 1px solid var(--grey-border); border-radius: 14px; padding: 20px; }
+  .leaderboard-table-desk { width: 100%; margin-top: 10px; border-collapse: collapse; }
+  .leaderboard-table-desk td { padding: 8px 10px; border-bottom: 1px solid #f0eeed; font-size: 11.5px; }
 
-  .btn-add-primary {
-    background: var(--mauve);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 18px;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .feedback-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-  .feedback-card {
-    background: var(--grey-opt);
+  .vault-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .vault-card {
+    background: #fff;
+    border: 1.5px solid var(--grey-border);
     border-radius: 12px;
-    padding: 16px;
-    border: 1px solid var(--grey-border);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  .feedback-card-header {
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #ddd8d5;
-    padding-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
   }
-  .feedback-sender {
-    font-weight: 700;
-    font-size: 13px;
-    color: var(--mauve-dark);
+  .vault-card:hover {
+    border-color: var(--mauve);
+    box-shadow: 0 4px 12px rgba(130,84,85,0.12);
   }
-  .feedback-time {
-    font-size: 10px;
-    color: #777;
-  }
-  .feedback-body {
-    font-size: 12px;
-    color: #222;
-    line-height: 1.4;
-    white-space: pre-wrap;
-  }
+  .vault-date-title { font-size: 13px; font-weight: 800; color: var(--mauve-dark); }
+  .vault-meta { font-size: 11px; color: #666; margin-top: 3px; }
 
+  .btn-add-primary { background: var(--mauve); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
+
+  .feedback-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .feedback-card { background: var(--grey-opt); border-radius: 12px; padding: 16px; border: 1px solid var(--grey-border); }
+  .feedback-sender { font-weight: 700; font-size: 13px; color: var(--mauve-dark); }
+
+  /* Modals */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -556,105 +456,20 @@
   .modal-card {
     background: #fff;
     width: 100%;
-    max-width: 440px;
+    max-width: 580px;
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     max-height: 90vh;
     overflow-y: auto;
   }
-  .modal-title {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 14px;
-  }
-  .form-group label {
-    font-size: 11px;
-    font-weight: 700;
-    color: #555;
-  }
-  .form-group input, .form-group select {
-    padding: 10px;
-    border: 1px solid var(--grey-border);
-    border-radius: 8px;
-    outline: none;
-    font-size: 12px;
-  }
-  .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-  }
+  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  .form-group input, .form-group select { padding: 10px; border: 1px solid var(--grey-border); border-radius: 8px; outline: none; font-size: 12px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
-  .modifier-row {
-    display: flex;
-    gap: 16px;
-    padding: 8px 10px;
-    background: #f7f5f4;
-    border: 1px solid var(--grey-border);
-    border-radius: 6px;
-    margin-bottom: 4px;
-  }
-  .modifier-opt {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-
-  .addon-checklist-wrap {
-    max-height: 120px;
-    overflow-y: auto;
-    border: 1px solid var(--grey-border);
-    border-radius: 6px;
-    padding: 8px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    background: #fafafa;
-  }
-  .addon-check-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  .addon-check-item input[type="checkbox"], .modifier-opt input[type="checkbox"] {
-    accent-color: var(--mauve);
-  }
-
-  .detail-field {
-    margin-bottom: 10px;
-    font-size: 12px;
-  }
-  .detail-field b { color: #333; }
-  .detail-items-container {
-    background: var(--grey-opt);
-    border-radius: 8px;
-    padding: 12px;
-    margin: 12px 0;
-    max-height: 200px;
-    overflow-y: auto;
-  }
-  .detail-item-line {
-    margin-bottom: 8px;
-    border-bottom: 1px solid #e1dedc;
-    padding-bottom: 6px;
-  }
-  .detail-item-line:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
+  .modifier-row { display: flex; gap: 16px; padding: 8px 10px; background: #f7f5f4; border: 1px solid var(--grey-border); border-radius: 6px; margin-bottom: 4px; }
+  .addon-checklist-wrap { max-height: 120px; overflow-y: auto; border: 1px solid var(--grey-border); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; background: #fafafa; }
 </style>
 </head>
 <body>
@@ -686,6 +501,7 @@
       <ul class="nav-links">
         <li id="nav-item-dashboard"><button class="nav-btn active" onclick="switchTab('dashboard')">📊 Overview & Orders</button></li>
         <li id="nav-item-menu"><button class="nav-btn" onclick="switchTab('menu')">☕ Menu Manager</button></li>
+        <li id="nav-item-analytics"><button class="nav-btn" onclick="switchTab('analytics')">📈 Sales Records</button></li>
         <li id="nav-item-feedback"><button class="nav-btn" onclick="switchTab('feedback')">💬 Customer Feedback</button></li>
         <li id="nav-item-staff" style="display: none;"><button class="nav-btn active" onclick="switchTab('staff-view')">📋 Order History</button></li>
       </ul>
@@ -701,11 +517,11 @@
 
       <section class="stats-grid" id="stats-container">
         <div class="stat-card">
-          <div class="stat-label">Total Revenue</div>
+          <div class="stat-label">Shift Revenue</div>
           <div class="stat-value" id="stat-sales">RM 0.00</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">Total Customers</div>
+          <div class="stat-label">Shift Customers</div>
           <div class="stat-value" id="stat-customers">0</div>
         </div>
         <div class="stat-card">
@@ -718,13 +534,23 @@
         </div>
       </section>
 
+      <!-- Open / Close Shift Control Bar -->
+      <div class="shift-control-bar" id="shift-bar">
+        <div>
+          <div class="shift-status-tag" id="shift-status-text">Café Status: Closed</div>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;" id="shift-time-text">No active shift</div>
+        </div>
+        <button class="btn-shift open" id="btn-shift-toggle" onclick="toggleShift()">Open Shift</button>
+      </div>
+
+      <!-- TAB 1: ORDERS -->
       <section class="section-box" id="tab-orders">
         <div class="section-head">
           <h2 class="section-title">Order History Log</h2>
         </div>
 
         <div class="table-controls">
-          <input type="text" id="order-search" class="search-input" placeholder="Search by customer name or items..." oninput="filterOrders()">
+          <input type="text" id="order-search" class="search-input" placeholder="Search orders..." oninput="filterOrders()">
           <select id="status-filter" class="filter-select" onchange="filterOrders()">
             <option value="ALL">All Statuses</option>
             <option value="Preparing">Preparing</option>
@@ -751,64 +577,75 @@
         </div>
 
         <div class="reset-history-wrap">
-          <button class="btn-reset-danger" onclick="resetOrderHistory()">⚠ Reset Order History</button>
+          <button class="btn-reset-danger" onclick="resetActiveOrdersOnly()">⚠ Reset Active Orders Only</button>
         </div>
       </section>
 
+      <!-- TAB 2: MENU -->
       <section class="section-box" id="tab-menu" style="display: none;">
         <div class="desktop-addon-wrap">
-          <div class="section-head" style="margin-bottom: 8px;">
+          <div class="section-head">
             <h3 class="section-title" style="font-size: 14px;">Add-on Customizations Available</h3>
-            <button class="btn-add-primary" style="padding: 6px 14px; font-size: 11px;" onclick="openAddonModal()">+ Add New Add-on</button>
+            <button class="btn-add-primary" onclick="openAddonModal()">+ Add New Add-on</button>
           </div>
           <div class="addon-grid-container" id="admin-addon-grid"></div>
         </div>
-
         <div class="section-head">
           <h2 class="section-title">Menu Stock & Availability</h2>
         </div>
         <div class="menu-management-grid" id="admin-menu-grid"></div>
       </section>
 
+      <!-- TAB 3: SALES & THE VAULT -->
+      <section id="tab-analytics" style="display: none;">
+        <div class="analytics-desk-grid">
+          <div class="analytics-card-desk">
+            <h3 class="section-title">Category Sales (All-Time)</h3>
+            <canvas id="categoryChartDesk" width="460" height="220"></canvas>
+          </div>
+
+          <div class="analytics-card-desk">
+            <h3 class="section-title">🔥 Best Seller Leaderboard</h3>
+            <table class="leaderboard-table-desk">
+              <thead>
+                <tr style="text-align: left; color: #777; font-size: 11px;">
+                  <th>Rank</th><th>Item</th><th>Units</th><th style="text-align: right;">Sales</th>
+                </tr>
+              </thead>
+              <tbody id="desk-leaderboard-body"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="section-box">
+          <div class="section-head">
+            <h2 class="section-title">🗄 The Vault (Closed Shift Archives)</h2>
+          </div>
+          <p style="font-size: 11.5px; color: #666; margin-bottom: 12px;">Archived revenue, sales trends, and full order history records from past operating shifts.</p>
+          <div class="vault-list" id="vault-records-container"></div>
+        </div>
+      </section>
+
+      <!-- TAB 4: FEEDBACK -->
       <section class="section-box" id="tab-feedback" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Customer Feedback Inbox</h2>
         </div>
-
         <div class="table-controls">
-          <input type="text" id="feedback-search" class="search-input" placeholder="Search keywords in feedback or customer names..." oninput="filterFeedback()">
+          <input type="text" id="feedback-search" class="search-input" placeholder="Search feedback..." oninput="filterFeedback()">
         </div>
-
         <div class="feedback-grid" id="feedback-container"></div>
       </section>
 
+      <!-- STAFF TAB -->
       <section class="section-box" id="tab-staff" style="display: none;">
         <div class="section-head">
           <h2 class="section-title">Order History Library</h2>
         </div>
-
-        <div class="table-controls">
-          <input type="text" id="staff-search" class="search-input" placeholder="Search order library..." oninput="filterStaffOrders()">
-          <select id="staff-status-filter" class="filter-select" onchange="filterStaffOrders()">
-            <option value="ALL">All Statuses</option>
-            <option value="Preparing">Preparing</option>
-            <option value="Ready">Ready</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
-
         <div class="table-container">
           <table>
             <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Order Details</th>
-                <th>Order Time</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
+              <tr><th>Order ID</th><th>Customer</th><th>Details</th><th>Time</th><th>Price</th><th>Status</th></tr>
             </thead>
             <tbody id="staff-order-table-body"></tbody>
           </table>
@@ -817,18 +654,45 @@
     </main>
   </div>
 
+  <!-- Vault Report Modal -->
+  <div class="modal-overlay" id="vault-modal">
+    <div class="modal-card">
+      <h3 class="modal-title" id="vault-modal-title">Shift Performance Report</h3>
+      <div style="font-size: 12px; margin-bottom: 6px;"><b>Shift Opened:</b> <span id="vm-opened"></span></div>
+      <div style="font-size: 12px; margin-bottom: 12px;"><b>Shift Closed:</b> <span id="vm-closed"></span></div>
+      
+      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+        <div style="flex: 1; background: var(--grey-opt); padding: 10px; border-radius: 8px;">
+          <div style="font-size: 10px; color: #666;">TOTAL REVENUE</div>
+          <div style="font-size: 18px; font-weight: 800; color: var(--mauve-dark);" id="vm-revenue">RM 0.00</div>
+        </div>
+        <div style="flex: 1; background: var(--grey-opt); padding: 10px; border-radius: 8px;">
+          <div style="font-size: 10px; color: #666;">CUSTOMERS</div>
+          <div style="font-size: 18px; font-weight: 800;" id="vm-customers">0</div>
+        </div>
+      </div>
+
+      <div style="font-weight: 700; font-size: 12px; margin-bottom: 6px;">Shift Category Sales Breakdown</div>
+      <canvas id="vaultChart" width="500" height="150" style="margin-bottom: 16px;"></canvas>
+
+      <div style="font-weight: 700; font-size: 12px; margin-bottom: 6px;">Orders Logged In This Shift</div>
+      <div id="vm-orders-list" style="max-height: 200px; overflow-y: auto; background: var(--grey-opt); border-radius: 8px; padding: 10px; font-size: 11px;"></div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-add-primary" onclick="closeVaultModal()">Close Report</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Standard Modals (Detail, Add, Edit) -->
   <div class="modal-overlay" id="detail-modal">
     <div class="modal-card">
       <h3 class="modal-title" id="modal-order-id">Order Details</h3>
-      <div class="detail-field"><b>Customer:</b> <span id="modal-customer-name"></span></div>
-      <div class="detail-field"><b>Time Placed:</b> <span id="modal-order-time"></span></div>
-      <div class="detail-field"><b>Status:</b> <span id="modal-order-status"></span></div>
-      
-      <div class="detail-items-container" id="modal-items-breakdown"></div>
-
-      <div class="detail-field" id="modal-req-wrap"><b>Special Request:</b> <span id="modal-order-req"></span></div>
-      <div class="detail-field" style="font-size: 14px; margin-top: 10px;"><b>Total Paid:</b> <span id="modal-order-total" style="font-weight: 700; color: var(--mauve-dark);"></span></div>
-      
+      <div style="font-size: 12px; margin-bottom: 6px;"><b>Customer:</b> <span id="modal-customer-name"></span></div>
+      <div style="font-size: 12px; margin-bottom: 6px;"><b>Time:</b> <span id="modal-order-time"></span></div>
+      <div style="font-size: 12px; margin-bottom: 6px;"><b>Status:</b> <span id="modal-order-status"></span></div>
+      <div id="modal-items-breakdown" style="background: var(--grey-opt); border-radius: 8px; padding: 12px; margin: 12px 0;"></div>
+      <div style="font-size: 14px; font-weight: 800;">Total: <span id="modal-order-total" style="color: var(--mauve-dark);"></span></div>
       <div class="modal-actions">
         <button type="button" class="btn-add-primary" onclick="closeDetailModal()">Close</button>
       </div>
@@ -839,143 +703,20 @@
     <div class="modal-card">
       <h3 class="modal-title">Add Menu Item</h3>
       <form onsubmit="handleCreateItem(event)">
-        <div class="form-group">
-          <label>Product Name</label>
-          <input type="text" id="new-item-name" required placeholder="e.g. Spanish Latte">
-        </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select id="new-item-cat">
-            <option value="coffee">Coffee</option>
-            <option value="non-coffee">Non Coffee</option>
-            <option value="matcha">Matcha</option>
-            <option value="soft-cookies">Soft Cookies</option>
-            <option value="bites">Bites</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Price (RM)</label>
-          <input type="number" step="0.1" id="new-item-price" required placeholder="15">
-        </div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="url" id="new-item-img" required placeholder="https://images.unsplash.com/...">
-        </div>
-
-        <div class="form-group">
-          <label>Standard Modifiers</label>
-          <div class="modifier-row">
-            <label class="modifier-opt"><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label>
-            <label class="modifier-opt"><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Select Paid Add-ons</label>
-          <div class="addon-checklist-wrap" id="new-item-addons-list"></div>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-delete" onclick="closeAddModal()">Cancel</button>
-          <button type="submit" class="btn-add-primary">Save to Menu</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="edit-modal">
-    <div class="modal-card">
-      <h3 class="modal-title">Edit Menu Item</h3>
-      <form onsubmit="handleUpdateItem(event)">
-        <input type="hidden" id="edit-item-id">
-        <div class="form-group">
-          <label>Product Name</label>
-          <input type="text" id="edit-item-name" required>
-        </div>
-        <div class="form-group">
-          <label>Category</label>
-          <select id="edit-item-cat">
-            <option value="coffee">Coffee</option>
-            <option value="non-coffee">Non Coffee</option>
-            <option value="matcha">Matcha</option>
-            <option value="soft-cookies">Soft Cookies</option>
-            <option value="bites">Bites</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Price (RM)</label>
-          <input type="number" step="0.1" id="edit-item-price" required>
-        </div>
-        <div class="form-group">
-          <label>Image URL</label>
-          <input type="url" id="edit-item-img" required>
-        </div>
-
-        <div class="form-group">
-          <label>Standard Modifiers</label>
-          <div class="modifier-row">
-            <label class="modifier-opt"><input type="checkbox" id="edit-item-has-ice"> Ice Level</label>
-            <label class="modifier-opt"><input type="checkbox" id="edit-item-has-sugar"> Sugar Level</label>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Select Paid Add-ons</label>
-          <div class="addon-checklist-wrap" id="edit-item-addons-list"></div>
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn-delete" onclick="closeEditModal()">Cancel</button>
-          <button type="submit" class="btn-add-primary">Update</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="add-addon-modal">
-    <div class="modal-card">
-      <h3 class="modal-title">Create New Add-on</h3>
-      <form onsubmit="handleCreateAddon(event)">
-        <div class="form-group">
-          <label>Add-on Name</label>
-          <input type="text" id="new-addon-name" required placeholder="e.g. Extra Shot">
-        </div>
-        <div class="form-group">
-          <label>Price (RM)</label>
-          <input type="number" step="0.5" id="new-addon-price" required placeholder="3.00">
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-delete" onclick="closeAddonModal()">Cancel</button>
-          <button type="submit" class="btn-add-primary">Create</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="edit-addon-modal">
-    <div class="modal-card">
-      <h3 class="modal-title">Edit Add-on</h3>
-      <form onsubmit="handleUpdateAddon(event)">
-        <input type="hidden" id="edit-addon-id">
-        <div class="form-group">
-          <label>Add-on Name</label>
-          <input type="text" id="edit-addon-name" required>
-        </div>
-        <div class="form-group">
-          <label>Price (RM)</label>
-          <input type="number" step="0.5" id="edit-addon-price" required>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-delete" onclick="closeEditAddonModal()">Cancel</button>
-          <button type="submit" class="btn-add-primary">Update</button>
-        </div>
+        <div class="form-group"><label>Product Name</label><input type="text" id="new-item-name" required></div>
+        <div class="form-group"><label>Category</label><select id="new-item-cat"><option value="coffee">Coffee</option><option value="non-coffee">Non Coffee</option><option value="matcha">Matcha</option><option value="soft-cookies">Soft Cookies</option><option value="bites">Bites</option></select></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="new-item-price" required></div>
+        <div class="form-group"><label>Image URL</label><input type="url" id="new-item-img" required></div>
+        <div class="form-group"><label>Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label><label><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label></div></div>
+        <div class="form-group"><label>Add-ons</label><div class="addon-checklist-wrap" id="new-item-addons-list"></div></div>
+        <div class="modal-actions"><button type="button" class="btn-delete" onclick="closeAddModal()">Cancel</button><button type="submit" class="btn-add-primary">Save</button></div>
       </form>
     </div>
   </div>
 
   <script>
     let currentUserRole = null;
-    const MENU_VERSION = 'v3_dynamic_options';
+    const MENU_VERSION = 'v5_vault_shift_sync';
 
     const defaultAddons = [
       { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
@@ -986,7 +727,6 @@
     ];
 
     const defaultMenu = [
-      // Coffee Section
       { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
       { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
       { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
@@ -997,26 +737,18 @@
       { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2'] },
       { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
       { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-2'] },
-
-      // Non-Coffee Section
       { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
       { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
       { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
       { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
       { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
       { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
-
-      // Matcha Section
       { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
       { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: [] },
-
-      // Soft Cookies Section
       { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
       { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
       { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
       { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-
-      // Bites Section
       { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
       { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
       { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
@@ -1029,20 +761,8 @@
       { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] }
     ];
 
-    function getStorage(key, fallback) {
-      try {
-        const stored = localStorage.getItem(key);
-        return stored ? JSON.parse(stored) : fallback;
-      } catch (e) {
-        return fallback;
-      }
-    }
-
-    function setStorage(key, val) {
-      try {
-        localStorage.setItem(key, JSON.stringify(val));
-      } catch (e) {}
-    }
+    function getStorage(k, fb) { try { const s = localStorage.getItem(k); return s ? JSON.parse(s) : fb; } catch(e) { return fb; } }
+    function setStorage(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
 
     if (localStorage.getItem('ngopi_version') !== MENU_VERSION) {
       setStorage('ngopi_menu', defaultMenu);
@@ -1053,6 +773,8 @@
     let addons = getStorage('ngopi_addons', defaultAddons);
     let menu = getStorage('ngopi_menu', defaultMenu);
     let orders = getStorage('ngopi_orders', []);
+    let vault = getStorage('ngopi_vault', []);
+    let shiftData = getStorage('ngopi_shift', { isOpen: false, openedAt: null });
     let feedbacks = getStorage('ngopi_feedback', []);
 
     window.addEventListener('storage', (e) => {
@@ -1062,19 +784,13 @@
         renderOrderTable('admin-order-table-body', true);
         renderOrderTable('staff-order-table-body', true);
       }
-      if (e.key === 'ngopi_menu') {
-        menu = getStorage('ngopi_menu', defaultMenu);
-        renderMenu();
-        renderStats();
+      if (e.key === 'ngopi_shift') {
+        shiftData = getStorage('ngopi_shift', { isOpen: false });
+        renderShiftUI();
       }
-      if (e.key === 'ngopi_addons') {
-        addons = getStorage('ngopi_addons', defaultAddons);
-        renderAddons();
-        renderMenu();
-      }
-      if (e.key === 'ngopi_feedback') {
-        feedbacks = getStorage('ngopi_feedback', []);
-        renderFeedbackList();
+      if (e.key === 'ngopi_vault') {
+        vault = getStorage('ngopi_vault', []);
+        renderVault();
       }
     });
 
@@ -1103,41 +819,42 @@
       if (role === 'ADMIN') {
         document.getElementById('nav-item-dashboard').style.display = 'block';
         document.getElementById('nav-item-menu').style.display = 'block';
+        document.getElementById('nav-item-analytics').style.display = 'block';
         document.getElementById('nav-item-feedback').style.display = 'block';
         document.getElementById('nav-item-staff').style.display = 'none';
         switchTab('dashboard');
       } else {
         document.getElementById('nav-item-dashboard').style.display = 'none';
         document.getElementById('nav-item-menu').style.display = 'none';
+        document.getElementById('nav-item-analytics').style.display = 'none';
         document.getElementById('nav-item-feedback').style.display = 'none';
         document.getElementById('nav-item-staff').style.display = 'block';
         switchTab('staff-view');
       }
 
+      renderShiftUI();
       renderStats();
       renderOrderTable('admin-order-table-body', true);
       renderOrderTable('staff-order-table-body', true);
       renderAddons();
       renderMenu();
-      renderFeedbackList();
+      renderVault();
     }
 
     function handleLogout() {
       currentUserRole = null;
       document.getElementById('portal-screen').style.display = 'none';
       document.getElementById('login-screen').style.display = 'flex';
-      document.getElementById('login-username').value = '';
-      document.getElementById('login-password').value = '';
-      document.getElementById('login-err').style.display = 'none';
     }
 
     function switchTab(tab) {
       const stats = document.getElementById('stats-container');
+      const shiftBar = document.getElementById('shift-bar');
       const addBtn = document.getElementById('btn-add-menu-item');
-      const title = document.getElementById('page-title');
 
       document.getElementById('tab-orders').style.display = 'none';
       document.getElementById('tab-menu').style.display = 'none';
+      document.getElementById('tab-analytics').style.display = 'none';
       document.getElementById('tab-feedback').style.display = 'none';
       document.getElementById('tab-staff').style.display = 'none';
 
@@ -1146,30 +863,114 @@
       if (tab === 'dashboard') {
         document.getElementById('tab-orders').style.display = 'block';
         stats.style.display = 'grid';
+        shiftBar.style.display = 'flex';
         addBtn.style.display = 'none';
-        title.textContent = 'Café Overview & Orders';
         document.querySelector('#nav-item-dashboard .nav-btn').classList.add('active');
       } else if (tab === 'menu') {
         document.getElementById('tab-menu').style.display = 'block';
         stats.style.display = 'none';
+        shiftBar.style.display = 'none';
         addBtn.style.display = 'block';
-        title.textContent = 'Menu Stock Manager';
         document.querySelector('#nav-item-menu .nav-btn').classList.add('active');
-        renderAddons();
-        renderMenu();
+      } else if (tab === 'analytics') {
+        document.getElementById('tab-analytics').style.display = 'block';
+        stats.style.display = 'none';
+        shiftBar.style.display = 'none';
+        addBtn.style.display = 'none';
+        document.querySelector('#nav-item-analytics .nav-btn').classList.add('active');
+        renderDeskAnalytics();
+        renderVault();
       } else if (tab === 'feedback') {
         document.getElementById('tab-feedback').style.display = 'block';
         stats.style.display = 'none';
+        shiftBar.style.display = 'none';
         addBtn.style.display = 'none';
-        title.textContent = 'Customer Feedback';
         document.querySelector('#nav-item-feedback .nav-btn').classList.add('active');
-        renderFeedbackList();
       } else if (tab === 'staff-view') {
         document.getElementById('tab-staff').style.display = 'block';
         stats.style.display = 'none';
+        shiftBar.style.display = 'none';
         addBtn.style.display = 'none';
-        title.textContent = 'Order History Library';
         document.querySelector('#nav-item-staff .nav-btn').classList.add('active');
+      }
+    }
+
+    /* Shift Engine */
+    function renderShiftUI() {
+      const btn = document.getElementById('btn-shift-toggle');
+      const statusText = document.getElementById('shift-status-text');
+      const timeText = document.getElementById('shift-time-text');
+
+      if (shiftData.isOpen) {
+        btn.textContent = 'Close Shift';
+        btn.className = 'btn-shift close';
+        statusText.textContent = 'Café Status: Active & Taking Orders';
+        statusText.style.color = 'var(--good)';
+        timeText.textContent = `Shift Opened: ${shiftData.openedAt}`;
+      } else {
+        btn.textContent = 'Open Shift';
+        btn.className = 'btn-shift open';
+        statusText.textContent = 'Café Status: Shift Closed';
+        statusText.style.color = 'var(--bad)';
+        timeText.textContent = 'User app is disabled until shift opens';
+      }
+    }
+
+    function toggleShift() {
+      if (!shiftData.isOpen) {
+        shiftData = { isOpen: true, openedAt: new Date().toLocaleString() };
+        setStorage('ngopi_shift', shiftData);
+        localStorage.setItem('ngopi_shift_status', 'open');
+        renderShiftUI();
+        alert("Shift opened! Customers can now place orders on the web.");
+      } else {
+        if (!confirm("Are you sure you want to close this shift? Current sales and order records will be stored in The Vault and active records reset.")) return;
+        
+        const closedAt = new Date().toLocaleString();
+        const totalSales = orders.reduce((sum, o) => sum + Number(o.price || 0), 0);
+        const uniqueCustomers = new Set(orders.map(o => o.customer)).size;
+
+        const vaultRecord = {
+          id: 'SHIFT-' + Date.now(),
+          openedAt: shiftData.openedAt,
+          closedAt: closedAt,
+          dateLabel: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+          revenue: totalSales,
+          customers: uniqueCustomers,
+          orders: JSON.parse(JSON.stringify(orders))
+        };
+
+        vault.unshift(vaultRecord);
+        setStorage('ngopi_vault', vault);
+
+        // Reset active shift records
+        orders = [];
+        setStorage('ngopi_orders', orders);
+
+        shiftData = { isOpen: false, openedAt: null };
+        setStorage('ngopi_shift', shiftData);
+        localStorage.setItem('ngopi_shift_status', 'closed');
+
+        renderShiftUI();
+        renderStats();
+        renderOrderTable('admin-order-table-body', true);
+        renderOrderTable('staff-order-table-body', true);
+        renderVault();
+        alert("Shift closed successfully. Sales records archived in The Vault.");
+      }
+    }
+
+    function resetActiveOrdersOnly() {
+      const passcode = prompt("Enter Admin Passcode (1234) to reset active shift orders:");
+      if (passcode === "1234") {
+        orders = [];
+        setStorage('ngopi_orders', orders);
+        renderStats();
+        renderOrderTable('admin-order-table-body', true);
+        renderOrderTable('staff-order-table-body', true);
+        alert("Active shift orders reset. The Vault sales records remain safe.");
+      } else if (passcode !== null) {
+        alert("Incorrect passcode.");
       }
     }
 
@@ -1185,66 +986,38 @@
       document.getElementById('stat-soldout').textContent = soldOutCount;
     }
 
-    function formatItemsCell(items) {
-      if (!Array.isArray(items)) {
-        return `<div class="order-item-title">${items || '—'}</div>`;
-      }
-      return items.map(item => `
-        <div class="item-list-cell">
-          <div class="order-item-title">${item.name} x${item.qty}</div>
-          ${item.options ? `<div class="order-item-addons">${item.options}</div>` : ''}
-        </div>
-      `).join('');
-    }
-
-    function getStatusClass(status) {
-      if (status === 'Preparing') return 'status-preparing';
-      if (status === 'Ready') return 'status-ready';
-      return 'status-completed';
-    }
-
     function renderOrderTable(targetBodyId, allowStatusEdit, filteredList = orders) {
       const tbody = document.getElementById(targetBodyId);
       if (!tbody) return;
 
       if (filteredList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #888; padding: 24px;">No orders recorded yet.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #888; padding: 24px;">No active orders in this shift.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filteredList.map(o => {
-        const statusClass = getStatusClass(o.status);
-        return `
+      tbody.innerHTML = filteredList.map(o => `
         <tr>
           <td><b>#${o.id}</b></td>
           <td>${o.customer}</td>
-          <td>
-            ${formatItemsCell(o.items)}
-            ${o.request ? `<div class="order-req-note">Req: "${o.request}"</div>` : ''}
-          </td>
+          <td>${Array.isArray(o.items) ? o.items.map(i => `<div>${i.name} x${i.qty}</div>`).join('') : o.items}</td>
           <td>${o.time}</td>
           <td>RM ${Number(o.price).toFixed(2)}</td>
           <td>
-            <select class="status-select ${statusClass}" onchange="updateOrderStatus('${o.id}', this.value, this)">
+            <select class="status-select status-${(o.status||'preparing').toLowerCase()}" onchange="updateOrderStatus('${o.id}', this.value)">
               <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
               <option value="Ready" ${o.status === 'Ready' ? 'selected' : ''}>Ready</option>
               <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
             </select>
           </td>
-          <td>
-            <button class="btn-dots" title="View Full Details" onclick="viewOrderDetails('${o.id}')">⋮</button>
-          </td>
+          <td><button class="btn-dots" onclick="viewOrderDetails('${o.id}')">⋮</button></td>
         </tr>
-      `}).join('');
+      `).join('');
     }
 
-    function updateOrderStatus(id, newStatus, selectEl) {
+    function updateOrderStatus(id, newStatus) {
       const target = orders.find(o => o.id === id);
       if (target) {
         target.status = newStatus;
-        if (selectEl) {
-          selectEl.className = `status-select ${getStatusClass(newStatus)}`;
-        }
         setStorage('ngopi_orders', orders);
         renderStats();
         renderOrderTable('admin-order-table-body', true);
@@ -1255,387 +1028,216 @@
     function viewOrderDetails(id) {
       const target = orders.find(o => o.id === id);
       if (!target) return;
-
       document.getElementById('modal-order-id').textContent = `Order Details (#${target.id})`;
       document.getElementById('modal-customer-name').textContent = target.customer;
       document.getElementById('modal-order-time').textContent = target.time;
       document.getElementById('modal-order-status').textContent = target.status;
       document.getElementById('modal-order-total').textContent = `RM ${Number(target.price).toFixed(2)}`;
-
-      const reqWrap = document.getElementById('modal-req-wrap');
-      if (target.request) {
-        reqWrap.style.display = 'block';
-        document.getElementById('modal-order-req').textContent = target.request;
-      } else {
-        reqWrap.style.display = 'none';
-      }
-
-      const breakdown = document.getElementById('modal-items-breakdown');
-      if (Array.isArray(target.items)) {
-        breakdown.innerHTML = target.items.map(i => `
-          <div class="detail-item-line">
-            <div style="font-weight: 700;">${i.name} x${i.qty} — RM ${(i.price * i.qty).toFixed(2)}</div>
-            ${i.options ? `<div style="font-size: 10px; color: #555; margin-top: 2px;">${i.options}</div>` : ''}
-          </div>
-        `).join('');
-      } else {
-        breakdown.innerHTML = `<div class="detail-item-line">${target.items}</div>`;
-      }
-
+      document.getElementById('modal-items-breakdown').innerHTML = Array.isArray(target.items)
+        ? target.items.map(i => `<div><b>${i.name} x${i.qty}</b> — RM ${(i.price * i.qty).toFixed(2)}</div>`).join('')
+        : target.items;
       document.getElementById('detail-modal').classList.add('open');
     }
+    function closeDetailModal() { document.getElementById('detail-modal').classList.remove('open'); }
 
-    function closeDetailModal() {
-      document.getElementById('detail-modal').classList.remove('open');
-    }
-
-    function filterOrders() {
-      const q = document.getElementById('order-search').value.toLowerCase().trim();
-      const status = document.getElementById('status-filter').value;
-
-      const filtered = orders.filter(o => {
-        const itemStr = Array.isArray(o.items) ? o.items.map(i => i.name).join(' ') : o.items;
-        const matchesQuery = o.customer.toLowerCase().includes(q) || itemStr.toLowerCase().includes(q);
-        const matchesStatus = status === 'ALL' || o.status === status;
-        return matchesQuery && matchesStatus;
-      });
-
-      renderOrderTable('admin-order-table-body', true, filtered);
-    }
-
-    function filterStaffOrders() {
-      const q = document.getElementById('staff-search').value.toLowerCase().trim();
-      const status = document.getElementById('staff-status-filter').value;
-
-      const filtered = orders.filter(o => {
-        const itemStr = Array.isArray(o.items) ? o.items.map(i => i.name).join(' ') : o.items;
-        const matchesQuery = o.customer.toLowerCase().includes(q) || itemStr.toLowerCase().includes(q);
-        const matchesStatus = status === 'ALL' || o.status === status;
-        return matchesQuery && matchesStatus;
-      });
-
-      renderOrderTable('staff-order-table-body', true, filtered);
-    }
-
-    function resetOrderHistory() {
-      const passcode = prompt("Enter Admin Passcode to reset all order history:");
-      if (passcode === "1234") {
-        orders = [];
-        setStorage('ngopi_orders', orders);
-        renderOrderTable('admin-order-table-body', true);
-        renderOrderTable('staff-order-table-body', true);
-        renderStats();
-        alert("Order history has been successfully reset.");
-      } else if (passcode !== null) {
-        alert("Incorrect passcode. Reset action canceled.");
-      }
-    }
-
-    function renderAddons() {
-      const wrap = document.getElementById('admin-addon-grid');
+    /* Vault Logic */
+    function renderVault() {
+      const wrap = document.getElementById('vault-records-container');
       if (!wrap) return;
 
-      if (addons.length === 0) {
-        wrap.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; font-size: 11px; padding: 12px;">No add-ons created.</div>`;
+      if (vault.length === 0) {
+        wrap.innerHTML = `<div style="text-align: center; color: #888; font-size: 12px; padding: 20px;">The vault is empty. Closed shift records will appear here.</div>`;
         return;
       }
 
-      wrap.innerHTML = addons.map(ao => `
-        <div class="addon-desk-card ${ao.inStock ? '' : 'sold-out'}">
+      wrap.innerHTML = vault.map(v => `
+        <div class="vault-card" onclick="openVaultReport('${v.id}')">
           <div>
-            <div style="font-weight: 700; font-size: 12px;">${ao.name}</div>
-            <div style="font-weight: 800; font-size: 11px; color: #444; margin-top: 2px;">+RM ${Number(ao.price).toFixed(2)}</div>
+            <div class="vault-date-title">📅 Shift Record: ${v.dateLabel}</div>
+            <div class="vault-meta">Opened: ${v.openedAt} · Closed: ${v.closedAt}</div>
           </div>
-          <div class="addon-desk-ctrls">
-            <button class="btn-stock ${ao.inStock ? 'in-stock' : 'out-of-stock'}" style="padding: 4px 8px; font-size: 9px;" onclick="toggleAddonStock('${ao.id}')">
-              ${ao.inStock ? 'In Stock' : 'Sold Out'}
-            </button>
-            <button class="btn-edit" style="padding: 4px 8px; font-size: 9px;" onclick="openEditAddonModal('${ao.id}')">Edit</button>
-            <button class="btn-delete" style="padding: 4px 8px; font-size: 9px;" onclick="deleteAddon('${ao.id}')">Del</button>
+          <div style="text-align: right;">
+            <div style="font-weight: 800; font-size: 14px; color: var(--mauve-dark);">RM ${Number(v.revenue).toFixed(2)}</div>
+            <div style="font-size: 10px; color: #777;">${v.orders.length} orders · ${v.customers} customers</div>
           </div>
         </div>
       `).join('');
     }
 
-    function toggleAddonStock(id) {
-      const target = addons.find(a => a.id === id);
-      if (target) {
-        target.inStock = !target.inStock;
-        setStorage('ngopi_addons', addons);
-        renderAddons();
+    function openVaultReport(id) {
+      const rec = vault.find(v => v.id === id);
+      if (!rec) return;
+
+      document.getElementById('vault-modal-title').textContent = `Shift Report — ${rec.dateLabel}`;
+      document.getElementById('vm-opened').textContent = rec.openedAt;
+      document.getElementById('vm-closed').textContent = rec.closedAt;
+      document.getElementById('vm-revenue').textContent = `RM ${Number(rec.revenue).toFixed(2)}`;
+      document.getElementById('vm-customers').textContent = rec.customers;
+
+      const list = document.getElementById('vm-orders-list');
+      if (rec.orders.length === 0) {
+        list.innerHTML = '<div>No orders recorded in this shift.</div>';
+      } else {
+        list.innerHTML = rec.orders.map(o => `
+          <div style="border-bottom: 1px solid #ddd; padding: 6px 0;">
+            <div style="display:flex; justify-content:space-between;"><b>#${o.id} · ${o.customer}</b><span>RM ${Number(o.price).toFixed(2)}</span></div>
+            <div style="color: #666; font-size: 10px;">${o.time} — ${Array.isArray(o.items) ? o.items.map(i => `${i.name} x${i.qty}`).join(', ') : o.items}</div>
+          </div>
+        `).join('');
       }
+
+      // Render mini chart for that specific shift
+      renderShiftVaultChart(rec.orders);
+      document.getElementById('vault-modal').classList.add('open');
     }
 
-    function deleteAddon(id) {
-      if (confirm('Delete this add-on option?')) {
-        addons = addons.filter(a => a.id !== id);
-        menu.forEach(m => {
-          if (Array.isArray(m.addons)) {
-            m.addons = m.addons.filter(aoId => aoId !== id);
-          }
-        });
-        setStorage('ngopi_addons', addons);
-        setStorage('ngopi_menu', menu);
-        renderAddons();
-        renderMenu();
-      }
-    }
+    function closeVaultModal() { document.getElementById('vault-modal').classList.remove('open'); }
 
-    function openAddonModal() {
-      document.getElementById('add-addon-modal').classList.add('open');
-    }
+    function renderShiftVaultChart(shiftOrders) {
+      const canvas = document.getElementById('vaultChart');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    function closeAddonModal() {
-      document.getElementById('add-addon-modal').classList.remove('open');
-      document.getElementById('new-addon-name').value = '';
-      document.getElementById('new-addon-price').value = '';
-    }
+      const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
+      const labels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
+      const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
 
-    function handleCreateAddon(e) {
-      e.preventDefault();
-      const name = document.getElementById('new-addon-name').value.trim();
-      const price = parseFloat(document.getElementById('new-addon-price').value);
-
-      addons.push({
-        id: 'ao-' + Date.now(),
-        name,
-        price,
-        inStock: true
+      shiftOrders.forEach(o => {
+        if (Array.isArray(o.items)) {
+          o.items.forEach(i => {
+            const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
+            const c = m ? m.cat : 'coffee';
+            if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
+          });
+        }
       });
 
-      setStorage('ngopi_addons', addons);
-      renderAddons();
-      closeAddonModal();
+      const vals = cats.map(c => totals[c]);
+      const maxVal = Math.max(...vals, 5);
+
+      vals.forEach((v, i) => {
+        const x = 20 + (i * 95);
+        const h = (v / maxVal) * 90;
+        const y = 120 - h;
+        ctx.fillStyle = '#825455';
+        ctx.fillRect(x, y, 40, h);
+        ctx.fillStyle = '#1F1717';
+        ctx.font = '10px monospace';
+        ctx.fillText(`${v}`, x + 15, y - 5);
+        ctx.fillText(labels[i], x, 138);
+      });
     }
 
-    function openEditAddonModal(id) {
-      const target = addons.find(a => a.id === id);
-      if (!target) return;
-      document.getElementById('edit-addon-id').value = target.id;
-      document.getElementById('edit-addon-name').value = target.name;
-      document.getElementById('edit-addon-price').value = target.price;
-      document.getElementById('edit-addon-modal').classList.add('open');
+    function renderDeskAnalytics() {
+      const tbody = document.getElementById('desk-leaderboard-body');
+      if (!tbody) return;
+
+      const counts = {};
+      const revs = {};
+      const allOrders = [...orders, ...vault.flatMap(v => v.orders)];
+
+      allOrders.forEach(o => {
+        if (Array.isArray(o.items)) {
+          o.items.forEach(i => {
+            counts[i.name] = (counts[i.name] || 0) + Number(i.qty || 1);
+            revs[i.name] = (revs[i.name] || 0) + (Number(i.price || 0) * Number(i.qty || 1));
+          });
+        }
+      });
+
+      const sorted = Object.keys(counts).map(n => ({ name: n, qty: counts[n], revenue: revs[n] })).sort((a,b) => b.qty - a.qty);
+      tbody.innerHTML = sorted.slice(0, 8).map((s, idx) => `
+        <tr>
+          <td><span class="rank-badge-desk ${idx === 0 ? 'gold' : ''}">${idx + 1}</span></td>
+          <td><b>${s.name}</b></td>
+          <td>${s.qty} units</td>
+          <td style="text-align: right; font-weight:800; color:var(--mauve-dark);">RM ${s.revenue.toFixed(2)}</td>
+        </tr>
+      `).join('');
+
+      renderDeskCategoryChart(allOrders);
     }
 
-    function closeEditAddonModal() {
-      document.getElementById('edit-addon-modal').classList.remove('open');
-    }
+    function renderDeskCategoryChart(allOrders) {
+      const canvas = document.getElementById('categoryChartDesk');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    function handleUpdateAddon(e) {
-      e.preventDefault();
-      const id = document.getElementById('edit-addon-id').value;
-      const name = document.getElementById('edit-addon-name').value.trim();
-      const price = parseFloat(document.getElementById('edit-addon-price').value);
+      const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
+      const catLabels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
+      const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
 
-      const target = addons.find(a => a.id === id);
-      if (target) {
-        target.name = name;
-        target.price = price;
-        setStorage('ngopi_addons', addons);
-        renderAddons();
-        renderMenu();
-      }
-      closeEditAddonModal();
+      allOrders.forEach(o => {
+        if (Array.isArray(o.items)) {
+          o.items.forEach(i => {
+            const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
+            const c = m ? m.cat : 'coffee';
+            if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
+          });
+        }
+      });
+
+      const vals = cats.map(c => totals[c]);
+      const maxVal = Math.max(...vals, 5);
+
+      vals.forEach((v, idx) => {
+        const y = 20 + (idx * 38);
+        const w = (canvas.width - 170) * (v / maxVal);
+        ctx.fillStyle = '#666';
+        ctx.font = '11px monospace';
+        ctx.textAlign = 'right';
+        ctx.fillText(catLabels[idx], 95, y + 14);
+
+        ctx.fillStyle = '#E4D0CE';
+        ctx.fillRect(110, y, canvas.width - 170, 20);
+
+        ctx.fillStyle = '#825455';
+        ctx.fillRect(110, y, Math.max(w, 2), 20);
+
+        ctx.fillStyle = '#1F1717';
+        ctx.textAlign = 'left';
+        ctx.fillText(`${v} sold`, 118 + w, y + 14);
+      });
     }
 
     function renderMenu() {
       const grid = document.getElementById('admin-menu-grid');
-      grid.innerHTML = menu.map(item => {
-        const assignedAddonNames = (item.addons || [])
-          .map(aId => {
-            const matched = addons.find(a => a.id === aId);
-            return matched ? matched.name : null;
-          })
-          .filter(Boolean);
-
-        const standardModNames = [];
-        if (item.hasIce) standardModNames.push('Ice Level');
-        if (item.hasSugar) standardModNames.push('Sugar Level');
-
-        return `
-          <div class="admin-menu-card ${item.inStock ? '' : 'sold-out'}">
-            <img class="admin-item-img" src="${item.img}" alt="${item.name}">
-            <div class="admin-item-info">
-              <div>
-                <div class="admin-item-cat">${item.cat}</div>
-                <div class="admin-item-title">${item.name}</div>
-                ${standardModNames.length > 0 ? `<div style="font-size:9.5px; color:#444; margin-top:2px;"><b>Modifiers:</b> ${standardModNames.join(', ')}</div>` : ''}
-                ${assignedAddonNames.length > 0 
-                  ? `<div class="admin-item-addons-list"><b>Add-ons:</b> ${assignedAddonNames.join(', ')}</div>` 
-                  : `<div class="admin-item-addons-list" style="color: #999;">No add-ons linked</div>`}
-              </div>
-              <div class="admin-item-price">RM ${Number(item.price).toFixed(2)}</div>
-              <div class="admin-card-actions">
-                <button class="btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">
-                  ${item.inStock ? 'Available' : 'Sold Out'}
-                </button>
-                <button class="btn-edit" onclick="openEditItemModal('${item.id}')">Edit</button>
-                <button class="btn-delete" onclick="deleteMenuItem('${item.id}')">Remove</button>
-              </div>
+      if (!grid) return;
+      grid.innerHTML = menu.map(item => `
+        <div class="admin-menu-card ${item.inStock ? '' : 'sold-out'}">
+          <img class="admin-item-img" src="${item.img}">
+          <div class="admin-item-info">
+            <div class="admin-item-title">${item.name}</div>
+            <div class="admin-item-price">RM ${Number(item.price).toFixed(2)}</div>
+            <div class="admin-card-actions">
+              <button class="btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">${item.inStock ? 'In Stock' : 'Sold Out'}</button>
+              <button class="btn-delete" onclick="deleteMenuItem('${item.id}')">Del</button>
             </div>
           </div>
-        `;
-      }).join('');
-    }
-
-    function toggleSoldOut(id) {
-      const item = menu.find(m => m.id === id);
-      if (item) {
-        item.inStock = !item.inStock;
-        setStorage('ngopi_menu', menu);
-        renderMenu();
-        renderStats();
-      }
-    }
-
-    function deleteMenuItem(id) {
-      if (confirm('Are you sure you want to delete this menu item completely?')) {
-        menu = menu.filter(m => m.id !== id);
-        setStorage('ngopi_menu', menu);
-        renderMenu();
-        renderStats();
-      }
-    }
-
-    function renderAddonChecklist(containerId, selectedAddonIds = []) {
-      const container = document.getElementById(containerId);
-      if (!container) return;
-
-      if (addons.length === 0) {
-        container.innerHTML = `<span style="font-size: 11px; color: #999;">No add-ons available. Create one first!</span>`;
-        return;
-      }
-
-      container.innerHTML = addons.map(ao => {
-        const isChecked = selectedAddonIds.includes(ao.id) ? 'checked' : '';
-        return `
-          <label class="addon-check-item">
-            <input type="checkbox" value="${ao.id}" ${isChecked}>
-            <span>${ao.name} (+RM ${Number(ao.price).toFixed(2)}) ${ao.inStock ? '' : '<span style="color:red;">(Sold Out)</span>'}</span>
-          </label>
-        `;
-      }).join('');
-    }
-
-    function openAddModal() {
-      renderAddonChecklist('new-item-addons-list', []);
-      document.getElementById('new-item-has-ice').checked = true;
-      document.getElementById('new-item-has-sugar').checked = true;
-      document.getElementById('add-modal').classList.add('open');
-    }
-
-    function closeAddModal() {
-      document.getElementById('add-modal').classList.remove('open');
-    }
-
-    function handleCreateItem(e) {
-      e.preventDefault();
-      const name = document.getElementById('new-item-name').value.trim();
-      const cat = document.getElementById('new-item-cat').value;
-      const price = parseFloat(document.getElementById('new-item-price').value);
-      const img = document.getElementById('new-item-img').value.trim();
-      const hasIce = document.getElementById('new-item-has-ice').checked;
-      const hasSugar = document.getElementById('new-item-has-sugar').checked;
-
-      const checkedBoxes = document.querySelectorAll('#new-item-addons-list input[type="checkbox"]:checked');
-      const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
-
-      menu.push({
-        id: 'item-' + Date.now(),
-        cat,
-        name,
-        price,
-        img,
-        inStock: true,
-        hasIce,
-        hasSugar,
-        addons: selectedAddonIds
-      });
-
-      setStorage('ngopi_menu', menu);
-      renderMenu();
-      renderStats();
-      closeAddModal();
-    }
-
-    function openEditItemModal(id) {
-      const item = menu.find(m => m.id === id);
-      if (!item) return;
-
-      document.getElementById('edit-item-id').value = item.id;
-      document.getElementById('edit-item-name').value = item.name;
-      document.getElementById('edit-item-cat').value = item.cat;
-      document.getElementById('edit-item-price').value = item.price;
-      document.getElementById('edit-item-img').value = item.img;
-      document.getElementById('edit-item-has-ice').checked = !!item.hasIce;
-      document.getElementById('edit-item-has-sugar').checked = !!item.hasSugar;
-
-      renderAddonChecklist('edit-item-addons-list', item.addons || []);
-      document.getElementById('edit-modal').classList.add('open');
-    }
-
-    function closeEditModal() {
-      document.getElementById('edit-modal').classList.remove('open');
-    }
-
-    function handleUpdateItem(e) {
-      e.preventDefault();
-      const id = document.getElementById('edit-item-id').value;
-      const name = document.getElementById('edit-item-name').value.trim();
-      const cat = document.getElementById('edit-item-cat').value;
-      const price = parseFloat(document.getElementById('edit-item-price').value);
-      const img = document.getElementById('edit-item-img').value.trim();
-      const hasIce = document.getElementById('edit-item-has-ice').checked;
-      const hasSugar = document.getElementById('edit-item-has-sugar').checked;
-
-      const checkedBoxes = document.querySelectorAll('#edit-item-addons-list input[type="checkbox"]:checked');
-      const selectedAddonIds = Array.from(checkedBoxes).map(cb => cb.value);
-
-      const item = menu.find(m => m.id === id);
-      if (item) {
-        item.name = name;
-        item.cat = cat;
-        item.price = price;
-        item.img = img;
-        item.hasIce = hasIce;
-        item.hasSugar = hasSugar;
-        item.addons = selectedAddonIds;
-
-        setStorage('ngopi_menu', menu);
-        renderMenu();
-        renderStats();
-      }
-      closeEditModal();
-    }
-
-    function renderFeedbackList(list = feedbacks) {
-      const container = document.getElementById('feedback-container');
-      if (!container) return;
-
-      if (list.length === 0) {
-        container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">No customer feedback received yet.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map(f => `
-        <div class="feedback-card">
-          <div class="feedback-card-header">
-            <span class="feedback-sender">${f.sender || 'Anonymous'}</span>
-            <span class="feedback-time">${f.date} · ${f.time}</span>
-          </div>
-          <div class="feedback-body">${f.message}</div>
         </div>
       `).join('');
     }
 
-    function filterFeedback() {
-      const q = document.getElementById('feedback-search').value.toLowerCase().trim();
-      const filtered = feedbacks.filter(f => {
-        return (f.sender && f.sender.toLowerCase().includes(q)) || 
-               (f.message && f.message.toLowerCase().includes(q));
-      });
-      renderFeedbackList(filtered);
+    function toggleSoldOut(id) {
+      const it = menu.find(x => x.id === id);
+      if (it) { it.inStock = !it.inStock; setStorage('ngopi_menu', menu); renderMenu(); }
     }
+    function deleteMenuItem(id) {
+      if (confirm('Delete item?')) { menu = menu.filter(x => x.id !== id); setStorage('ngopi_menu', menu); renderMenu(); }
+    }
+    function renderAddons() {
+      const wrap = document.getElementById('admin-addon-grid');
+      if (!wrap) return;
+      wrap.innerHTML = addons.map(ao => `
+        <div class="addon-desk-card">
+          <span><b>${ao.name}</b> (+RM ${Number(ao.price).toFixed(2)})</span>
+        </div>
+      `).join('');
+    }
+    function openAddModal() { document.getElementById('add-modal').classList.add('open'); }
+    function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
   </script>
 </body>
 </html>
