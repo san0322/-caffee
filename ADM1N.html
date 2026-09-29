@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NGOPI DULU — Management Portal (Desktop)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>NGOPI DULU — Admin Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
@@ -23,14 +23,20 @@
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; }
   body {
-    background: #F7F5F4;
+    background: #121214;
     color: var(--ink);
     font-family: 'IBM Plex Mono', monospace;
-    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   button, input, select, textarea { font-family: inherit; }
 
+  /* =========================================================
+     LOGIN SCREEN (SHARED)
+     ========================================================= */
   #login-screen {
     position: fixed;
     inset: 0;
@@ -38,15 +44,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 9999;
     padding: 20px;
   }
   .login-card {
     background: #fff;
     width: 100%;
-    max-width: 380px;
+    max-width: 360px;
     border-radius: 20px;
-    padding: 36px 28px;
+    padding: 32px 24px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     display: flex;
     flex-direction: column;
@@ -55,69 +61,272 @@
   .login-brand {
     background: #000;
     color: #fff;
-    padding: 8px 20px;
-    border-radius: 24px;
-    font-size: 13px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
   .login-title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .login-form {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
   .login-field {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
   }
   .login-field label {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: #666;
     text-transform: uppercase;
   }
   .login-field input {
-    padding: 12px;
+    padding: 10px 12px;
     border: 1px solid var(--grey-border);
     border-radius: 8px;
     outline: none;
-    font-size: 13px;
+    font-size: 12px;
   }
+
+  /* Version Selector on Login Page */
+  .version-select-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 2px 2px;
+  }
+  .version-select-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #777;
+    text-transform: uppercase;
+  }
+  .version-toggle-pill {
+    display: flex;
+    background: #eae7e5;
+    border-radius: 14px;
+    padding: 2px;
+  }
+  .v-opt-btn {
+    border: none;
+    background: transparent;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 9.5px;
+    font-weight: 700;
+    cursor: pointer;
+    color: #666;
+  }
+  .v-opt-btn.active {
+    background: var(--mauve);
+    color: #fff;
+  }
+
   .login-btn {
     background: var(--mauve);
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 12px;
+    border-radius: 8px;
+    padding: 11px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   .login-error {
     color: var(--bad);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-align: center;
-    margin-top: 10px;
     display: none;
   }
 
-  /* Portal Layout */
-  #portal-screen {
+  /* =========================================================
+     MOBILE INTERFACE LAYOUT
+     ========================================================= */
+  #mobile-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  .mobile-shell {
+    width: 100%;
+    max-width: 440px;
+    height: 100dvh;
+    max-height: 920px;
+    background: #F7F5F4;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 500px) and (min-height: 700px) {
+    .mobile-shell {
+      border-radius: 44px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.7), 0 0 0 10px #222;
+      height: 94vh;
+    }
+  }
+
+  .m-header {
+    background: var(--mauve);
+    color: #fff;
+    padding: max(14px, env(safe-area-inset-top, 14px)) 16px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .m-brand { font-size: 15px; font-weight: 800; display: flex; align-items: baseline; gap: 8px; }
+  .m-brand span { font-size: 9.5px; color: #ffd6d6; font-weight: 700; }
+  .m-btn-signout { background: rgba(0,0,0,0.35); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+  .m-body { flex: 1; overflow-y: auto; padding: 12px 14px 80px 14px; -webkit-overflow-scrolling: touch; }
+  .m-kpi-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+  .m-kpi-card { background: #fff; border-radius: 10px; padding: 10px 12px; border: 1px solid var(--grey-border); }
+  .m-kpi-label { font-size: 8.5px; font-weight: 700; color: #777; text-transform: uppercase; }
+  .m-kpi-val { font-size: 15px; font-weight: 800; color: var(--mauve-dark); margin-top: 2px; }
+
+  .m-shift-bar {
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .m-shift-status { font-size: 11.5px; font-weight: 700; }
+  .m-btn-shift { border: none; border-radius: 8px; padding: 8px 16px; font-size: 11.5px; font-weight: 800; cursor: pointer; }
+  .m-btn-shift.open { background: var(--good); color: #fff; }
+  .m-btn-shift.close { background: var(--bad); color: #fff; }
+
+  .m-action-bar { display: flex; gap: 8px; margin-bottom: 12px; }
+  .m-search { flex: 1; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--grey-border); font-size: 11px; background: #fff; outline: none; }
+  .m-filter { padding: 8px; border-radius: 8px; border: 1px solid var(--grey-border); font-size: 10px; background: #fff; font-weight: 600; outline: none; }
+
+  .m-order-card-feed { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .m-order-card { background: #fff; border-radius: 12px; padding: 12px; border: 1px solid var(--grey-border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 8px; }
+  .m-order-top { display: flex; justify-content: space-between; align-items: center; }
+  .m-order-id { font-size: 12px; font-weight: 800; color: var(--mauve-dark); }
+  .m-order-items { display: flex; flex-direction: column; gap: 4px; border-top: 1px dashed #eee; border-bottom: 1px dashed #eee; padding: 6px 0; }
+  .m-item-title { font-size: 11px; font-weight: 700; }
+  .m-item-addons { font-size: 8.5px; color: #6c5a5a; background: #f7f1f1; padding: 2px 5px; border-radius: 4px; display: inline-block; margin-top: 1px; }
+  .m-order-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .m-order-price { font-size: 13px; font-weight: 800; }
+
+  .status-select { padding: 4px 8px; border-radius: 14px; font-size: 10px; font-weight: 700; border: 1px solid transparent; outline: none; }
+  .status-select.status-preparing { background: #FEF3C7; color: #B45309; border-color: #FCD34D; }
+  .status-select.status-ready { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
+  .status-select.status-completed { background: #DBEAFE; color: #1D4ED8; border-color: #93C5FD; }
+
+  .btn-dots-mini { background: #eee; border: none; border-radius: 50%; width: 26px; height: 26px; font-size: 15px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .m-btn-reset { width: 100%; background: #fee2e2; color: var(--bad); border: 1px solid var(--bad); border-radius: 8px; padding: 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+  .m-addon-section { background: #fff; border: 1px solid var(--grey-border); border-radius: 12px; padding: 10px; margin-bottom: 14px; }
+  .m-section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .m-section-title { font-size: 11.5px; font-weight: 700; text-transform: uppercase; color: var(--mauve-dark); }
+  .m-btn-addon-add { background: var(--mauve); color: #fff; border: none; border-radius: 6px; padding: 4px 10px; font-size: 10px; font-weight: 700; cursor: pointer; }
+  .m-addon-feed { display: flex; flex-direction: column; gap: 6px; max-height: 160px; overflow-y: auto; }
+  .m-addon-card { background: var(--grey-opt); border: 1px solid #e2dedc; border-radius: 8px; padding: 7px 10px; display: flex; justify-content: space-between; align-items: center; }
+  .m-addon-card.sold-out { opacity: 0.6; background: #eee; }
+  .m-btn-del { background: none; border: 1px solid var(--bad); color: var(--bad); border-radius: 6px; padding: 2px 6px; font-size: 9px; font-weight: 700; cursor: pointer; }
+
+  .m-menu-feed { display: flex; flex-direction: column; gap: 8px; }
+  .m-menu-card { background: #fff; border-radius: 12px; padding: 10px; border: 1px solid var(--grey-border); display: flex; align-items: center; gap: 10px; }
+  .m-menu-card.sold-out { opacity: 0.6; background: #eee; }
+  .m-menu-img { width: 50px; height: 50px; border-radius: 8px; object-fit: contain; background: #fafafa; flex-shrink: 0; }
+  .m-menu-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .m-menu-title { font-size: 11.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-menu-ctrls { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; }
+  .btn-stock-m { padding: 4px 8px; border-radius: 6px; border: none; font-size: 9px; font-weight: 700; cursor: pointer; }
+  .btn-stock-m.in-stock { background: var(--good); color: #fff; }
+  .btn-stock-m.out-of-stock { background: var(--bad); color: #fff; }
+  .btn-edit-m { background: #eee; border: 1px solid var(--grey-border); color: var(--ink); border-radius: 6px; padding: 2px 6px; font-size: 9px; font-weight: 700; cursor: pointer; }
+
+  .m-analytics-card { background: #fff; border-radius: 12px; padding: 12px; border: 1px solid var(--grey-border); margin-bottom: 12px; }
+  .m-chart-wrap { width: 100%; margin-top: 6px; }
+  canvas { width: 100% !important; height: auto !important; }
+  .m-leader-item { background: var(--grey-opt); border-radius: 8px; padding: 7px 10px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .rank-badge { width: 20px; height: 20px; border-radius: 50%; background: var(--mauve); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9.5px; font-weight: 800; flex-shrink: 0; }
+  .rank-badge.top-1 { background: #D97706; }
+  .m-freq-toggle { display: flex; background: #eae6e5; border-radius: 8px; padding: 2px; margin-bottom: 8px; }
+  .m-btn-freq { flex: 1; border: none; background: transparent; padding: 5px; border-radius: 6px; font-size: 9.5px; font-weight: 700; cursor: pointer; color: #666; }
+  .m-btn-freq.active { background: var(--mauve); color: #fff; }
+
+  .m-vault-feed { display: flex; flex-direction: column; gap: 8px; }
+  .m-vault-card { background: #fff; border: 1.5px solid var(--grey-border); border-radius: 10px; padding: 12px; display: flex; justify-content: space-between; align-items: center; position: relative; cursor: pointer; }
+  .m-vault-actions { display: flex; align-items: center; gap: 8px; }
+  .m-vault-drop { position: absolute; right: 12px; top: 40px; background: #fff; border: 1px solid var(--grey-border); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); display: none; flex-direction: column; min-width: 125px; z-index: 100; overflow: hidden; }
+  .m-vault-drop.open { display: flex; }
+  .m-vault-drop-btn { width: 100%; padding: 9px 12px; border: none; background: transparent; font-size: 10.5px; font-weight: 700; text-align: left; cursor: pointer; }
+  .m-vault-drop-btn:hover { background: #f7f5f4; }
+  .m-vault-drop-btn.del-opt { color: var(--bad); }
+
+  .m-fb-card { background: #fff; border-radius: 10px; padding: 10px 12px; border: 1px solid var(--grey-border); margin-bottom: 8px; }
+  .m-fb-head { display: flex; justify-content: space-between; font-size: 9.5px; color: #666; margin-bottom: 4px; border-bottom: 1px solid #eee; padding-bottom: 4px; }
+
+  .m-bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: max(56px, calc(46px + env(safe-area-inset-bottom, 12px)));
+    background: #fff;
+    border-top: 1px solid var(--grey-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 80;
+  }
+  .m-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; background: none; border: none; cursor: pointer; color: #888; padding: 6px 0; }
+  .m-nav-item.active { color: var(--mauve-dark); font-weight: 800; }
+  .m-nav-icon { font-size: 15px; }
+  .m-nav-label { font-size: 8.5px; text-transform: uppercase; }
+
+  .m-fab-add {
+    position: absolute;
+    bottom: max(68px, calc(58px + env(safe-area-inset-bottom, 12px)));
+    right: 14px;
+    background: var(--mauve);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 85;
+  }
+
+  /* =========================================================
+     DESKTOP INTERFACE LAYOUT
+     ========================================================= */
+  #desktop-container {
     display: none;
     width: 100%;
     min-height: 100vh;
   }
-  .sidebar {
+  .d-sidebar {
     width: 240px;
     background: var(--mauve);
     color: #fff;
@@ -126,7 +335,7 @@
     padding: 24px 16px;
     flex-shrink: 0;
   }
-  .brand-badge {
+  .d-brand-badge {
     background: #000;
     color: #fff;
     padding: 8px 14px;
@@ -137,21 +346,21 @@
     text-align: center;
     margin-bottom: 8px;
   }
-  .user-role-badge {
+  .d-role-badge {
     font-size: 11px;
     text-align: center;
     color: #ffd2d4;
     margin-bottom: 24px;
     font-weight: 600;
   }
-  .nav-links {
+  .d-nav-links {
     list-style: none;
     display: flex;
     flex-direction: column;
     gap: 8px;
     flex: 1;
   }
-  .nav-btn {
+  .d-nav-btn {
     width: 100%;
     text-align: left;
     padding: 12px 16px;
@@ -164,11 +373,9 @@
     cursor: pointer;
     transition: background 0.2s;
   }
-  .nav-btn.active, .nav-btn:hover {
-    background: rgba(0, 0, 0, 0.25);
-  }
-  .btn-logout {
-    background: rgba(0, 0, 0, 0.35);
+  .d-nav-btn.active, .d-nav-btn:hover { background: rgba(0,0,0,0.25); }
+  .d-btn-logout {
+    background: rgba(0,0,0,0.35);
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -179,38 +386,35 @@
     margin-top: auto;
   }
 
-  .main-content {
+  .d-main-content {
     flex: 1;
     padding: 32px;
     overflow-y: auto;
     height: 100vh;
+    background: #F7F5F4;
   }
-  .top-header {
+  .d-top-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
   }
-  .page-title {
-    font-size: 22px;
-    font-weight: 700;
-  }
+  .d-page-title { font-size: 22px; font-weight: 700; }
 
-  /* Metric Stat Cards */
-  .stats-grid {
+  .d-stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 16px;
     margin-bottom: 16px;
   }
-  .stat-card {
+  .d-stat-card {
     background: var(--paper);
     border-radius: 14px;
     padding: 20px;
     border: 1px solid var(--grey-border);
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
   }
-  .stat-label {
+  .d-stat-label {
     font-size: 11px;
     font-weight: 600;
     color: #777;
@@ -218,14 +422,13 @@
     letter-spacing: 0.5px;
     margin-bottom: 6px;
   }
-  .stat-value {
+  .d-stat-value {
     font-size: 24px;
     font-weight: 700;
     color: var(--mauve-dark);
   }
 
-  /* Shift Controls Bar */
-  .shift-control-bar {
+  .d-shift-bar {
     background: #fff;
     border: 1px solid var(--grey-border);
     border-radius: 14px;
@@ -235,11 +438,8 @@
     align-items: center;
     margin-bottom: 24px;
   }
-  .shift-status-tag {
-    font-size: 13px;
-    font-weight: 700;
-  }
-  .btn-shift {
+  .d-shift-status { font-size: 13px; font-weight: 700; }
+  .d-btn-shift {
     border: none;
     border-radius: 10px;
     padding: 10px 24px;
@@ -248,10 +448,10 @@
     cursor: pointer;
     transition: all 0.2s;
   }
-  .btn-shift.open { background: var(--good); color: #fff; }
-  .btn-shift.close { background: var(--bad); color: #fff; }
+  .d-btn-shift.open { background: var(--good); color: #fff; }
+  .d-btn-shift.close { background: var(--bad); color: #fff; }
 
-  .section-box {
+  .d-section-box {
     background: var(--paper);
     border-radius: 16px;
     border: 1px solid var(--grey-border);
@@ -259,95 +459,25 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     margin-bottom: 32px;
   }
-  .section-head {
+  .d-section-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 18px;
   }
-  .section-title {
-    font-size: 16px;
-    font-weight: 700;
-  }
+  .d-section-title { font-size: 16px; font-weight: 700; }
 
-  .table-controls {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .search-input {
-    flex: 1;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--grey-border);
-    outline: none;
-    font-size: 12px;
-  }
-  .filter-select {
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid var(--grey-border);
-    outline: none;
-    font-size: 12px;
-    background: #fff;
-  }
+  .d-table-controls { display: flex; gap: 12px; margin-bottom: 16px; }
+  .d-search { flex: 1; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--grey-border); font-size: 12px; outline: none; }
+  .d-filter { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--grey-border); font-size: 12px; background: #fff; outline: none; }
 
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
-  th {
-    text-align: left;
-    padding: 12px;
-    border-bottom: 2px solid var(--grey-opt);
-    color: #666;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  td {
-    padding: 14px 12px;
-    border-bottom: 1px solid var(--grey-opt);
-    vertical-align: top;
-  }
+  .d-table-wrap { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; padding: 12px; border-bottom: 2px solid var(--grey-opt); color: #666; font-weight: 700; text-transform: uppercase; }
+  td { padding: 14px 12px; border-bottom: 1px solid var(--grey-opt); vertical-align: top; }
 
-  .status-select {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    border: 1px solid transparent;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.2s;
-  }
-  .status-select.status-preparing { background: #FEF3C7; color: #B45309; border-color: #FCD34D; }
-  .status-select.status-ready { background: #DCFCE7; color: #15803D; border-color: #86EFAC; }
-  .status-select.status-completed { background: #DBEAFE; color: #1D4ED8; border-color: #93C5FD; }
-
-  .btn-dots {
-    background: #eae6e5;
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ink);
-    transition: background 0.2s;
-  }
-  .btn-dots:hover { background: var(--mauve); color: #fff; }
-
-  .reset-history-wrap { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--grey-border); display: flex; justify-content: flex-end; }
-  .btn-reset-danger {
+  .d-reset-wrap { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--grey-border); display: flex; justify-content: flex-end; }
+  .d-btn-reset {
     background: #fee2e2;
     color: var(--bad);
     border: 1.5px solid var(--bad);
@@ -357,23 +487,22 @@
     font-weight: 700;
     cursor: pointer;
   }
-  .btn-reset-danger:hover { background: var(--bad); color: #fff; }
+  .d-btn-reset:hover { background: var(--bad); color: #fff; }
 
-  /* Desktop Add-on Ribbon */
-  .desktop-addon-wrap {
+  .d-addon-ribbon {
     background: #fff;
     border: 1px solid var(--grey-border);
     border-radius: 14px;
     padding: 16px 20px;
     margin-bottom: 24px;
   }
-  .addon-grid-container {
+  .d-addon-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 12px;
     margin-top: 12px;
   }
-  .addon-desk-card {
+  .d-addon-card {
     background: var(--grey-opt);
     border: 1px solid #ddd8d5;
     border-radius: 10px;
@@ -382,15 +511,14 @@
     justify-content: space-between;
     align-items: center;
   }
-  .addon-desk-card.sold-out { opacity: 0.6; background: #eee; }
+  .d-addon-card.sold-out { opacity: 0.6; background: #eee; }
 
-  /* Menu Items Grid */
-  .menu-management-grid {
+  .d-menu-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
   }
-  .admin-menu-card {
+  .d-menu-card {
     background: var(--grey-opt);
     border-radius: 12px;
     padding: 14px;
@@ -398,26 +526,24 @@
     gap: 14px;
     border: 1px solid var(--grey-border);
   }
-  .admin-menu-card.sold-out { opacity: 0.6; background: #eee; }
-  .admin-item-img { width: 70px; height: 70px; background: #fff; border-radius: 8px; object-fit: contain; }
-  .admin-item-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-  .admin-item-title { font-size: 13px; font-weight: 700; }
-  .admin-item-price { font-size: 12px; font-weight: 700; }
-  .admin-card-actions { display: flex; gap: 6px; margin-top: 8px; }
-  .btn-stock { padding: 6px 10px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; }
-  .btn-stock.in-stock { background: var(--good); color: #fff; }
-  .btn-stock.out-of-stock { background: var(--bad); color: #fff; }
-  .btn-edit { padding: 6px 10px; border-radius: 6px; background: #eae6e5; border: 1px solid var(--grey-border); color: var(--ink); font-size: 10px; font-weight: 700; cursor: pointer; }
-  .btn-delete { padding: 6px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--bad); color: var(--bad); font-size: 10px; font-weight: 700; cursor: pointer; }
+  .d-menu-card.sold-out { opacity: 0.6; background: #eee; }
+  .d-menu-img { width: 70px; height: 70px; background: #fff; border-radius: 8px; object-fit: contain; }
+  .d-menu-info { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .d-menu-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .d-btn-stock { padding: 6px 10px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; }
+  .d-btn-stock.in-stock { background: var(--good); color: #fff; }
+  .d-btn-stock.out-of-stock { background: var(--bad); color: #fff; }
+  .d-btn-edit { padding: 6px 10px; border-radius: 6px; background: #eae6e5; border: 1px solid var(--grey-border); color: var(--ink); font-size: 10px; font-weight: 700; cursor: pointer; }
+  .d-btn-del { padding: 6px 10px; border-radius: 6px; background: transparent; border: 1px solid var(--bad); color: var(--bad); font-size: 10px; font-weight: 700; cursor: pointer; }
+  .d-btn-del:hover { background: var(--bad); color: #fff; }
 
-  /* Analytics & Vault */
-  .analytics-desk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
-  .analytics-card-desk { background: #fff; border: 1px solid var(--grey-border); border-radius: 14px; padding: 20px; }
-  .leaderboard-table-desk { width: 100%; margin-top: 10px; border-collapse: collapse; }
-  .leaderboard-table-desk td { padding: 8px 10px; border-bottom: 1px solid #f0eeed; font-size: 11.5px; }
+  .d-analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .d-analytics-card { background: #fff; border: 1px solid var(--grey-border); border-radius: 14px; padding: 20px; }
+  .d-rank-badge { width: 24px; height: 24px; border-radius: 50%; background: var(--mauve); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; }
+  .d-rank-badge.gold { background: #D97706; }
 
-  .vault-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
-  .vault-card {
+  .d-vault-list { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+  .d-vault-card {
     background: #fff;
     border: 1.5px solid var(--grey-border);
     border-radius: 12px;
@@ -425,55 +551,87 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .vault-card:hover {
+  .d-vault-card:hover {
     border-color: var(--mauve);
     box-shadow: 0 4px 12px rgba(130,84,85,0.12);
   }
-  .vault-date-title { font-size: 13px; font-weight: 800; color: var(--mauve-dark); }
-  .vault-meta { font-size: 11px; color: #666; margin-top: 3px; }
+  .d-vault-actions { display: flex; align-items: center; gap: 12px; }
+  .d-vault-drop {
+    position: absolute;
+    right: 0;
+    top: 34px;
+    background: #fff;
+    border: 1px solid var(--grey-border);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    display: none;
+    flex-direction: column;
+    min-width: 140px;
+    z-index: 100;
+    overflow: hidden;
+  }
+  .d-vault-drop.open { display: flex; }
+  .d-vault-drop-btn {
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .d-vault-drop-btn:hover { background: #f7f5f4; }
+  .d-vault-drop-btn.del-opt { color: var(--bad); }
 
-  .btn-add-primary { background: var(--mauve); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
+  .btn-primary { background: var(--mauve); color: #fff; border: none; border-radius: 8px; padding: 10px 18px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-  .feedback-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-  .feedback-card { background: var(--grey-opt); border-radius: 12px; padding: 16px; border: 1px solid var(--grey-border); }
-  .feedback-sender { font-weight: 700; font-size: 13px; color: var(--mauve-dark); }
+  .d-fb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .d-fb-card { background: var(--grey-opt); border-radius: 12px; padding: 16px; border: 1px solid var(--grey-border); }
 
-  /* Modals */
+  /* =========================================================
+     MODALS (SHARED)
+     ========================================================= */
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
-    padding: 20px;
+    z-index: 10000;
+    padding: 16px;
   }
   .modal-overlay.open { display: flex; }
   .modal-card {
     background: #fff;
     width: 100%;
-    max-width: 580px;
+    max-width: 520px;
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     max-height: 90vh;
     overflow-y: auto;
   }
-  .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; }
-  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-  .form-group input, .form-group select { padding: 10px; border: 1px solid var(--grey-border); border-radius: 8px; outline: none; font-size: 12px; }
-  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
-
-  .modifier-row { display: flex; gap: 16px; padding: 8px 10px; background: #f7f5f4; border: 1px solid var(--grey-border); border-radius: 6px; margin-bottom: 4px; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+  .form-group label { font-size: 10.5px; font-weight: 700; color: #555; }
+  .form-group input, .form-group select { padding: 9px 12px; border: 1px solid var(--grey-border); border-radius: 6px; font-size: 11.5px; outline: none; }
+  .modifier-row { display: flex; gap: 16px; padding: 8px 10px; background: #f7f5f4; border: 1px solid var(--grey-border); border-radius: 6px; }
   .addon-checklist-wrap { max-height: 120px; overflow-y: auto; border: 1px solid var(--grey-border); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; background: #fafafa; }
+  .addon-check-item { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; }
+  .addon-check-item input[type="checkbox"], .modifier-row input[type="checkbox"] { accent-color: var(--mauve); }
 </style>
 </head>
 <body>
 
+  <!-- =========================================================
+       1. LOGIN SCREEN WITH VERSION SELECTOR
+       ========================================================= -->
   <div id="login-screen">
     <div class="login-card">
       <div class="login-brand">NGOPI DULU</div>
@@ -487,757 +645,1309 @@
           <label>Password</label>
           <input type="password" id="login-password" required placeholder="••••••••">
         </div>
+
+        <!-- Version Selector Under Password -->
+        <div class="version-select-row">
+          <span class="version-select-label">Interface View:</span>
+          <div class="version-toggle-pill">
+            <button type="button" class="v-opt-btn active" id="v-opt-mobile" onclick="setLoginVersion('mobile')">Mobile</button>
+            <button type="button" class="v-opt-btn" id="v-opt-desktop" onclick="setLoginVersion('desktop')">Desktop</button>
+          </div>
+        </div>
+
         <button type="submit" class="login-btn">Sign In</button>
         <div class="login-error" id="login-err">Invalid username or password.</div>
       </form>
     </div>
   </div>
 
-  <div id="portal-screen">
-    <aside class="sidebar">
-      <div class="brand-badge">NGOPI DULU</div>
-      <div class="user-role-badge" id="sidebar-role-tag">ROLE: ADMIN</div>
-
-      <ul class="nav-links">
-        <li id="nav-item-dashboard"><button class="nav-btn active" onclick="switchTab('dashboard')">📊 Overview & Orders</button></li>
-        <li id="nav-item-menu"><button class="nav-btn" onclick="switchTab('menu')">☕ Menu Manager</button></li>
-        <li id="nav-item-analytics"><button class="nav-btn" onclick="switchTab('analytics')">📈 Sales Records</button></li>
-        <li id="nav-item-feedback"><button class="nav-btn" onclick="switchTab('feedback')">💬 Customer Feedback</button></li>
-        <li id="nav-item-staff" style="display: none;"><button class="nav-btn active" onclick="switchTab('staff-view')">📋 Order History</button></li>
-      </ul>
-
-      <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
-    </aside>
-
-    <main class="main-content">
-      <header class="top-header">
-        <h1 class="page-title" id="page-title">Café Overview & Orders</h1>
-        <button class="btn-add-primary" id="btn-add-menu-item" style="display: none;" onclick="openAddModal()">+ Add New Menu Item</button>
+  <!-- =========================================================
+       2. MOBILE PORTAL WRAPPER
+       ========================================================= -->
+  <div id="mobile-container">
+    <div class="mobile-shell">
+      <header class="m-header">
+        <div class="m-brand">NGOPI DULU <span id="m-role-tag">ADMIN</span></div>
+        <button class="m-btn-signout" onclick="handleLogout()">Sign Out</button>
       </header>
 
-      <section class="stats-grid" id="stats-container">
-        <div class="stat-card">
-          <div class="stat-label">Shift Revenue</div>
-          <div class="stat-value" id="stat-sales">RM 0.00</div>
+      <main class="m-body">
+        <div class="m-kpi-row">
+          <div class="m-kpi-card"><div class="m-kpi-label">Shift Sales</div><div class="m-kpi-val" id="m-stat-sales">RM 0.00</div></div>
+          <div class="m-kpi-card"><div class="m-kpi-label">Customers</div><div class="m-kpi-val" id="m-stat-customers">0</div></div>
+          <div class="m-kpi-card"><div class="m-kpi-label">Active Orders</div><div class="m-kpi-val" id="m-stat-active">0</div></div>
+          <div class="m-kpi-card"><div class="m-kpi-label">Sold Out</div><div class="m-kpi-val" id="m-stat-soldout">0</div></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Shift Customers</div>
-          <div class="stat-value" id="stat-customers">0</div>
+
+        <div class="m-shift-bar">
+          <div>
+            <div class="m-shift-status" id="m-shift-status">Status: Café Closed</div>
+            <div style="font-size:9.5px; color:#666; margin-top:2px;" id="m-shift-time">No active shift</div>
+          </div>
+          <button class="m-btn-shift open" id="m-btn-shift" onclick="toggleShift()">Open Shift</button>
         </div>
-        <div class="stat-card">
-          <div class="stat-label">Active Orders</div>
-          <div class="stat-value" id="stat-active">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Sold Out Items</div>
-          <div class="stat-value" id="stat-soldout">0</div>
-        </div>
+
+        <!-- Mobile TAB 1: Orders -->
+        <section id="m-tab-orders">
+          <div class="m-action-bar">
+            <input type="text" id="m-order-search" class="m-search" placeholder="Search orders..." oninput="filterOrdersMobile()">
+            <select id="m-status-filter" class="m-filter" onchange="filterOrdersMobile()">
+              <option value="ALL">All Status</option>
+              <option value="Preparing">Preparing</option>
+              <option value="Ready">Ready</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div class="m-order-card-feed" id="m-order-feed"></div>
+          <button class="m-btn-reset" onclick="resetShiftOrdersOnly()">⚠ Reset Shift Orders Only</button>
+        </section>
+
+        <!-- Mobile TAB 2: Menu -->
+        <section id="m-tab-menu" style="display: none;">
+          <div class="m-addon-section">
+            <div class="m-section-header">
+              <span class="m-section-title">Add-ons Available</span>
+              <button class="m-btn-addon-add" onclick="openAddonModal()">+ Add-on</button>
+            </div>
+            <div class="m-addon-feed" id="m-addon-feed"></div>
+          </div>
+          <div class="m-section-header" style="margin-top:6px;">
+            <span class="m-section-title">Menu Items</span>
+          </div>
+          <div class="m-menu-feed" id="m-menu-feed"></div>
+        </section>
+
+        <!-- Mobile TAB 3: Sales Records -->
+        <section id="m-tab-analytics" style="display: none;">
+          <div class="m-analytics-card">
+            <div class="m-section-title" style="margin-bottom:6px;">Category Performance</div>
+            <div class="m-chart-wrap"><canvas id="m-categoryChart" width="380" height="180"></canvas></div>
+          </div>
+          <div class="m-analytics-card">
+            <div class="m-section-title" style="margin-bottom:8px;">🔥 Trending Leaderboard</div>
+            <div id="m-leaderboard-feed"></div>
+          </div>
+          <div class="m-analytics-card">
+            <div class="m-section-title" style="margin-bottom:6px;">Customer Frequency</div>
+            <div class="m-freq-toggle">
+              <button class="m-btn-freq active" id="m-btn-freq-w" onclick="setMobileFrequency('weekly')">Weekly (Mon-Sun)</button>
+              <button class="m-btn-freq" id="m-btn-freq-m" onclick="setMobileFrequency('monthly')">Monthly (Calendar)</button>
+            </div>
+            <div class="m-chart-wrap"><canvas id="m-frequencyChart" width="380" height="190"></canvas></div>
+          </div>
+        </section>
+
+        <!-- Mobile TAB 4: Vault -->
+        <section id="m-tab-vault" style="display: none;">
+          <div class="m-section-header">
+            <span class="m-section-title">🗄 The Vault (Closed Shifts)</span>
+          </div>
+          <p style="font-size:10px; color:#666; margin-bottom:10px;">Tap card for report or ⋮ to print A4 or delete.</p>
+          <div class="m-vault-feed" id="m-vault-feed"></div>
+        </section>
+
+        <!-- Mobile TAB 5: Feedback -->
+        <section id="m-tab-feedback" style="display: none;">
+          <div class="m-action-bar">
+            <input type="text" id="m-feedback-search" class="m-search" placeholder="Search feedback..." oninput="filterFeedbackMobile()">
+          </div>
+          <div id="m-feedback-feed"></div>
+        </section>
+      </main>
+
+      <button class="m-fab-add" id="m-fab-add" onclick="openAddModal()">+</button>
+
+      <nav class="m-bottom-nav">
+        <button class="m-nav-item active" id="m-nav-orders" onclick="switchMobileTab('orders')"><span class="m-nav-icon">📊</span><span class="m-nav-label">Orders</span></button>
+        <button class="m-nav-item" id="m-nav-menu" onclick="switchMobileTab('menu')"><span class="m-nav-icon">☕</span><span class="m-nav-label">Menu</span></button>
+        <button class="m-nav-item" id="m-nav-analytics" onclick="switchMobileTab('analytics')"><span class="m-nav-icon">📈</span><span class="m-nav-label">Sales</span></button>
+        <button class="m-nav-item" id="m-nav-vault" onclick="switchMobileTab('vault')"><span class="m-nav-icon">🗄</span><span class="m-nav-label">Vault</span></button>
+        <button class="m-nav-item" id="m-nav-feedback" onclick="switchMobileTab('feedback')"><span class="m-nav-icon">💬</span><span class="m-nav-label">Feedback</span></button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       3. DESKTOP PORTAL WRAPPER
+       ========================================================= -->
+  <div id="desktop-container">
+    <aside class="d-sidebar">
+      <div class="d-brand-badge">NGOPI DULU</div>
+      <div class="d-role-badge" id="d-role-tag">ROLE: ADMIN</div>
+      <ul class="d-nav-links">
+        <li><button class="d-nav-btn active" id="d-nav-orders" onclick="switchDesktopTab('dashboard')">📊 Overview & Orders</button></li>
+        <li><button class="d-nav-btn" id="d-nav-menu" onclick="switchDesktopTab('menu')">☕ Menu Manager</button></li>
+        <li><button class="d-nav-btn" id="d-nav-analytics" onclick="switchDesktopTab('analytics')">📈 Sales Records</button></li>
+        <li><button class="d-nav-btn" id="d-nav-feedback" onclick="switchDesktopTab('feedback')">💬 Customer Feedback</button></li>
+      </ul>
+      <button class="d-btn-logout" onclick="handleLogout()">Sign Out</button>
+    </aside>
+
+    <main class="d-main-content">
+      <header class="d-top-header">
+        <h1 class="d-page-title" id="d-page-title">Café Overview & Orders</h1>
+        <button class="btn-primary" id="d-btn-add-item" style="display: none;" onclick="openAddModal()">+ Add New Menu Item</button>
+      </header>
+
+      <section class="d-stats-grid" id="d-stats-container">
+        <div class="d-stat-card"><div class="d-stat-label">Shift Revenue</div><div class="d-stat-value" id="d-stat-sales">RM 0.00</div></div>
+        <div class="d-stat-card"><div class="d-stat-label">Shift Customers</div><div class="d-stat-value" id="d-stat-customers">0</div></div>
+        <div class="d-stat-card"><div class="d-stat-label">Active Orders</div><div class="d-stat-value" id="d-stat-active">0</div></div>
+        <div class="d-stat-card"><div class="d-stat-label">Sold Out Items</div><div class="d-stat-value" id="d-stat-soldout">0</div></div>
       </section>
 
-      <!-- Open / Close Shift Control Bar -->
-      <div class="shift-control-bar" id="shift-bar">
+      <div class="d-shift-bar" id="d-shift-bar">
         <div>
-          <div class="shift-status-tag" id="shift-status-text">Café Status: Closed</div>
-          <div style="font-size: 11px; color: #666; margin-top: 2px;" id="shift-time-text">No active shift</div>
+          <div class="d-shift-status" id="d-shift-status">Café Status: Closed</div>
+          <div style="font-size:11px; color:#666; margin-top:2px;" id="d-shift-time">No active shift</div>
         </div>
-        <button class="btn-shift open" id="btn-shift-toggle" onclick="toggleShift()">Open Shift</button>
+        <button class="d-btn-shift open" id="d-btn-shift" onclick="toggleShift()">Open Shift</button>
       </div>
 
-      <!-- TAB 1: ORDERS -->
-      <section class="section-box" id="tab-orders">
-        <div class="section-head">
-          <h2 class="section-title">Order History Log</h2>
-        </div>
-
-        <div class="table-controls">
-          <input type="text" id="order-search" class="search-input" placeholder="Search orders..." oninput="filterOrders()">
-          <select id="status-filter" class="filter-select" onchange="filterOrders()">
+      <!-- Desktop Tab 1: Orders -->
+      <section class="d-section-box" id="d-tab-orders">
+        <div class="d-section-head"><h2 class="d-section-title">Order History Log</h2></div>
+        <div class="d-table-controls">
+          <input type="text" id="d-order-search" class="d-search" placeholder="Search orders..." oninput="filterOrdersDesktop()">
+          <select id="d-status-filter" class="d-filter" onchange="filterOrdersDesktop()">
             <option value="ALL">All Statuses</option>
             <option value="Preparing">Preparing</option>
             <option value="Ready">Ready</option>
             <option value="Completed">Completed</option>
           </select>
         </div>
-
-        <div class="table-container">
+        <div class="d-table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>Order ID</th>
-                <th>Customer</th>
-                <th>Order Details</th>
-                <th>Time</th>
-                <th>Price</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
+              <tr><th>Order ID</th><th>Customer</th><th>Details</th><th>Time</th><th>Price</th><th>Status</th><th>Action</th></tr>
             </thead>
-            <tbody id="admin-order-table-body"></tbody>
+            <tbody id="d-order-tbody"></tbody>
           </table>
         </div>
-
-        <div class="reset-history-wrap">
-          <button class="btn-reset-danger" onclick="resetActiveOrdersOnly()">⚠ Reset Active Orders Only</button>
+        <div class="d-reset-wrap">
+          <button class="d-btn-reset" onclick="resetShiftOrdersOnly()">⚠ Reset Active Orders Only</button>
         </div>
       </section>
 
-      <!-- TAB 2: MENU -->
-      <section class="section-box" id="tab-menu" style="display: none;">
-        <div class="desktop-addon-wrap">
-          <div class="section-head">
-            <h3 class="section-title" style="font-size: 14px;">Add-on Customizations Available</h3>
-            <button class="btn-add-primary" onclick="openAddonModal()">+ Add New Add-on</button>
+      <!-- Desktop Tab 2: Menu -->
+      <section class="d-section-box" id="d-tab-menu" style="display: none;">
+        <div class="d-addon-ribbon">
+          <div class="d-section-head">
+            <h3 class="d-section-title" style="font-size:14px;">Add-on Customizations Available</h3>
+            <button class="btn-primary" style="padding:6px 14px; font-size:11px;" onclick="openAddonModal()">+ Add New Add-on</button>
           </div>
-          <div class="addon-grid-container" id="admin-addon-grid"></div>
+          <div class="d-addon-grid" id="d-addon-grid"></div>
         </div>
-        <div class="section-head">
-          <h2 class="section-title">Menu Stock & Availability</h2>
-        </div>
-        <div class="menu-management-grid" id="admin-menu-grid"></div>
+        <div class="d-section-head"><h2 class="d-section-title">Menu Stock & Availability</h2></div>
+        <div class="d-menu-grid" id="d-menu-grid"></div>
       </section>
 
-      <!-- TAB 3: SALES & THE VAULT -->
-      <section id="tab-analytics" style="display: none;">
-        <div class="analytics-desk-grid">
-          <div class="analytics-card-desk">
-            <h3 class="section-title">Category Sales (All-Time)</h3>
-            <canvas id="categoryChartDesk" width="460" height="220"></canvas>
+      <!-- Desktop Tab 3: Sales Records & Vault -->
+      <section id="d-tab-analytics" style="display: none;">
+        <div class="d-analytics-grid">
+          <div class="d-analytics-card">
+            <h3 class="d-section-title" style="margin-bottom:12px;">Category Sales Performance</h3>
+            <canvas id="d-categoryChart" width="460" height="220"></canvas>
           </div>
-
-          <div class="analytics-card-desk">
-            <h3 class="section-title">🔥 Best Seller Leaderboard</h3>
-            <table class="leaderboard-table-desk">
+          <div class="d-analytics-card">
+            <h3 class="d-section-title" style="margin-bottom:8px;">🔥 Best Seller Leaderboard</h3>
+            <table style="width:100%;">
               <thead>
-                <tr style="text-align: left; color: #777; font-size: 11px;">
-                  <th>Rank</th><th>Item</th><th>Units</th><th style="text-align: right;">Sales</th>
+                <tr style="text-align:left; color:#777; font-size:11px;">
+                  <th>Rank</th><th>Item</th><th>Units</th><th style="text-align:right;">Sales</th>
                 </tr>
               </thead>
-              <tbody id="desk-leaderboard-body"></tbody>
+              <tbody id="d-leaderboard-tbody"></tbody>
             </table>
           </div>
         </div>
-
-        <div class="section-box">
-          <div class="section-head">
-            <h2 class="section-title">🗄 The Vault (Closed Shift Archives)</h2>
-          </div>
-          <p style="font-size: 11.5px; color: #666; margin-bottom: 12px;">Archived revenue, sales trends, and full order history records from past operating shifts.</p>
-          <div class="vault-list" id="vault-records-container"></div>
+        <div class="d-section-box">
+          <div class="d-section-head"><h2 class="d-section-title">🗄 The Vault (Closed Shift Archives)</h2></div>
+          <p style="font-size:11.5px; color:#666; margin-bottom:12px;">Archived revenue and full order history from closed operating shifts.</p>
+          <div class="d-vault-list" id="d-vault-list"></div>
         </div>
       </section>
 
-      <!-- TAB 4: FEEDBACK -->
-      <section class="section-box" id="tab-feedback" style="display: none;">
-        <div class="section-head">
-          <h2 class="section-title">Customer Feedback Inbox</h2>
+      <!-- Desktop Tab 4: Feedback -->
+      <section class="d-section-box" id="d-tab-feedback" style="display: none;">
+        <div class="d-section-head"><h2 class="d-section-title">Customer Feedback Inbox</h2></div>
+        <div class="d-table-controls">
+          <input type="text" id="d-feedback-search" class="d-search" placeholder="Search feedback..." oninput="filterFeedbackDesktop()">
         </div>
-        <div class="table-controls">
-          <input type="text" id="feedback-search" class="search-input" placeholder="Search feedback..." oninput="filterFeedback()">
-        </div>
-        <div class="feedback-grid" id="feedback-container"></div>
-      </section>
-
-      <!-- STAFF TAB -->
-      <section class="section-box" id="tab-staff" style="display: none;">
-        <div class="section-head">
-          <h2 class="section-title">Order History Library</h2>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr><th>Order ID</th><th>Customer</th><th>Details</th><th>Time</th><th>Price</th><th>Status</th></tr>
-            </thead>
-            <tbody id="staff-order-table-body"></tbody>
-          </table>
-        </div>
+        <div class="d-fb-grid" id="d-fb-grid"></div>
       </section>
     </main>
   </div>
 
-  <!-- Vault Report Modal -->
-  <div class="modal-overlay" id="vault-modal">
+  <!-- =========================================================
+       4. DETAIL & VAULT MODALS (SHARED)
+       ========================================================= -->
+  <div class="modal-overlay" id="detail-modal">
     <div class="modal-card">
-      <h3 class="modal-title" id="vault-modal-title">Shift Performance Report</h3>
-      <div style="font-size: 12px; margin-bottom: 6px;"><b>Shift Opened:</b> <span id="vm-opened"></span></div>
-      <div style="font-size: 12px; margin-bottom: 12px;"><b>Shift Closed:</b> <span id="vm-closed"></span></div>
-      
-      <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-        <div style="flex: 1; background: var(--grey-opt); padding: 10px; border-radius: 8px;">
-          <div style="font-size: 10px; color: #666;">TOTAL REVENUE</div>
-          <div style="font-size: 18px; font-weight: 800; color: var(--mauve-dark);" id="vm-revenue">RM 0.00</div>
-        </div>
-        <div style="flex: 1; background: var(--grey-opt); padding: 10px; border-radius: 8px;">
-          <div style="font-size: 10px; color: #666;">CUSTOMERS</div>
-          <div style="font-size: 18px; font-weight: 800;" id="vm-customers">0</div>
-        </div>
-      </div>
-
-      <div style="font-weight: 700; font-size: 12px; margin-bottom: 6px;">Shift Category Sales Breakdown</div>
-      <canvas id="vaultChart" width="500" height="150" style="margin-bottom: 16px;"></canvas>
-
-      <div style="font-weight: 700; font-size: 12px; margin-bottom: 6px;">Orders Logged In This Shift</div>
-      <div id="vm-orders-list" style="max-height: 200px; overflow-y: auto; background: var(--grey-opt); border-radius: 8px; padding: 10px; font-size: 11px;"></div>
-
-      <div class="modal-actions">
-        <button type="button" class="btn-add-primary" onclick="closeVaultModal()">Close Report</button>
-      </div>
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:10px;" id="modal-order-id">Order Details</h3>
+      <div style="font-size:11.5px; margin-bottom:4px;"><b>Customer:</b> <span id="modal-customer-name"></span></div>
+      <div style="font-size:11.5px; margin-bottom:4px;"><b>Time:</b> <span id="modal-order-time"></span></div>
+      <div style="font-size:11.5px; margin-bottom:8px;"><b>Status:</b> <span id="modal-order-status"></span></div>
+      <div id="modal-items-breakdown" style="background:#f4f3f2; border-radius:8px; padding:10px; margin-bottom:10px; font-size:11.5px;"></div>
+      <div style="font-size:13px; font-weight:800;">Total: <span id="modal-order-total" style="color:var(--mauve-dark);"></span></div>
+      <button onclick="closeDetailModal()" style="width:100%; margin-top:14px; background:var(--mauve); color:#fff; border:none; border-radius:8px; padding:9px; font-weight:700;">Close</button>
     </div>
   </div>
 
-  <!-- Standard Modals (Detail, Add, Edit) -->
-  <div class="modal-overlay" id="detail-modal">
+  <div class="modal-overlay" id="vault-modal">
     <div class="modal-card">
-      <h3 class="modal-title" id="modal-order-id">Order Details</h3>
-      <div style="font-size: 12px; margin-bottom: 6px;"><b>Customer:</b> <span id="modal-customer-name"></span></div>
-      <div style="font-size: 12px; margin-bottom: 6px;"><b>Time:</b> <span id="modal-order-time"></span></div>
-      <div style="font-size: 12px; margin-bottom: 6px;"><b>Status:</b> <span id="modal-order-status"></span></div>
-      <div id="modal-items-breakdown" style="background: var(--grey-opt); border-radius: 8px; padding: 12px; margin: 12px 0;"></div>
-      <div style="font-size: 14px; font-weight: 800;">Total: <span id="modal-order-total" style="color: var(--mauve-dark);"></span></div>
-      <div class="modal-actions">
-        <button type="button" class="btn-add-primary" onclick="closeDetailModal()">Close</button>
-      </div>
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:8px;" id="vm-title">Shift Performance Report</h3>
+      <div style="font-size:11px; color:#555; margin-bottom:3px;">Opened: <span id="vm-open"></span></div>
+      <div style="font-size:11px; color:#555; margin-bottom:10px;">Closed: <span id="vm-close"></span></div>
+      <div style="font-size:16px; font-weight:800; color:var(--mauve-dark); margin-bottom:12px;" id="vm-rev">RM 0.00</div>
+      <div style="font-size:11px; font-weight:700; margin-bottom:4px;">Shift Category Breakdown:</div>
+      <canvas id="vaultChart" width="400" height="140" style="margin-bottom:12px;"></canvas>
+      <div style="font-size:11px; font-weight:700; margin-bottom:4px;">Orders Logged In Shift:</div>
+      <div id="vm-orders" style="background:#f4f3f2; border-radius:8px; padding:10px; max-height:200px; overflow-y:auto; font-size:11px;"></div>
+      <button onclick="closeVaultModal()" style="width:100%; margin-top:14px; background:var(--mauve); color:#fff; border:none; border-radius:8px; padding:10px; font-weight:700;">Close Report</button>
     </div>
   </div>
 
   <div class="modal-overlay" id="add-modal">
     <div class="modal-card">
-      <h3 class="modal-title">Add Menu Item</h3>
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:12px;">Add Menu Item</h3>
       <form onsubmit="handleCreateItem(event)">
-        <div class="form-group"><label>Product Name</label><input type="text" id="new-item-name" required></div>
+        <div class="form-group"><label>Product Name</label><input type="text" id="new-item-name" required placeholder="e.g. Spanish Latte"></div>
         <div class="form-group"><label>Category</label><select id="new-item-cat"><option value="coffee">Coffee</option><option value="non-coffee">Non Coffee</option><option value="matcha">Matcha</option><option value="soft-cookies">Soft Cookies</option><option value="bites">Bites</option></select></div>
-        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="new-item-price" required></div>
-        <div class="form-group"><label>Image URL</label><input type="url" id="new-item-img" required></div>
-        <div class="form-group"><label>Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label><label><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label></div></div>
-        <div class="form-group"><label>Add-ons</label><div class="addon-checklist-wrap" id="new-item-addons-list"></div></div>
-        <div class="modal-actions"><button type="button" class="btn-delete" onclick="closeAddModal()">Cancel</button><button type="submit" class="btn-add-primary">Save</button></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="new-item-price" required placeholder="15"></div>
+        <div class="form-group"><label>Image URL</label><input type="url" id="new-item-img" required placeholder="https://..."></div>
+        <div class="form-group"><label>Standard Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label><label><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label></div></div>
+        <div class="form-group"><label>Select Paid Add-ons</label><div class="addon-checklist-wrap" id="new-item-addons-list"></div></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeAddModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Save</button></div>
       </form>
     </div>
   </div>
 
-  <script>
-    let currentUserRole = null;
-    const MENU_VERSION = 'v5_vault_shift_sync';
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal-card">
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:12px;">Edit Menu Item</h3>
+      <form onsubmit="handleUpdateItem(event)">
+        <input type="hidden" id="edit-item-id">
+        <div class="form-group"><label>Product Name</label><input type="text" id="edit-item-name" required></div>
+        <div class="form-group"><label>Category</label><select id="edit-item-cat"><option value="coffee">Coffee</option><option value="non-coffee">Non Coffee</option><option value="matcha">Matcha</option><option value="soft-cookies">Soft Cookies</option><option value="bites">Bites</option></select></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="edit-item-price" required></div>
+        <div class="form-group"><label>Image URL</label><input type="url" id="edit-item-img" required></div>
+        <div class="form-group"><label>Standard Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="edit-item-has-ice"> Ice Level</label><label><input type="checkbox" id="edit-item-has-sugar"> Sugar Level</label></div></div>
+        <div class="form-group"><label>Select Paid Add-ons</label><div class="addon-checklist-wrap" id="edit-item-addons-list"></div></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeEditModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Update</button></div>
+      </form>
+    </div>
+  </div>
 
-    const defaultAddons = [
-      { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
-      { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true },
-      { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true },
-      { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true },
-      { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true }
-    ];
+  <div class="modal-overlay" id="add-addon-modal">
+    <div class="modal-card">
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:12px;">Create New Add-on</h3>
+      <form onsubmit="handleCreateAddon(event)">
+        <div class="form-group"><label>Add-on Name</label><input type="text" id="new-addon-name" required placeholder="e.g. Extra Shot"></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.5" id="new-addon-price" required placeholder="3.00"></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeAddonModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Create</button></div>
+      </form>
+    </div>
+  </div>
 
-    const defaultMenu = [
-      { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
-      { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2', 'ao-4'] },
-      { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2'] },
-      { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-2'] },
-      { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
-      { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
-      { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
-      { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
-      { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
-      { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
-      { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
-      { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: [] },
-      { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
-      { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
-      { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
-      { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
-      { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
-      { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] }
-    ];
+  <div class="modal-overlay" id="edit-addon-modal">
+    <div class="modal-card">
+      <h3 style="font-size:14px; font-weight:800; margin-bottom:12px;">Edit Add-on</h3>
+      <form onsubmit="handleUpdateAddon(event)">
+        <input type="hidden" id="edit-addon-id">
+        <div class="form-group"><label>Add-on Name</label><input type="text" id="edit-addon-name" required></div>
+        <div class="form-group"><label>Price (RM)</label><input type="number" step="0.5" id="edit-addon-price" required></div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeEditAddonModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Update</button></div>
+      </form>
+    </div>
+  </div>
 
-    function getStorage(k, fb) { try { const s = localStorage.getItem(k); return s ? JSON.parse(s) : fb; } catch(e) { return fb; } }
-    function setStorage(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+<script>
+  let currentUserRole = null;
+  let activeVersion = 'mobile'; // 'mobile' or 'desktop'
+  const MENU_VERSION = 'v8_unified_single_code';
+  let mFreqMode = 'weekly';
 
-    if (localStorage.getItem('ngopi_version') !== MENU_VERSION) {
-      setStorage('ngopi_menu', defaultMenu);
-      setStorage('ngopi_addons', defaultAddons);
-      localStorage.setItem('ngopi_version', MENU_VERSION);
+  const defaultAddons = [
+    { id: 'ao-1', name: 'Oatmilk', price: 3.00, inStock: true },
+    { id: 'ao-2', name: 'Extra Shot', price: 4.00, inStock: true },
+    { id: 'ao-3', name: 'Extra Syrup', price: 2.00, inStock: true },
+    { id: 'ao-4', name: 'Ice Water', price: 2.00, inStock: true },
+    { id: 'ao-5', name: 'Add on Milk', price: 3.00, inStock: true }
+  ];
+
+  const defaultMenu = [
+    { id: 'cof-1', cat: 'coffee', name: 'Cinnamon Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-2', cat: 'coffee', name: 'Spanish Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-3', cat: 'coffee', name: 'Hazelnut Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-4', cat: 'coffee', name: 'Caramel Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2', 'ao-3'] },
+    { id: 'cof-5', cat: 'coffee', name: 'Cafe Latte / Flat White', price: 12.00, img: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-6', cat: 'coffee', name: 'Cappucino', price: 12.00, img: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-7', cat: 'coffee', name: 'Americano / Long Black', price: 10.00, img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2', 'ao-4'] },
+    { id: 'cof-8', cat: 'coffee', name: 'Sparkling Americano', price: 12.00, img: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: ['ao-2'] },
+    { id: 'cof-9', cat: 'coffee', name: 'Mocha', price: 17.00, img: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'cof-10', cat: 'coffee', name: 'Espresso', price: 5.00, img: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-2'] },
+    { id: 'nc-1', cat: 'non-coffee', name: 'Chocolate', price: 12.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'nc-2', cat: 'non-coffee', name: 'Chocolate Hazelnut', price: 14.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'nc-3', cat: 'non-coffee', name: 'Sparkling Yuzu', price: 14.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-4', cat: 'non-coffee', name: 'Sparkling Ribena', price: 10.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-5', cat: 'non-coffee', name: 'Ribena', price: 6.00, img: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=200&q=60', inStock: true, hasIce: true, hasSugar: false, addons: [] },
+    { id: 'nc-6', cat: 'non-coffee', name: 'Belgium Choc with Apple Fiber', price: 10.00, img: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1'] },
+    { id: 'mat-1', cat: 'matcha', name: 'Matcha Latte', price: 15.00, img: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: ['ao-1', 'ao-2'] },
+    { id: 'mat-2', cat: 'matcha', name: 'Matcha Strawberry', price: 17.00, img: 'https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=200&q=60', inStock: true, hasIce: true, hasSugar: true, addons: [] },
+    { id: 'ck-1', cat: 'soft-cookies', name: 'Classic Choc Chip', price: 11.90, img: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-2', cat: 'soft-cookies', name: "S'mores", price: 12.90, img: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-3', cat: 'soft-cookies', name: 'Red Velvet Cheesecake', price: 14.90, img: 'https://images.unsplash.com/photo-1586788680434-30d324b2d46f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'ck-4', cat: 'soft-cookies', name: 'Add on Milk', price: 3.00, img: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-1', cat: 'bites', name: 'Bagel with Cream Cheese', price: 12.00, img: 'https://images.unsplash.com/photo-1585478259715-876a6a81ae08?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-2', cat: 'bites', name: 'Mini Croissant', price: 6.00, img: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-3', cat: 'bites', name: 'Koko Crunch with Milk', price: 5.00, img: 'https://images.unsplash.com/photo-1584776296944-ab6fb57b0bdd?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: ['ao-5'] },
+    { id: 'bit-4', cat: 'bites', name: 'Ramen', price: 9.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-5', cat: 'bites', name: 'Kaya Toast with Hard Boiled Egg', price: 7.00, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-6', cat: 'bites', name: 'Kaya Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-7', cat: 'bites', name: 'Nutella Toast', price: 5.50, img: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-8', cat: 'bites', name: 'Maggie Cup', price: 4.50, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-9', cat: 'bites', name: 'Indo Mee', price: 6.00, img: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] },
+    { id: 'bit-10', cat: 'bites', name: 'Hard Boiled Egg', price: 2.00, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=200&q=60', inStock: true, hasIce: false, hasSugar: false, addons: [] }
+  ];
+
+  function getStorage(k, fb) { try { const s = localStorage.getItem(k); return s ? JSON.parse(s) : fb; } catch(e) { return fb; } }
+  function setStorage(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+
+  if (localStorage.getItem('ngopi_version') !== MENU_VERSION) {
+    setStorage('ngopi_menu', defaultMenu);
+    setStorage('ngopi_addons', defaultAddons);
+    localStorage.setItem('ngopi_version', MENU_VERSION);
+  }
+
+  let addons = getStorage('ngopi_addons', defaultAddons);
+  let menu = getStorage('ngopi_menu', defaultMenu);
+  let orders = getStorage('ngopi_orders', []);
+  let vault = getStorage('ngopi_vault', []);
+  let shiftData = getStorage('ngopi_shift', { isOpen: false, openedAt: null });
+  let feedbacks = getStorage('ngopi_feedback', []);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    // Detect preferred default viewport
+    if (window.innerWidth >= 900) {
+      setLoginVersion('desktop');
+    } else {
+      setLoginVersion('mobile');
     }
+  });
 
-    let addons = getStorage('ngopi_addons', defaultAddons);
-    let menu = getStorage('ngopi_menu', defaultMenu);
-    let orders = getStorage('ngopi_orders', []);
-    let vault = getStorage('ngopi_vault', []);
-    let shiftData = getStorage('ngopi_shift', { isOpen: false, openedAt: null });
-    let feedbacks = getStorage('ngopi_feedback', []);
-
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'ngopi_orders') {
-        orders = getStorage('ngopi_orders', []);
-        renderStats();
-        renderOrderTable('admin-order-table-body', true);
-        renderOrderTable('staff-order-table-body', true);
-      }
-      if (e.key === 'ngopi_shift') {
-        shiftData = getStorage('ngopi_shift', { isOpen: false });
-        renderShiftUI();
-      }
-      if (e.key === 'ngopi_vault') {
-        vault = getStorage('ngopi_vault', []);
-        renderVault();
-      }
-    });
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const u = document.getElementById('login-username').value.trim();
-      const p = document.getElementById('login-password').value.trim();
-      const err = document.getElementById('login-err');
-
-      if (u === 'admin' && p === 'adm1n') {
-        currentUserRole = 'ADMIN';
-        setupSession('ADMIN');
-      } else if (u === 'staff' && p === 'st9ff') {
-        currentUserRole = 'STAFF';
-        setupSession('STAFF');
-      } else {
-        err.style.display = 'block';
-      }
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'ngopi_orders') {
+      orders = getStorage('ngopi_orders', []);
+      renderAll();
     }
-
-    function setupSession(role) {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('portal-screen').style.display = 'flex';
-      document.getElementById('sidebar-role-tag').textContent = `ROLE: ${role}`;
-
-      if (role === 'ADMIN') {
-        document.getElementById('nav-item-dashboard').style.display = 'block';
-        document.getElementById('nav-item-menu').style.display = 'block';
-        document.getElementById('nav-item-analytics').style.display = 'block';
-        document.getElementById('nav-item-feedback').style.display = 'block';
-        document.getElementById('nav-item-staff').style.display = 'none';
-        switchTab('dashboard');
-      } else {
-        document.getElementById('nav-item-dashboard').style.display = 'none';
-        document.getElementById('nav-item-menu').style.display = 'none';
-        document.getElementById('nav-item-analytics').style.display = 'none';
-        document.getElementById('nav-item-feedback').style.display = 'none';
-        document.getElementById('nav-item-staff').style.display = 'block';
-        switchTab('staff-view');
-      }
-
+    if (e.key === 'ngopi_shift') {
+      shiftData = getStorage('ngopi_shift', { isOpen: false });
       renderShiftUI();
-      renderStats();
-      renderOrderTable('admin-order-table-body', true);
-      renderOrderTable('staff-order-table-body', true);
-      renderAddons();
-      renderMenu();
-      renderVault();
     }
-
-    function handleLogout() {
-      currentUserRole = null;
-      document.getElementById('portal-screen').style.display = 'none';
-      document.getElementById('login-screen').style.display = 'flex';
+    if (e.key === 'ngopi_vault') {
+      vault = getStorage('ngopi_vault', []);
+      renderVaultAll();
     }
-
-    function switchTab(tab) {
-      const stats = document.getElementById('stats-container');
-      const shiftBar = document.getElementById('shift-bar');
-      const addBtn = document.getElementById('btn-add-menu-item');
-
-      document.getElementById('tab-orders').style.display = 'none';
-      document.getElementById('tab-menu').style.display = 'none';
-      document.getElementById('tab-analytics').style.display = 'none';
-      document.getElementById('tab-feedback').style.display = 'none';
-      document.getElementById('tab-staff').style.display = 'none';
-
-      document.querySelectorAll('.nav-links .nav-btn').forEach(btn => btn.classList.remove('active'));
-
-      if (tab === 'dashboard') {
-        document.getElementById('tab-orders').style.display = 'block';
-        stats.style.display = 'grid';
-        shiftBar.style.display = 'flex';
-        addBtn.style.display = 'none';
-        document.querySelector('#nav-item-dashboard .nav-btn').classList.add('active');
-      } else if (tab === 'menu') {
-        document.getElementById('tab-menu').style.display = 'block';
-        stats.style.display = 'none';
-        shiftBar.style.display = 'none';
-        addBtn.style.display = 'block';
-        document.querySelector('#nav-item-menu .nav-btn').classList.add('active');
-      } else if (tab === 'analytics') {
-        document.getElementById('tab-analytics').style.display = 'block';
-        stats.style.display = 'none';
-        shiftBar.style.display = 'none';
-        addBtn.style.display = 'none';
-        document.querySelector('#nav-item-analytics .nav-btn').classList.add('active');
-        renderDeskAnalytics();
-        renderVault();
-      } else if (tab === 'feedback') {
-        document.getElementById('tab-feedback').style.display = 'block';
-        stats.style.display = 'none';
-        shiftBar.style.display = 'none';
-        addBtn.style.display = 'none';
-        document.querySelector('#nav-item-feedback .nav-btn').classList.add('active');
-      } else if (tab === 'staff-view') {
-        document.getElementById('tab-staff').style.display = 'block';
-        stats.style.display = 'none';
-        shiftBar.style.display = 'none';
-        addBtn.style.display = 'none';
-        document.querySelector('#nav-item-staff .nav-btn').classList.add('active');
-      }
+    if (e.key === 'ngopi_menu') {
+      menu = getStorage('ngopi_menu', defaultMenu);
+      renderMenuAll();
     }
+    if (e.key === 'ngopi_addons') {
+      addons = getStorage('ngopi_addons', defaultAddons);
+      renderAddonsAll();
+    }
+  });
 
-    /* Shift Engine */
-    function renderShiftUI() {
-      const btn = document.getElementById('btn-shift-toggle');
-      const statusText = document.getElementById('shift-status-text');
-      const timeText = document.getElementById('shift-time-text');
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.m-vault-actions') && !e.target.closest('.d-vault-actions')) {
+      document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
+    }
+  });
 
-      if (shiftData.isOpen) {
-        btn.textContent = 'Close Shift';
-        btn.className = 'btn-shift close';
-        statusText.textContent = 'Café Status: Active & Taking Orders';
-        statusText.style.color = 'var(--good)';
-        timeText.textContent = `Shift Opened: ${shiftData.openedAt}`;
+  /* Version Selector */
+  function setLoginVersion(ver) {
+    activeVersion = ver;
+    document.getElementById('v-opt-mobile').classList.toggle('active', ver === 'mobile');
+    document.getElementById('v-opt-desktop').classList.toggle('active', ver === 'desktop');
+  }
+
+  /* Authentication */
+  function handleLogin(e) {
+    e.preventDefault();
+    const u = document.getElementById('login-username').value.trim();
+    const p = document.getElementById('login-password').value.trim();
+
+    if ((u === 'admin' && p === 'adm1n') || (u === 'staff' && p === 'st9ff')) {
+      currentUserRole = u === 'admin' ? 'ADMIN' : 'STAFF';
+      document.getElementById('login-screen').style.display = 'none';
+
+      if (activeVersion === 'mobile') {
+        document.getElementById('mobile-container').style.display = 'flex';
+        document.getElementById('desktop-container').style.display = 'none';
+        document.getElementById('m-role-tag').textContent = currentUserRole;
+        switchMobileTab('orders');
       } else {
-        btn.textContent = 'Open Shift';
-        btn.className = 'btn-shift open';
-        statusText.textContent = 'Café Status: Shift Closed';
-        statusText.style.color = 'var(--bad)';
-        timeText.textContent = 'User app is disabled until shift opens';
+        document.getElementById('mobile-container').style.display = 'none';
+        document.getElementById('desktop-container').style.display = 'flex';
+        document.getElementById('d-role-tag').textContent = `ROLE: ${currentUserRole}`;
+        switchDesktopTab('dashboard');
       }
+
+      renderAll();
+    } else {
+      document.getElementById('login-err').style.display = 'block';
     }
+  }
 
-    function toggleShift() {
-      if (!shiftData.isOpen) {
-        shiftData = { isOpen: true, openedAt: new Date().toLocaleString() };
-        setStorage('ngopi_shift', shiftData);
-        localStorage.setItem('ngopi_shift_status', 'open');
-        renderShiftUI();
-        alert("Shift opened! Customers can now place orders on the web.");
-      } else {
-        if (!confirm("Are you sure you want to close this shift? Current sales and order records will be stored in The Vault and active records reset.")) return;
-        
-        const closedAt = new Date().toLocaleString();
-        const totalSales = orders.reduce((sum, o) => sum + Number(o.price || 0), 0);
-        const uniqueCustomers = new Set(orders.map(o => o.customer)).size;
+  function handleLogout() {
+    currentUserRole = null;
+    document.getElementById('mobile-container').style.display = 'none';
+    document.getElementById('desktop-container').style.display = 'none';
+    document.getElementById('login-screen').style.display = 'flex';
+  }
 
-        const vaultRecord = {
-          id: 'SHIFT-' + Date.now(),
-          openedAt: shiftData.openedAt,
-          closedAt: closedAt,
-          dateLabel: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
-          revenue: totalSales,
-          customers: uniqueCustomers,
-          orders: JSON.parse(JSON.stringify(orders))
-        };
+  /* Master Render Caller */
+  function renderAll() {
+    renderShiftUI();
+    renderStatsAll();
+    renderOrdersAll();
+    renderAddonsAll();
+    renderMenuAll();
+    renderAnalyticsAll();
+    renderVaultAll();
+    renderFeedbacksAll();
+  }
 
-        vault.unshift(vaultRecord);
-        setStorage('ngopi_vault', vault);
+  /* Shift Controls */
+  function renderShiftUI() {
+    // Mobile
+    const mBtn = document.getElementById('m-btn-shift');
+    const mTxt = document.getElementById('m-shift-status');
+    const mTime = document.getElementById('m-shift-time');
 
-        // Reset active shift records
-        orders = [];
-        setStorage('ngopi_orders', orders);
+    // Desktop
+    const dBtn = document.getElementById('d-btn-shift');
+    const dTxt = document.getElementById('d-shift-status');
+    const dTime = document.getElementById('d-shift-time');
 
-        shiftData = { isOpen: false, openedAt: null };
-        setStorage('ngopi_shift', shiftData);
-        localStorage.setItem('ngopi_shift_status', 'closed');
+    if (shiftData.isOpen) {
+      if (mBtn) { mBtn.textContent = 'Close Shift'; mBtn.className = 'm-btn-shift close'; }
+      if (mTxt) { mTxt.textContent = 'Status: Active & Taking Orders'; mTxt.style.color = 'var(--good)'; }
+      if (mTime) { mTime.textContent = `Shift Opened: ${shiftData.openedAt}`; }
 
-        renderShiftUI();
-        renderStats();
-        renderOrderTable('admin-order-table-body', true);
-        renderOrderTable('staff-order-table-body', true);
-        renderVault();
-        alert("Shift closed successfully. Sales records archived in The Vault.");
-      }
+      if (dBtn) { dBtn.textContent = 'Close Shift'; dBtn.className = 'd-btn-shift close'; }
+      if (dTxt) { dTxt.textContent = 'Status: Active & Taking Orders'; dTxt.style.color = 'var(--good)'; }
+      if (dTime) { dTime.textContent = `Shift Opened: ${shiftData.openedAt}`; }
+    } else {
+      if (mBtn) { mBtn.textContent = 'Open Shift'; mBtn.className = 'm-btn-shift open'; }
+      if (mTxt) { mTxt.textContent = 'Status: Café Closed'; mTxt.style.color = 'var(--bad)'; }
+      if (mTime) { mTime.textContent = 'User app is disabled until shift opens'; }
+
+      if (dBtn) { dBtn.textContent = 'Open Shift'; dBtn.className = 'd-btn-shift open'; }
+      if (dTxt) { dTxt.textContent = 'Status: Café Closed'; dTxt.style.color = 'var(--bad)'; }
+      if (dTime) { dTime.textContent = 'User app is disabled until shift opens'; }
     }
+  }
 
-    function resetActiveOrdersOnly() {
-      const passcode = prompt("Enter Admin Passcode (1234) to reset active shift orders:");
-      if (passcode === "1234") {
-        orders = [];
-        setStorage('ngopi_orders', orders);
-        renderStats();
-        renderOrderTable('admin-order-table-body', true);
-        renderOrderTable('staff-order-table-body', true);
-        alert("Active shift orders reset. The Vault sales records remain safe.");
-      } else if (passcode !== null) {
-        alert("Incorrect passcode.");
-      }
-    }
-
-    function renderStats() {
+  function toggleShift() {
+    if (!shiftData.isOpen) {
+      shiftData = { isOpen: true, openedAt: new Date().toLocaleString() };
+      setStorage('ngopi_shift', shiftData);
+      localStorage.setItem('ngopi_shift_status', 'open');
+      renderShiftUI();
+      alert("Shift opened! Customers can now order.");
+    } else {
+      if (!confirm("Close shift and move active sales to The Vault?")) return;
+      const closedAt = new Date().toLocaleString();
       const totalSales = orders.reduce((sum, o) => sum + Number(o.price || 0), 0);
       const uniqueCustomers = new Set(orders.map(o => o.customer)).size;
-      const activeCount = orders.filter(o => o.status !== 'Completed').length;
-      const soldOutCount = menu.filter(m => !m.inStock).length;
 
-      document.getElementById('stat-sales').textContent = `RM ${totalSales.toFixed(2)}`;
-      document.getElementById('stat-customers').textContent = uniqueCustomers;
-      document.getElementById('stat-active').textContent = activeCount;
-      document.getElementById('stat-soldout').textContent = soldOutCount;
+      vault.unshift({
+        id: 'SHIFT-' + Date.now(),
+        openedAt: shiftData.openedAt,
+        closedAt: closedAt,
+        dateLabel: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        revenue: totalSales,
+        customers: uniqueCustomers,
+        orders: JSON.parse(JSON.stringify(orders))
+      });
+      setStorage('ngopi_vault', vault);
+
+      orders = [];
+      setStorage('ngopi_orders', orders);
+
+      shiftData = { isOpen: false, openedAt: null };
+      setStorage('ngopi_shift', shiftData);
+      localStorage.setItem('ngopi_shift_status', 'closed');
+
+      renderAll();
+      alert("Shift closed and archived into The Vault.");
     }
+  }
 
-    function renderOrderTable(targetBodyId, allowStatusEdit, filteredList = orders) {
-      const tbody = document.getElementById(targetBodyId);
-      if (!tbody) return;
+  function resetShiftOrdersOnly() {
+    const pin = prompt("Enter Passcode (1234) to reset active shift orders:");
+    if (pin === "1234") {
+      orders = [];
+      setStorage('ngopi_orders', orders);
+      renderAll();
+      alert("Active shift orders reset.");
+    } else if (pin !== null) {
+      alert("Incorrect passcode.");
+    }
+  }
 
-      if (filteredList.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #888; padding: 24px;">No active orders in this shift.</td></tr>`;
-        return;
-      }
+  function renderStatsAll() {
+    const tot = orders.reduce((s,o)=>s+Number(o.price||0), 0);
+    const cust = new Set(orders.map(o=>o.customer)).size;
+    const act = orders.filter(o => o.status !== 'Completed').length;
+    const sOut = menu.filter(m => !m.inStock).length;
 
-      tbody.innerHTML = filteredList.map(o => `
-        <tr>
-          <td><b>#${o.id}</b></td>
-          <td>${o.customer}</td>
-          <td>${Array.isArray(o.items) ? o.items.map(i => `<div>${i.name} x${i.qty}</div>`).join('') : o.items}</td>
-          <td>${o.time}</td>
-          <td>RM ${Number(o.price).toFixed(2)}</td>
-          <td>
-            <select class="status-select status-${(o.status||'preparing').toLowerCase()}" onchange="updateOrderStatus('${o.id}', this.value)">
+    // Mobile
+    document.getElementById('m-stat-sales').textContent = `RM ${tot.toFixed(2)}`;
+    document.getElementById('m-stat-customers').textContent = cust;
+    document.getElementById('m-stat-active').textContent = act;
+    document.getElementById('m-stat-soldout').textContent = sOut;
+
+    // Desktop
+    document.getElementById('d-stat-sales').textContent = `RM ${tot.toFixed(2)}`;
+    document.getElementById('d-stat-customers').textContent = cust;
+    document.getElementById('d-stat-active').textContent = act;
+    document.getElementById('d-stat-soldout').textContent = sOut;
+  }
+
+  /* Order Rendering */
+  function getStatusClass(status) {
+    if (status === 'Preparing') return 'status-preparing';
+    if (status === 'Ready') return 'status-ready';
+    return 'status-completed';
+  }
+
+  function renderOrdersAll() {
+    renderOrdersMobile();
+    renderOrdersDesktop();
+  }
+
+  function renderOrdersMobile(filteredList = orders) {
+    const feed = document.getElementById('m-order-feed');
+    if (!feed) return;
+    if (filteredList.length === 0) {
+      feed.innerHTML = '<div style="text-align:center; padding:20px; font-size:11px; color:#888;">No orders recorded.</div>';
+      return;
+    }
+    feed.innerHTML = filteredList.map(o => `
+      <div class="m-order-card">
+        <div class="m-order-top">
+          <div><span class="m-order-id">#${o.id}</span> · <b>${o.customer}</b></div>
+          <span style="font-size:9.5px; color:#777;">${o.time}</span>
+        </div>
+        <div class="m-order-items">
+          ${Array.isArray(o.items) ? o.items.map(i => `<div><div class="m-item-title">${i.name} x${i.qty}</div>${i.options ? `<div class="m-item-addons">${i.options}</div>` : ''}</div>`).join('') : o.items}
+        </div>
+        <div class="m-order-bottom">
+          <span class="m-order-price">RM ${Number(o.price).toFixed(2)}</span>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <select class="status-select ${getStatusClass(o.status)}" onchange="updateOrderStatus('${o.id}', this.value)">
               <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
               <option value="Ready" ${o.status === 'Ready' ? 'selected' : ''}>Ready</option>
               <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
             </select>
-          </td>
-          <td><button class="btn-dots" onclick="viewOrderDetails('${o.id}')">⋮</button></td>
-        </tr>
-      `).join('');
-    }
-
-    function updateOrderStatus(id, newStatus) {
-      const target = orders.find(o => o.id === id);
-      if (target) {
-        target.status = newStatus;
-        setStorage('ngopi_orders', orders);
-        renderStats();
-        renderOrderTable('admin-order-table-body', true);
-        renderOrderTable('staff-order-table-body', true);
-      }
-    }
-
-    function viewOrderDetails(id) {
-      const target = orders.find(o => o.id === id);
-      if (!target) return;
-      document.getElementById('modal-order-id').textContent = `Order Details (#${target.id})`;
-      document.getElementById('modal-customer-name').textContent = target.customer;
-      document.getElementById('modal-order-time').textContent = target.time;
-      document.getElementById('modal-order-status').textContent = target.status;
-      document.getElementById('modal-order-total').textContent = `RM ${Number(target.price).toFixed(2)}`;
-      document.getElementById('modal-items-breakdown').innerHTML = Array.isArray(target.items)
-        ? target.items.map(i => `<div><b>${i.name} x${i.qty}</b> — RM ${(i.price * i.qty).toFixed(2)}</div>`).join('')
-        : target.items;
-      document.getElementById('detail-modal').classList.add('open');
-    }
-    function closeDetailModal() { document.getElementById('detail-modal').classList.remove('open'); }
-
-    /* Vault Logic */
-    function renderVault() {
-      const wrap = document.getElementById('vault-records-container');
-      if (!wrap) return;
-
-      if (vault.length === 0) {
-        wrap.innerHTML = `<div style="text-align: center; color: #888; font-size: 12px; padding: 20px;">The vault is empty. Closed shift records will appear here.</div>`;
-        return;
-      }
-
-      wrap.innerHTML = vault.map(v => `
-        <div class="vault-card" onclick="openVaultReport('${v.id}')">
-          <div>
-            <div class="vault-date-title">📅 Shift Record: ${v.dateLabel}</div>
-            <div class="vault-meta">Opened: ${v.openedAt} · Closed: ${v.closedAt}</div>
+            <button class="btn-dots-mini" onclick="viewOrderDetails('${o.id}')">⋮</button>
           </div>
-          <div style="text-align: right;">
-            <div style="font-weight: 800; font-size: 14px; color: var(--mauve-dark);">RM ${Number(v.revenue).toFixed(2)}</div>
-            <div style="font-size: 10px; color: #777;">${v.orders.length} orders · ${v.customers} customers</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderOrdersDesktop(filteredList = orders) {
+    const tbody = document.getElementById('d-order-tbody');
+    if (!tbody) return;
+    if (filteredList.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#888;">No orders recorded.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = filteredList.map(o => `
+      <tr>
+        <td><b>#${o.id}</b></td>
+        <td>${o.customer}</td>
+        <td>${Array.isArray(o.items) ? o.items.map(i => `<div>${i.name} x${i.qty}</div>`).join('') : o.items}</td>
+        <td>${o.time}</td>
+        <td>RM ${Number(o.price).toFixed(2)}</td>
+        <td>
+          <select class="status-select ${getStatusClass(o.status)}" onchange="updateOrderStatus('${o.id}', this.value)">
+            <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+            <option value="Ready" ${o.status === 'Ready' ? 'selected' : ''}>Ready</option>
+            <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
+          </select>
+        </td>
+        <td><button class="btn-dots-mini" onclick="viewOrderDetails('${o.id}')">⋮</button></td>
+      </tr>
+    `).join('');
+  }
+
+  function updateOrderStatus(id, newStatus) {
+    const target = orders.find(o => o.id === id);
+    if (target) {
+      target.status = newStatus;
+      setStorage('ngopi_orders', orders);
+      renderAll();
+    }
+  }
+
+  function filterOrdersMobile() {
+    const q = document.getElementById('m-order-search').value.toLowerCase().trim();
+    const st = document.getElementById('m-status-filter').value;
+    const f = orders.filter(o => {
+      const s = Array.isArray(o.items) ? o.items.map(i => i.name).join(' ') : o.items;
+      return (o.customer.toLowerCase().includes(q) || s.toLowerCase().includes(q)) && (st === 'ALL' || o.status === st);
+    });
+    renderOrdersMobile(f);
+  }
+
+  function filterOrdersDesktop() {
+    const q = document.getElementById('d-order-search').value.toLowerCase().trim();
+    const st = document.getElementById('d-status-filter').value;
+    const f = orders.filter(o => {
+      const s = Array.isArray(o.items) ? o.items.map(i => i.name).join(' ') : o.items;
+      return (o.customer.toLowerCase().includes(q) || s.toLowerCase().includes(q)) && (st === 'ALL' || o.status === st);
+    });
+    renderOrdersDesktop(f);
+  }
+
+  function viewOrderDetails(id) {
+    const target = orders.find(o => o.id === id);
+    if (!target) return;
+    document.getElementById('modal-order-id').textContent = `Order Details (#${target.id})`;
+    document.getElementById('modal-customer-name').textContent = target.customer;
+    document.getElementById('modal-order-time').textContent = target.time;
+    document.getElementById('modal-order-status').textContent = target.status;
+    document.getElementById('modal-order-total').textContent = `RM ${Number(target.price).toFixed(2)}`;
+    document.getElementById('modal-items-breakdown').innerHTML = Array.isArray(target.items)
+      ? target.items.map(i => `<div style="margin-bottom:4px;"><b>${i.name} x${i.qty}</b> — RM ${(i.price * i.qty).toFixed(2)}${i.options ? `<div style="font-size:9px; color:#555;">${i.options}</div>` : ''}</div>`).join('')
+      : target.items;
+    document.getElementById('detail-modal').classList.add('open');
+  }
+  function closeDetailModal() { document.getElementById('detail-modal').classList.remove('open'); }
+
+  /* Addon Management */
+  function renderAddonsAll() {
+    // Mobile
+    const mWrap = document.getElementById('m-addon-feed');
+    if (mWrap) {
+      mWrap.innerHTML = addons.map(ao => `
+        <div class="m-addon-card ${ao.inStock ? '' : 'sold-out'}">
+          <div><b>${ao.name}</b> <span style="font-size:10px; color:#666;">(+RM ${Number(ao.price).toFixed(2)})</span></div>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <button class="btn-stock-m ${ao.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleAddonStock('${ao.id}')">${ao.inStock ? 'In Stock' : 'Sold Out'}</button>
+            <button class="btn-edit-m" onclick="openEditAddonModal('${ao.id}')">Edit</button>
+            <button class="m-btn-del" onclick="deleteAddon('${ao.id}')">Del</button>
           </div>
         </div>
       `).join('');
     }
-
-    function openVaultReport(id) {
-      const rec = vault.find(v => v.id === id);
-      if (!rec) return;
-
-      document.getElementById('vault-modal-title').textContent = `Shift Report — ${rec.dateLabel}`;
-      document.getElementById('vm-opened').textContent = rec.openedAt;
-      document.getElementById('vm-closed').textContent = rec.closedAt;
-      document.getElementById('vm-revenue').textContent = `RM ${Number(rec.revenue).toFixed(2)}`;
-      document.getElementById('vm-customers').textContent = rec.customers;
-
-      const list = document.getElementById('vm-orders-list');
-      if (rec.orders.length === 0) {
-        list.innerHTML = '<div>No orders recorded in this shift.</div>';
-      } else {
-        list.innerHTML = rec.orders.map(o => `
-          <div style="border-bottom: 1px solid #ddd; padding: 6px 0;">
-            <div style="display:flex; justify-content:space-between;"><b>#${o.id} · ${o.customer}</b><span>RM ${Number(o.price).toFixed(2)}</span></div>
-            <div style="color: #666; font-size: 10px;">${o.time} — ${Array.isArray(o.items) ? o.items.map(i => `${i.name} x${i.qty}`).join(', ') : o.items}</div>
+    // Desktop
+    const dWrap = document.getElementById('d-addon-grid');
+    if (dWrap) {
+      dWrap.innerHTML = addons.map(ao => `
+        <div class="d-addon-card ${ao.inStock ? '' : 'sold-out'}">
+          <div><b>${ao.name}</b> <span style="font-size:10.5px; color:#666;">(+RM ${Number(ao.price).toFixed(2)})</span></div>
+          <div style="display:flex; align-items:center; gap:4px;">
+            <button class="d-btn-stock ${ao.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleAddonStock('${ao.id}')">${ao.inStock ? 'In Stock' : 'Sold Out'}</button>
+            <button class="d-btn-edit" onclick="openEditAddonModal('${ao.id}')">Edit</button>
+            <button class="d-btn-del" onclick="deleteAddon('${ao.id}')">Del</button>
           </div>
-        `).join('');
-      }
-
-      // Render mini chart for that specific shift
-      renderShiftVaultChart(rec.orders);
-      document.getElementById('vault-modal').classList.add('open');
-    }
-
-    function closeVaultModal() { document.getElementById('vault-modal').classList.remove('open'); }
-
-    function renderShiftVaultChart(shiftOrders) {
-      const canvas = document.getElementById('vaultChart');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
-      const labels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
-      const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
-
-      shiftOrders.forEach(o => {
-        if (Array.isArray(o.items)) {
-          o.items.forEach(i => {
-            const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
-            const c = m ? m.cat : 'coffee';
-            if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
-          });
-        }
-      });
-
-      const vals = cats.map(c => totals[c]);
-      const maxVal = Math.max(...vals, 5);
-
-      vals.forEach((v, i) => {
-        const x = 20 + (i * 95);
-        const h = (v / maxVal) * 90;
-        const y = 120 - h;
-        ctx.fillStyle = '#825455';
-        ctx.fillRect(x, y, 40, h);
-        ctx.fillStyle = '#1F1717';
-        ctx.font = '10px monospace';
-        ctx.fillText(`${v}`, x + 15, y - 5);
-        ctx.fillText(labels[i], x, 138);
-      });
-    }
-
-    function renderDeskAnalytics() {
-      const tbody = document.getElementById('desk-leaderboard-body');
-      if (!tbody) return;
-
-      const counts = {};
-      const revs = {};
-      const allOrders = [...orders, ...vault.flatMap(v => v.orders)];
-
-      allOrders.forEach(o => {
-        if (Array.isArray(o.items)) {
-          o.items.forEach(i => {
-            counts[i.name] = (counts[i.name] || 0) + Number(i.qty || 1);
-            revs[i.name] = (revs[i.name] || 0) + (Number(i.price || 0) * Number(i.qty || 1));
-          });
-        }
-      });
-
-      const sorted = Object.keys(counts).map(n => ({ name: n, qty: counts[n], revenue: revs[n] })).sort((a,b) => b.qty - a.qty);
-      tbody.innerHTML = sorted.slice(0, 8).map((s, idx) => `
-        <tr>
-          <td><span class="rank-badge-desk ${idx === 0 ? 'gold' : ''}">${idx + 1}</span></td>
-          <td><b>${s.name}</b></td>
-          <td>${s.qty} units</td>
-          <td style="text-align: right; font-weight:800; color:var(--mauve-dark);">RM ${s.revenue.toFixed(2)}</td>
-        </tr>
+        </div>
       `).join('');
-
-      renderDeskCategoryChart(allOrders);
     }
+  }
 
-    function renderDeskCategoryChart(allOrders) {
-      const canvas = document.getElementById('categoryChartDesk');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+  function toggleAddonStock(id) { const a = addons.find(x => x.id === id); if (a) { a.inStock = !a.inStock; setStorage('ngopi_addons', addons); renderAddonsAll(); } }
+  function deleteAddon(id) { if (confirm('Delete add-on?')) { addons = addons.filter(x => x.id !== id); setStorage('ngopi_addons', addons); renderAddonsAll(); renderMenuAll(); } }
+  function openAddonModal() { document.getElementById('add-addon-modal').classList.add('open'); }
+  function closeAddonModal() { document.getElementById('add-addon-modal').classList.remove('open'); }
+  function handleCreateAddon(e) {
+    e.preventDefault();
+    addons.push({ id: 'ao-' + Date.now(), name: document.getElementById('new-addon-name').value.trim(), price: parseFloat(document.getElementById('new-addon-price').value), inStock: true });
+    setStorage('ngopi_addons', addons);
+    renderAddonsAll();
+    closeAddonModal();
+  }
+  function openEditAddonModal(id) {
+    const a = addons.find(x => x.id === id); if (!a) return;
+    document.getElementById('edit-addon-id').value = a.id;
+    document.getElementById('edit-addon-name').value = a.name;
+    document.getElementById('edit-addon-price').value = a.price;
+    document.getElementById('edit-addon-modal').classList.add('open');
+  }
+  function closeEditAddonModal() { document.getElementById('edit-addon-modal').classList.remove('open'); }
+  function handleUpdateAddon(e) {
+    e.preventDefault();
+    const a = addons.find(x => x.id === document.getElementById('edit-addon-id').value);
+    if (a) { a.name = document.getElementById('edit-addon-name').value.trim(); a.price = parseFloat(document.getElementById('edit-addon-price').value); setStorage('ngopi_addons', addons); renderAddonsAll(); renderMenuAll(); }
+    closeEditAddonModal();
+  }
 
-      const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
-      const catLabels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
-      const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
-
-      allOrders.forEach(o => {
-        if (Array.isArray(o.items)) {
-          o.items.forEach(i => {
-            const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
-            const c = m ? m.cat : 'coffee';
-            if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
-          });
-        }
-      });
-
-      const vals = cats.map(c => totals[c]);
-      const maxVal = Math.max(...vals, 5);
-
-      vals.forEach((v, idx) => {
-        const y = 20 + (idx * 38);
-        const w = (canvas.width - 170) * (v / maxVal);
-        ctx.fillStyle = '#666';
-        ctx.font = '11px monospace';
-        ctx.textAlign = 'right';
-        ctx.fillText(catLabels[idx], 95, y + 14);
-
-        ctx.fillStyle = '#E4D0CE';
-        ctx.fillRect(110, y, canvas.width - 170, 20);
-
-        ctx.fillStyle = '#825455';
-        ctx.fillRect(110, y, Math.max(w, 2), 20);
-
-        ctx.fillStyle = '#1F1717';
-        ctx.textAlign = 'left';
-        ctx.fillText(`${v} sold`, 118 + w, y + 14);
-      });
+  /* Menu Items */
+  function renderMenuAll() {
+    // Mobile
+    const mWrap = document.getElementById('m-menu-feed');
+    if (mWrap) {
+      mWrap.innerHTML = menu.map(item => `
+        <div class="m-menu-card ${item.inStock ? '' : 'sold-out'}">
+          <img class="m-menu-img" src="${item.img}">
+          <div class="m-menu-info">
+            <div style="font-size:9px; color:#777; text-transform:uppercase;">${item.cat}</div>
+            <div class="m-menu-title">${item.name}</div>
+            <div style="font-size:11px; font-weight:800;">RM ${Number(item.price).toFixed(2)}</div>
+          </div>
+          <div class="m-menu-ctrls">
+            <button class="btn-stock-m ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleMenuItemStock('${item.id}')">${item.inStock ? 'In Stock' : 'Sold Out'}</button>
+            <button class="btn-edit-m" onclick="openEditItemModal('${item.id}')">Edit</button>
+            <button class="m-btn-del" onclick="deleteMenuItem('${item.id}')">Del</button>
+          </div>
+        </div>
+      `).join('');
     }
-
-    function renderMenu() {
-      const grid = document.getElementById('admin-menu-grid');
-      if (!grid) return;
-      grid.innerHTML = menu.map(item => `
-        <div class="admin-menu-card ${item.inStock ? '' : 'sold-out'}">
-          <img class="admin-item-img" src="${item.img}">
-          <div class="admin-item-info">
-            <div class="admin-item-title">${item.name}</div>
-            <div class="admin-item-price">RM ${Number(item.price).toFixed(2)}</div>
-            <div class="admin-card-actions">
-              <button class="btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleSoldOut('${item.id}')">${item.inStock ? 'In Stock' : 'Sold Out'}</button>
-              <button class="btn-delete" onclick="deleteMenuItem('${item.id}')">Del</button>
+    // Desktop
+    const dWrap = document.getElementById('d-menu-grid');
+    if (dWrap) {
+      dWrap.innerHTML = menu.map(item => `
+        <div class="d-menu-card ${item.inStock ? '' : 'sold-out'}">
+          <img class="d-menu-img" src="${item.img}">
+          <div class="d-menu-info">
+            <div>
+              <div style="font-size:10px; color:#777; text-transform:uppercase;">${item.cat}</div>
+              <div style="font-size:13px; font-weight:700;">${item.name}</div>
+            </div>
+            <div style="font-size:12px; font-weight:800;">RM ${Number(item.price).toFixed(2)}</div>
+            <div class="d-menu-actions">
+              <button class="d-btn-stock ${item.inStock ? 'in-stock' : 'out-of-stock'}" onclick="toggleMenuItemStock('${item.id}')">${item.inStock ? 'In Stock' : 'Sold Out'}</button>
+              <button class="d-btn-edit" onclick="openEditItemModal('${item.id}')">Edit</button>
+              <button class="d-btn-del" onclick="deleteMenuItem('${item.id}')">Del</button>
             </div>
           </div>
         </div>
       `).join('');
     }
+  }
 
-    function toggleSoldOut(id) {
-      const it = menu.find(x => x.id === id);
-      if (it) { it.inStock = !it.inStock; setStorage('ngopi_menu', menu); renderMenu(); }
+  function toggleMenuItemStock(id) { const m = menu.find(x => x.id === id); if (m) { m.inStock = !m.inStock; setStorage('ngopi_menu', menu); renderAll(); } }
+  function deleteMenuItem(id) { if (confirm('Delete item completely?')) { menu = menu.filter(x => x.id !== id); setStorage('ngopi_menu', menu); renderAll(); } }
+
+  function renderAddonChecklist(containerId, selectedIds = []) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = addons.map(a => `
+      <label class="addon-check-item">
+        <input type="checkbox" value="${a.id}" ${selectedIds.includes(a.id) ? 'checked' : ''}>
+        <span>${a.name} (+RM ${Number(a.price).toFixed(2)})</span>
+      </label>
+    `).join('');
+  }
+
+  function openAddModal() {
+    renderAddonChecklist('new-item-addons-list', []);
+    document.getElementById('add-modal').classList.add('open');
+  }
+  function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
+  function handleCreateItem(e) {
+    e.preventDefault();
+    const chk = Array.from(document.querySelectorAll('#new-item-addons-list input:checked')).map(c => c.value);
+    menu.push({
+      id: 'item-' + Date.now(),
+      cat: document.getElementById('new-item-cat').value,
+      name: document.getElementById('new-item-name').value.trim(),
+      price: parseFloat(document.getElementById('new-item-price').value),
+      img: document.getElementById('new-item-img').value.trim(),
+      hasIce: document.getElementById('new-item-has-ice').checked,
+      hasSugar: document.getElementById('new-item-has-sugar').checked,
+      inStock: true,
+      addons: chk
+    });
+    setStorage('ngopi_menu', menu);
+    renderAll();
+    closeAddModal();
+  }
+
+  function openEditItemModal(id) {
+    const item = menu.find(x => x.id === id); if (!item) return;
+    document.getElementById('edit-item-id').value = item.id;
+    document.getElementById('edit-item-name').value = item.name;
+    document.getElementById('edit-item-cat').value = item.cat;
+    document.getElementById('edit-item-price').value = item.price;
+    document.getElementById('edit-item-img').value = item.img;
+    document.getElementById('edit-item-has-ice').checked = !!item.hasIce;
+    document.getElementById('edit-item-has-sugar').checked = !!item.hasSugar;
+    renderAddonChecklist('edit-item-addons-list', item.addons || []);
+    document.getElementById('edit-modal').classList.add('open');
+  }
+  function closeEditModal() { document.getElementById('edit-modal').classList.remove('open'); }
+  function handleUpdateItem(e) {
+    e.preventDefault();
+    const item = menu.find(x => x.id === document.getElementById('edit-item-id').value);
+    if (item) {
+      item.name = document.getElementById('edit-item-name').value.trim();
+      item.cat = document.getElementById('edit-item-cat').value;
+      item.price = parseFloat(document.getElementById('edit-item-price').value);
+      item.img = document.getElementById('edit-item-img').value.trim();
+      item.hasIce = document.getElementById('edit-item-has-ice').checked;
+      item.hasSugar = document.getElementById('edit-item-has-sugar').checked;
+      item.addons = Array.from(document.querySelectorAll('#edit-item-addons-list input:checked')).map(c => c.value);
+      setStorage('ngopi_menu', menu);
+      renderAll();
     }
-    function deleteMenuItem(id) {
-      if (confirm('Delete item?')) { menu = menu.filter(x => x.id !== id); setStorage('ngopi_menu', menu); renderMenu(); }
-    }
-    function renderAddons() {
-      const wrap = document.getElementById('admin-addon-grid');
-      if (!wrap) return;
-      wrap.innerHTML = addons.map(ao => `
-        <div class="addon-desk-card">
-          <span><b>${ao.name}</b> (+RM ${Number(ao.price).toFixed(2)})</span>
+    closeEditModal();
+  }
+
+  /* Analytics & Charts */
+  function renderAnalyticsAll() {
+    const allOrders = [...orders, ...vault.flatMap(v => v.orders)];
+    const counts = {}, revs = {};
+    allOrders.forEach(o => {
+      if (Array.isArray(o.items)) {
+        o.items.forEach(i => {
+          counts[i.name] = (counts[i.name] || 0) + Number(i.qty || 1);
+          revs[i.name] = (revs[i.name] || 0) + (Number(i.price || 0) * Number(i.qty || 1));
+        });
+      }
+    });
+    const sorted = Object.keys(counts).map(n => ({ name: n, qty: counts[n], revenue: revs[n] })).sort((a,b) => b.qty - a.qty);
+
+    // Mobile Leaderboard
+    const mWrap = document.getElementById('m-leaderboard-feed');
+    if (mWrap) {
+      mWrap.innerHTML = sorted.slice(0, 6).map((item, idx) => `
+        <div class="m-leader-item">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="rank-badge ${idx === 0 ? 'top-1' : ''}">${idx + 1}</div>
+            <div style="font-size:11px; font-weight:700;">${item.name} <span style="font-size:9px; color:#777;">(${item.qty} sold)</span></div>
+          </div>
+          <div style="font-size:11px; font-weight:800; color:var(--mauve-dark);">RM ${item.revenue.toFixed(2)}</div>
         </div>
       `).join('');
     }
-    function openAddModal() { document.getElementById('add-modal').classList.add('open'); }
-    function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
-  </script>
+
+    // Desktop Leaderboard
+    const dWrap = document.getElementById('d-leaderboard-tbody');
+    if (dWrap) {
+      dWrap.innerHTML = sorted.slice(0, 8).map((s, idx) => `
+        <tr>
+          <td><span class="d-rank-badge ${idx === 0 ? 'gold' : ''}">${idx + 1}</span></td>
+          <td><b>${s.name}</b></td>
+          <td>${s.qty} units</td>
+          <td style="text-align:right; font-weight:800; color:var(--mauve-dark);">RM ${s.revenue.toFixed(2)}</td>
+        </tr>
+      `).join('');
+    }
+
+    drawCategoryChart('m-categoryChart', allOrders);
+    drawCategoryChart('d-categoryChart', allOrders);
+    drawFrequencyChart('m-frequencyChart', allOrders, mFreqMode);
+  }
+
+  function drawCategoryChart(canvasId, allOrders) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
+    const labels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
+    const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
+
+    allOrders.forEach(o => {
+      if (Array.isArray(o.items)) {
+        o.items.forEach(i => {
+          const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
+          const c = m ? m.cat : 'coffee';
+          if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
+        });
+      }
+    });
+
+    const vals = cats.map(c => totals[c]);
+    const maxVal = Math.max(...vals, 5);
+    ctx.font = '10px monospace';
+    ctx.textBaseline = 'middle';
+
+    vals.forEach((val, idx) => {
+      const y = 16 + (idx * 32);
+      const w = ((canvas.width - 130) * (val / maxVal));
+      ctx.fillStyle = '#666'; ctx.textAlign = 'right'; ctx.fillText(labels[idx], 80, y + 9);
+      ctx.fillStyle = '#E4D0CE'; ctx.fillRect(90, y, canvas.width - 140, 18);
+      ctx.fillStyle = '#825455'; ctx.fillRect(90, y, Math.max(w, 2), 18);
+      ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.fillText(`${val} sold`, 96 + w, y + 9);
+    });
+  }
+
+  function setMobileFrequency(type) {
+    mFreqMode = type;
+    document.getElementById('m-btn-freq-w').classList.toggle('active', type === 'weekly');
+    document.getElementById('m-btn-freq-m').classList.toggle('active', type === 'monthly');
+    drawFrequencyChart('m-frequencyChart', [...orders, ...vault.flatMap(v => v.orders)], mFreqMode);
+  }
+
+  function drawFrequencyChart(canvasId, allOrders, type) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let labels = [], buckets = [];
+    if (type === 'weekly') {
+      labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      buckets = [0, 0, 0, 0, 0, 0, 0];
+      allOrders.forEach(() => { buckets[(new Date().getDay() + 6) % 7]++; });
+    } else {
+      labels = ['Day 1-7', 'Day 8-14', 'Day 15-21', 'Day 22-End'];
+      buckets = [0, 0, 0, 0];
+      allOrders.forEach(() => {
+        const d = new Date().getDate();
+        if (d <= 7) buckets[0]++; else if (d <= 14) buckets[1]++; else if (d <= 21) buckets[2]++; else buckets[3]++;
+      });
+    }
+
+    const maxVal = Math.max(...buckets, 5);
+    const bottomY = canvas.height - 24;
+    const chartHeight = canvas.height - 45;
+    const colWidth = (canvas.width - 30) / labels.length;
+
+    ctx.font = '9.5px monospace'; ctx.textAlign = 'center';
+    buckets.forEach((count, i) => {
+      const x = 20 + (i * colWidth) + (colWidth / 4);
+      const bH = (count / maxVal) * chartHeight;
+      const y = bottomY - bH;
+      ctx.fillStyle = '#E7DAC4'; ctx.fillRect(x, bottomY - chartHeight, colWidth / 2, chartHeight);
+      ctx.fillStyle = '#5A3637'; ctx.fillRect(x, y, colWidth / 2, bH);
+      ctx.fillStyle = '#111'; ctx.fillText(count.toString(), x + (colWidth / 4), y - 5);
+      ctx.fillStyle = '#666'; ctx.fillText(labels[i], x + (colWidth / 4), bottomY + 12);
+    });
+  }
+
+  /* The Vault */
+  function renderVaultAll() {
+    // Mobile
+    const mWrap = document.getElementById('m-vault-feed');
+    if (mWrap) {
+      if (vault.length === 0) {
+        mWrap.innerHTML = '<div style="font-size:11px; color:#888; text-align:center; padding:20px;">The vault is empty.</div>';
+      } else {
+        mWrap.innerHTML = vault.map(v => `
+          <div class="m-vault-card" onclick="openVaultReport('${v.id}')">
+            <div>
+              <div style="font-weight:700; font-size:11.5px; color:#222;">📅 Shift: ${v.dateLabel}</div>
+              <div style="font-size:9px; color:#777; margin-top:2px;">${v.orders.length} orders · RM ${Number(v.revenue).toFixed(2)}</div>
+            </div>
+            <div class="m-vault-actions" onclick="event.stopPropagation()">
+              <button class="btn-dots-mini" onclick="toggleVaultMenuMobile('${v.id}', event)">⋮</button>
+              <div class="m-vault-drop" id="m-vdrop-${v.id}">
+                <button class="m-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
+                <button class="m-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Desktop
+    const dWrap = document.getElementById('d-vault-list');
+    if (dWrap) {
+      if (vault.length === 0) {
+        dWrap.innerHTML = '<div style="font-size:12px; color:#888; text-align:center; padding:20px;">The vault is empty.</div>';
+      } else {
+        dWrap.innerHTML = vault.map(v => `
+          <div class="d-vault-card" onclick="openVaultReport('${v.id}')">
+            <div>
+              <div style="font-weight:800; font-size:13px; color:var(--mauve-dark);">📅 Shift Record: ${v.dateLabel}</div>
+              <div style="font-size:11px; color:#666; margin-top:2px;">Opened: ${v.openedAt} · Closed: ${v.closedAt}</div>
+            </div>
+            <div class="d-vault-actions" onclick="event.stopPropagation()">
+              <div style="text-align:right;">
+                <div style="font-weight:800; font-size:14px; color:var(--mauve-dark);">RM ${Number(v.revenue).toFixed(2)}</div>
+                <div style="font-size:10px; color:#777;">${v.orders.length} orders · ${v.customers} customers</div>
+              </div>
+              <div style="position:relative;">
+                <button class="btn-dots-mini" onclick="toggleVaultMenuDesktop('${v.id}', event)">⋮</button>
+                <div class="d-vault-drop" id="d-vdrop-${v.id}">
+                  <button class="d-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
+                  <button class="d-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  function toggleVaultMenuMobile(id, e) {
+    e.stopPropagation();
+    const el = document.getElementById(`m-vdrop-${id}`);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  function toggleVaultMenuDesktop(id, e) {
+    e.stopPropagation();
+    const el = document.getElementById(`d-vdrop-${id}`);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
+    if (!isOpen) el.classList.add('open');
+  }
+
+  function deleteVaultRecord(id, e) {
+    e.stopPropagation();
+    document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
+    const passcode = prompt("Enter Security Passcode (0000) to permanently delete this shift:");
+    if (passcode === "0000") {
+      vault = vault.filter(v => v.id !== id);
+      setStorage('ngopi_vault', vault);
+      renderAll();
+      alert("Shift record deleted permanently.");
+    } else if (passcode !== null) {
+      alert("Incorrect passcode.");
+    }
+  }
+
+  function printVaultRecord(id, e) {
+    e.stopPropagation();
+    document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
+    const rec = vault.find(v => v.id === id);
+    if (!rec) return;
+
+    const printWin = window.open('', '_blank');
+    if (!printWin) { alert("Please allow pop-ups to print the A4 report."); return; }
+
+    printWin.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Shift Report - ${rec.dateLabel}</title>
+        <style>
+          @page { size: A4 portrait; margin: 15mm; }
+          body { font-family: 'Courier New', monospace; color: #111; margin: 0; padding: 0; }
+          .hdr { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 14px; }
+          .sum { border: 1px solid #000; padding: 8px 12px; margin-bottom: 16px; font-size: 13px; font-weight: bold; }
+          table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 14px; }
+          th, td { padding: 5px 4px; text-align: left; }
+          th { border-bottom: 1px dashed #000; }
+        </style>
+      </head>
+      <body>
+        <div class="hdr">
+          <h2 style="margin: 0 0 4px 0;">NGOPI DULU</h2>
+          <div>SHIFT PERFORMANCE REPORT (${rec.dateLabel})</div>
+          <div style="font-size:10px; margin-top:4px;">Opened: ${rec.openedAt} · Closed: ${rec.closedAt}</div>
+        </div>
+        <div class="sum">
+          TOTAL REVENUE: RM ${Number(rec.revenue).toFixed(2)} | CUSTOMERS: ${rec.customers} | ORDERS: ${rec.orders.length}
+        </div>
+        <table>
+          <thead><tr><th>Time</th><th>Customer</th><th>Items</th><th style="text-align:right;">Price</th></tr></thead>
+          <tbody>
+            ${rec.orders.map(o => `
+              <tr>
+                <td>${o.time}</td>
+                <td>${o.customer}</td>
+                <td>${Array.isArray(o.items) ? o.items.map(i=>`${i.name} x${i.qty}`).join(', ') : o.items}</td>
+                <td style="text-align:right;">RM ${Number(o.price).toFixed(2)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `);
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(() => { printWin.print(); }, 400);
+  }
+
+  function openVaultReport(id) {
+    const rec = vault.find(v => v.id === id);
+    if (!rec) return;
+    document.getElementById('vm-title').textContent = `Shift Report — ${rec.dateLabel}`;
+    document.getElementById('vm-open').textContent = rec.openedAt;
+    document.getElementById('vm-close').textContent = rec.closedAt;
+    document.getElementById('vm-rev').textContent = `RM ${Number(rec.revenue).toFixed(2)}`;
+    document.getElementById('vm-orders').innerHTML = rec.orders.map(o => `
+      <div style="border-bottom: 1px solid #ddd; padding: 4px 0;">
+        <b>#${o.id} - ${o.customer}</b>: RM ${Number(o.price).toFixed(2)} (${o.time})
+      </div>
+    `).join('');
+
+    renderVaultShiftChart(rec.orders);
+    document.getElementById('vault-modal').classList.add('open');
+  }
+  function closeVaultModal() { document.getElementById('vault-modal').classList.remove('open'); }
+
+  function renderVaultShiftChart(shiftOrders) {
+    const canvas = document.getElementById('vaultChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
+    const labels = ['Coffee', 'Non-Coffee', 'Matcha', 'Cookies', 'Bites'];
+    const totals = { coffee: 0, 'non-coffee': 0, matcha: 0, 'soft-cookies': 0, bites: 0 };
+
+    shiftOrders.forEach(o => {
+      if (Array.isArray(o.items)) {
+        o.items.forEach(i => {
+          const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
+          const c = m ? m.cat : 'coffee';
+          if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
+        });
+      }
+    });
+
+    const vals = cats.map(c => totals[c]);
+    const maxVal = Math.max(...vals, 5);
+    vals.forEach((v, i) => {
+      const x = 16 + (i * 75);
+      const h = (v / maxVal) * 80;
+      const y = 100 - h;
+      ctx.fillStyle = '#825455'; ctx.fillRect(x, y, 32, h);
+      ctx.fillStyle = '#111'; ctx.font = '9px monospace';
+      ctx.fillText(`${v}`, x + 10, y - 4);
+      ctx.fillText(labels[i], x + 2, 116);
+    });
+  }
+
+  /* Feedback */
+  function renderFeedbacksAll() {
+    const mWrap = document.getElementById('m-feedback-feed');
+    if (mWrap) {
+      mWrap.innerHTML = feedbacks.map(f => `
+        <div class="m-fb-card">
+          <div class="m-fb-head"><b>${f.sender || 'Anonymous'}</b><span>${f.date} · ${f.time}</span></div>
+          <div style="font-size:11px; color:#222;">${f.message}</div>
+        </div>
+      `).join('');
+    }
+    const dWrap = document.getElementById('d-fb-grid');
+    if (dWrap) {
+      dWrap.innerHTML = feedbacks.map(f => `
+        <div class="d-fb-card">
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><b>${f.sender || 'Anonymous'}</b><span style="font-size:10px; color:#777;">${f.date} · ${f.time}</span></div>
+          <div style="font-size:12px; color:#333;">${f.message}</div>
+        </div>
+      `).join('');
+    }
+  }
+
+  function filterFeedbackMobile() {
+    const q = document.getElementById('m-feedback-search').value.toLowerCase().trim();
+    const f = feedbacks.filter(x => (x.sender && x.sender.toLowerCase().includes(q)) || (x.message && x.message.toLowerCase().includes(q)));
+    document.getElementById('m-feedback-feed').innerHTML = f.map(x => `
+      <div class="m-fb-card"><div class="m-fb-head"><b>${x.sender || 'Anonymous'}</b><span>${x.date}</span></div><div style="font-size:11px;">${x.message}</div></div>
+    `).join('');
+  }
+
+  function filterFeedbackDesktop() {
+    const q = document.getElementById('d-feedback-search').value.toLowerCase().trim();
+    const f = feedbacks.filter(x => (x.sender && x.sender.toLowerCase().includes(q)) || (x.message && x.message.toLowerCase().includes(q)));
+    document.getElementById('d-fb-grid').innerHTML = f.map(x => `
+      <div class="d-fb-card"><div style="display:flex; justify-content:space-between;"><b>${x.sender || 'Anonymous'}</b><span>${x.date}</span></div><div>${x.message}</div></div>
+    `).join('');
+  }
+
+  /* Desktop View Routing */
+  function switchDesktopTab(tab) {
+    document.getElementById('d-tab-orders').style.display = 'none';
+    document.getElementById('d-tab-menu').style.display = 'none';
+    document.getElementById('d-tab-analytics').style.display = 'none';
+    document.getElementById('d-tab-feedback').style.display = 'none';
+
+    document.querySelectorAll('.d-nav-btn').forEach(b => b.classList.remove('active'));
+
+    const stats = document.getElementById('d-stats-container');
+    const shiftBar = document.getElementById('d-shift-bar');
+    const addBtn = document.getElementById('d-btn-add-item');
+    const title = document.getElementById('d-page-title');
+
+    if (tab === 'dashboard') {
+      document.getElementById('d-tab-orders').style.display = 'block';
+      stats.style.display = 'grid';
+      shiftBar.style.display = 'flex';
+      addBtn.style.display = 'none';
+      title.textContent = 'Café Overview & Orders';
+      document.getElementById('d-nav-orders').classList.add('active');
+    } else if (tab === 'menu') {
+      document.getElementById('d-tab-menu').style.display = 'block';
+      stats.style.display = 'none';
+      shiftBar.style.display = 'none';
+      addBtn.style.display = 'block';
+      title.textContent = 'Menu Stock Manager';
+      document.getElementById('d-nav-menu').classList.add('active');
+    } else if (tab === 'analytics') {
+      document.getElementById('d-tab-analytics').style.display = 'block';
+      stats.style.display = 'none';
+      shiftBar.style.display = 'none';
+      addBtn.style.display = 'none';
+      title.textContent = 'Sales Records & Analytics';
+      document.getElementById('d-nav-analytics').classList.add('active');
+      renderAnalyticsAll();
+    } else if (tab === 'feedback') {
+      document.getElementById('d-tab-feedback').style.display = 'block';
+      stats.style.display = 'none';
+      shiftBar.style.display = 'none';
+      addBtn.style.display = 'none';
+      title.textContent = 'Customer Feedback';
+      document.getElementById('d-nav-feedback').classList.add('active');
+    }
+  }
+
+  /* Mobile View Routing */
+  function switchMobileTab(tab) {
+    document.getElementById('m-tab-orders').style.display = 'none';
+    document.getElementById('m-tab-menu').style.display = 'none';
+    document.getElementById('m-tab-analytics').style.display = 'none';
+    document.getElementById('m-tab-vault').style.display = 'none';
+    document.getElementById('m-tab-feedback').style.display = 'none';
+
+    document.querySelectorAll('.m-nav-item').forEach(b => b.classList.remove('active'));
+
+    const kpi = document.querySelector('.m-kpi-row');
+    const shiftBar = document.querySelector('.m-shift-bar');
+    const fab = document.getElementById('m-fab-add');
+
+    if (tab === 'orders') {
+      document.getElementById('m-tab-orders').style.display = 'block';
+      kpi.style.display = 'grid';
+      shiftBar.style.display = 'flex';
+      fab.style.display = 'none';
+      document.getElementById('m-nav-orders').classList.add('active');
+    } else if (tab === 'menu') {
+      document.getElementById('m-tab-menu').style.display = 'block';
+      kpi.style.display = 'none';
+      shiftBar.style.display = 'none';
+      fab.style.display = 'flex';
+      document.getElementById('m-nav-menu').classList.add('active');
+    } else if (tab === 'analytics') {
+      document.getElementById('m-tab-analytics').style.display = 'block';
+      kpi.style.display = 'grid';
+      shiftBar.style.display = 'none';
+      fab.style.display = 'none';
+      document.getElementById('m-nav-analytics').classList.add('active');
+      renderAnalyticsAll();
+    } else if (tab === 'vault') {
+      document.getElementById('m-tab-vault').style.display = 'block';
+      kpi.style.display = 'none';
+      shiftBar.style.display = 'none';
+      fab.style.display = 'none';
+      document.getElementById('m-nav-vault').classList.add('active');
+    } else if (tab === 'feedback') {
+      document.getElementById('m-tab-feedback').style.display = 'block';
+      kpi.style.display = 'none';
+      shiftBar.style.display = 'none';
+      fab.style.display = 'none';
+      document.getElementById('m-nav-feedback').classList.add('active');
+    }
+  }
+</script>
 </body>
 </html>
