@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <style>
   :root {
     --rose:       #E4D0CE;
@@ -780,8 +782,24 @@ let customerName = '';
 let currentSubmittedOrder = null;
 let feedbackPrivacyMode = 'public';
 
+async function watchShift() {
+  const overlay = document.getElementById('closed-overlay');
+  
+  // 1. Initial check from Supabase table
+  const { data } = await supabase.from('cafe_shift').select('*').eq('id', 1).single();
+  if (overlay) overlay.style.display = (data && data.is_open) ? 'none' : 'flex';
+
+  // 2. Real-time subscription listening for when tablet toggles Open/Close shift
+  supabase.channel('user-shift-watch')
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'cafe_shift' }, payload => {
+      if (overlay) overlay.style.display = payload.new.is_open ? 'none' : 'flex';
+    })
+    .subscribe();
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   openScreen('start');
+  watchShift();
   renderSidebar();
   renderCatalog();
   updateCartUI();
@@ -1118,25 +1136,39 @@ function handleWaitMinute() {
   runLoadTransition('menu');
 }
 
-function handleLetsGo() {
+async function handleLetsGo() {
   document.getElementById('confirm-modal').classList.remove('open');
 
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const req = document.getElementById('special-request-text').value.trim();
+  const orderId = 'ORD-' + Math.floor(100 + Math.random() * 900);
+  const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   currentSubmittedOrder = {
-    id: 'ORD-' + Math.floor(100 + Math.random() * 900),
+    id: orderId,
     customer: customerName || 'Guest',
     items: JSON.parse(JSON.stringify(cart)),
     request: req,
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    time: timeStr,
     price: Number(total.toFixed(2)),
     status: 'Preparing'
   };
 
-  const currentOrders = getStorage('ngopi_orders', []);
-  currentOrders.unshift(currentSubmittedOrder);
-  setStorage('ngopi_orders', currentOrders);
+  // Insert into Supabase 'orders' table
+  const { error } = await supabase.from('orders').insert([{
+    id: currentSubmittedOrder.id,
+    customer: currentSubmittedOrder.customer,
+    items: currentSubmittedOrder.items,
+    request: currentSubmittedOrder.request,
+    price: currentSubmittedOrder.price,
+    status: currentSubmittedOrder.status,
+    order_time: currentSubmittedOrder.time
+  }]);
+
+  if (error) {
+    alert("Ordering failed: The café shift is currently closed or offline.");
+    return;
+  }
 
   renderGuaranteePage();
   runLoadTransition('guarantee');
@@ -1188,7 +1220,7 @@ function setFeedbackMode(mode) {
   }
 }
 
-function submitCustomerFeedback() {
+async function submitCustomerFeedback() {
   const text = document.getElementById('feedback-text').value.trim();
   if (!text) {
     alert("Please write a message before sending.");
@@ -1204,9 +1236,7 @@ function submitCustomerFeedback() {
     date: now.toLocaleDateString()
   };
 
-  const existingFeedbacks = getStorage('ngopi_feedback', []);
-  existingFeedbacks.unshift(feedbackPayload);
-  setStorage('ngopi_feedback', existingFeedbacks);
+  await supabase.from('feedbacks').insert([feedbackPayload]);
 
   alert("Thanks for your feedback!");
   document.getElementById('feedback-text').value = '';
