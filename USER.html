@@ -791,17 +791,40 @@ let feedbackPrivacyMode = 'public';
 async function watchShift() {
   const overlay = document.getElementById('closed-overlay');
   if (!overlay) return;
-  
-  // 1. Initial check from Supabase table
-  const { data } = await supabase.from('cafe_shift').select('*').eq('id', 1).single();
-  if (overlay) overlay.style.display = (data && data.is_open) ? 'none' : 'flex';
 
-  // 2. Real-time subscription listening for when tablet toggles Open/Close shift
+  function applyShiftState(isOpen) {
+    if (isOpen) {
+      overlay.style.display = 'none';
+    } else {
+      // 1. Show closed overlay over the whole screen
+      overlay.style.display = 'flex';
+
+      // 2. Shut down any open checkout drawers or modals
+      const confirmModal = document.getElementById('confirm-modal');
+      if (confirmModal) confirmModal.classList.remove('open');
+
+      const checkoutTab = document.getElementById('checkout-tab');
+      if (checkoutTab) checkoutTab.classList.remove('open');
+
+      // 3. Reset view to the start screen
+      openScreen('start');
+    }
+  }
+
+  // Initial check
+  const { data } = await supabase.from('cafe_shift').select('is_open').eq('id', 1).single();
+  applyShiftState(data ? data.is_open : false);
+
+  // Realtime channel listener
   supabase.channel('user-shift-watch')
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'cafe_shift' }, payload => {
-      if (overlay) overlay.style.display = payload.new.is_open ? 'none' : 'flex';
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'cafe_shift' }, payload => {
+      if (payload.new && typeof payload.new.is_open !== 'undefined') {
+        applyShiftState(payload.new.is_open);
+      }
     })
-    .subscribe();
+    .subscribe((status) => {
+      console.log("USER shift watch status:", status);
+    });
 }
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -1144,48 +1167,56 @@ function handleWaitMinute() {
 }
 
 async function handleLetsGo() {
-  const confirmModal = document.getElementById('confirm-modal');
-  if (confirmModal) confirmModal.classList.remove('open');
+    const confirmModal = document.getElementById('confirm-modal');
+    if (confirmModal) confirmModal.classList.remove('open');
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const req = document.getElementById('special-request-text') ? document.getElementById('special-request-text').value.trim() : '';
-  const orderId = 'ORD-' + Math.floor(100 + Math.random() * 900);
-  const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    // HARD GUARD: Verify shift is open before placing order
+    const { data: shiftCheck } = await supabase.from('cafe_shift').select('is_open').eq('id', 1).single();
+    if (!shiftCheck || !shiftCheck.is_open) {
+      alert("Shift is closed. You cannot place an order right now.");
+      const overlay = document.getElementById('closed-overlay');
+      if (overlay) overlay.style.display = 'flex';
+      openScreen('start');
+      return;
+    }
 
-  currentSubmittedOrder = {
-    id: orderId,
-    customer: customerName || 'Guest',
-    items: JSON.parse(JSON.stringify(cart)),
-    request: req,
-    time: timeStr,
-    price: Number(total.toFixed(2)),
-    status: 'Preparing'
-  };
+    const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const req = document.getElementById('special-request-text') ? document.getElementById('special-request-text').value.trim() : '';
+    const orderId = 'ORD-' + Math.floor(100 + Math.random() * 900);
+    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  // Submit to Supabase table
-  const { error } = await supabase.from('orders').insert([{
-    id: currentSubmittedOrder.id,
-    customer: currentSubmittedOrder.customer,
-    items: currentSubmittedOrder.items,
-    request: currentSubmittedOrder.request,
-    price: currentSubmittedOrder.price,
-    status: currentSubmittedOrder.status,
-    order_time: currentSubmittedOrder.time
-  }]);
+    currentSubmittedOrder = {
+      id: orderId,
+      customer: customerName || 'Guest',
+      items: JSON.parse(JSON.stringify(cart)),
+      request: req,
+      time: timeStr,
+      price: Number(total.toFixed(2)),
+      status: 'Preparing'
+    };
 
-  if (error) {
-    alert("Ordering rejected: The café shift is closed or offline.");
-    const overlay = document.getElementById('closed-overlay');
-    if (overlay) overlay.style.display = 'flex';
-    return;
+    const { error } = await supabase.from('orders').insert([{
+      id: currentSubmittedOrder.id,
+      customer: currentSubmittedOrder.customer,
+      items: currentSubmittedOrder.items,
+      request: currentSubmittedOrder.request,
+      price: currentSubmittedOrder.price,
+      status: currentSubmittedOrder.status,
+      order_time: currentSubmittedOrder.time
+    }]);
+
+    if (error) {
+      alert("Ordering rejected: The café shift is closed or offline.");
+      const overlay = document.getElementById('closed-overlay');
+      if (overlay) overlay.style.display = 'flex';
+      return;
+    }
+
+    cart = [];
+    updateCartUI();
+    renderGuaranteePage();
+    runLoadTransition('guarantee');
   }
-
-  // Clear cart and transition to guarantee page
-  cart = [];
-  updateCartUI();
-  renderGuaranteePage();
-  runLoadTransition('guarantee');
-}
 
 function renderGuaranteePage() {
   if (!currentSubmittedOrder) return;
