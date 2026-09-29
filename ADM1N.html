@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
 <style>
   :root {
     --rose:       #E4D0CE;
@@ -1022,40 +1024,74 @@
 
   let addons = getStorage('ngopi_addons', defaultAddons);
   let menu = getStorage('ngopi_menu', defaultMenu);
-  let orders = getStorage('ngopi_orders', []);
-  let vault = getStorage('ngopi_vault', []);
-  let shiftData = getStorage('ngopi_shift', { isOpen: false, openedAt: null });
-  let feedbacks = getStorage('ngopi_feedback', []);
+  let orders = [];
+  let vault = [];
+  let shiftData = { isOpen: false, openedAt: null };
+  let feedbacks = [];
+
+  // Fetch initial data from cloud
+  async function refreshActiveData() {
+    // 1. Shift Status
+    const { data: shift } = await supabase.from('cafe_shift').select('*').eq('id', 1).single();
+    shiftData = shift ? { isOpen: shift.is_open, openedAt: shift.opened_at } : { isOpen: false, openedAt: null };
+    renderShiftUI();
+
+    // 2. Active Orders
+    const { data: liveOrders } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+    orders = liveOrders || [];
+    renderOrdersAll();
+    renderStatsAll();
+
+    // 3. Vault Shifts
+    const { data: vaultRows } = await supabase.from('vault_shifts').select('*').order('archived_at', { ascending: false });
+    vault = vaultRows || [];
+    renderVaultAll();
+
+    // 4. Feedbacks
+    const { data: fbRows } = await supabase.from('feedbacks').select('*').order('created_at', { ascending: false });
+    feedbacks = fbRows || [];
+    renderFeedbacksAll();
+  }
+
+  // Real-time listener for Tablet
+  function startRealtimeSubscription() {
+    supabase.channel('tablet-admin-feed')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, payload => {
+        orders.unshift(payload.new);
+        playOrderChime();
+        renderOrdersAll();
+        renderStatsAll();
+        renderAnalyticsAll();
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, payload => {
+        const idx = orders.findIndex(o => o.id === payload.new.id);
+        if (idx !== -1) orders[idx] = payload.new;
+        renderOrdersAll();
+        renderStatsAll();
+        renderAnalyticsAll();
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'orders' }, payload => {
+        orders = orders.filter(o => o.id !== payload.old.id);
+        renderOrdersAll();
+        renderStatsAll();
+        renderAnalyticsAll();
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'cafe_shift' }, payload => {
+        shiftData = { isOpen: payload.new.is_open, openedAt: payload.new.opened_at };
+        renderShiftUI();
+      })
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks' }, payload => {
+        feedbacks.unshift(payload.new);
+        renderFeedbacksAll();
+      })
+      .subscribe();
+  }
 
   window.addEventListener('DOMContentLoaded', () => {
-    // Detect preferred default viewport
     if (window.innerWidth >= 900) {
       setLoginVersion('desktop');
     } else {
       setLoginVersion('mobile');
-    }
-  });
-
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'ngopi_orders') {
-      orders = getStorage('ngopi_orders', []);
-      renderAll();
-    }
-    if (e.key === 'ngopi_shift') {
-      shiftData = getStorage('ngopi_shift', { isOpen: false });
-      renderShiftUI();
-    }
-    if (e.key === 'ngopi_vault') {
-      vault = getStorage('ngopi_vault', []);
-      renderVaultAll();
-    }
-    if (e.key === 'ngopi_menu') {
-      menu = getStorage('ngopi_menu', defaultMenu);
-      renderMenuAll();
-    }
-    if (e.key === 'ngopi_addons') {
-      addons = getStorage('ngopi_addons', defaultAddons);
-      renderAddonsAll();
     }
   });
 
@@ -1150,47 +1186,49 @@
     }
   }
 
-  function toggleShift() {
+  async function toggleShift() {
     if (!shiftData.isOpen) {
-      shiftData = { isOpen: true, openedAt: new Date().toLocaleString() };
-      setStorage('ngopi_shift', shiftData);
-      localStorage.setItem('ngopi_shift_status', 'open');
+      const openedTime = new Date().toLocaleString();
+      await supabase.from('cafe_shift').update({ is_open: true, opened_at: openedTime, closed_at: null }).eq('id', 1);
+      shiftData = { isOpen: true, openedAt: openedTime };
       renderShiftUI();
       alert("Shift opened! Customers can now order.");
     } else {
       if (!confirm("Close shift and move active sales to The Vault?")) return;
-      const closedAt = new Date().toLocaleString();
+      const closedTime = new Date().toLocaleString();
       const totalSales = orders.reduce((sum, o) => sum + Number(o.price || 0), 0);
       const uniqueCustomers = new Set(orders.map(o => o.customer)).size;
 
-      vault.unshift({
+      const vaultEntry = {
         id: 'SHIFT-' + Date.now(),
-        openedAt: shiftData.openedAt,
-        closedAt: closedAt,
-        dateLabel: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+        opened_at: shiftData.openedAt || closedTime,
+        closed_at: closedTime,
+        date_label: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
         revenue: totalSales,
         customers: uniqueCustomers,
-        orders: JSON.parse(JSON.stringify(orders))
-      });
-      setStorage('ngopi_vault', vault);
+        orders: orders
+      };
 
-      orders = [];
-      setStorage('ngopi_orders', orders);
+      // 1. Save snapshot to vault
+      await supabase.from('vault_shifts').insert([vaultEntry]);
+      // 2. Wipe active orders
+      await supabase.from('orders').delete().neq('id', 'NONE');
+      // 3. Mark shift closed
+      await supabase.from('cafe_shift').update({ is_open: false, closed_at: closedTime }).eq('id', 1);
 
       shiftData = { isOpen: false, openedAt: null };
-      setStorage('ngopi_shift', shiftData);
-      localStorage.setItem('ngopi_shift_status', 'closed');
-
+      orders = [];
+      vault.unshift(vaultEntry);
       renderAll();
-      alert("Shift closed and archived into The Vault.");
+      alert("Shift closed. All records secured in The Vault.");
     }
   }
 
-  function resetShiftOrdersOnly() {
+  async function resetShiftOrdersOnly() {
     const pin = prompt("Enter Passcode (1234) to reset active shift orders:");
     if (pin === "1234") {
+      await supabase.from('orders').delete().neq('id', 'NONE');
       orders = [];
-      setStorage('ngopi_orders', orders);
       renderAll();
       alert("Active shift orders reset.");
     } else if (pin !== null) {
@@ -1698,13 +1736,13 @@
     if (!isOpen) el.classList.add('open');
   }
 
-  function deleteVaultRecord(id, e) {
+  async function deleteVaultRecord(id, e) {
     e.stopPropagation();
     document.querySelectorAll('.m-vault-drop, .d-vault-drop').forEach(m => m.classList.remove('open'));
     const passcode = prompt("Enter Security Passcode (0000) to permanently delete this shift:");
     if (passcode === "0000") {
+      await supabase.from('vault_shifts').delete().eq('id', id);
       vault = vault.filter(v => v.id !== id);
-      setStorage('ngopi_vault', vault);
       renderAll();
       alert("Shift record deleted permanently.");
     } else if (passcode !== null) {
