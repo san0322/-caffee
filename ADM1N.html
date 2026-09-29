@@ -1054,38 +1054,35 @@
   }
 
   // Real-time listener for Tablet
-  function startRealtimeSubscription() {
-    supabase.channel('tablet-admin-feed')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, payload => {
-        orders.unshift(payload.new);
-        playOrderChime();
-        renderOrdersAll();
-        renderStatsAll();
-        renderAnalyticsAll();
-      })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, payload => {
-        const idx = orders.findIndex(o => o.id === payload.new.id);
-        if (idx !== -1) orders[idx] = payload.new;
-        renderOrdersAll();
-        renderStatsAll();
-        renderAnalyticsAll();
-      })
-      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'orders' }, payload => {
-        orders = orders.filter(o => o.id !== payload.old.id);
-        renderOrdersAll();
-        renderStatsAll();
-        renderAnalyticsAll();
-      })
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'cafe_shift' }, payload => {
+function startRealtimeSubscription() {
+  supabase.channel('tablet-admin-feed')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, payload => {
+      orders.unshift(payload.new);
+      playOrderChime();
+      renderOrdersAll();
+      renderStatsAll();
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, payload => {
+      const idx = orders.findIndex(o => o.id === payload.new.id);
+      if (idx !== -1) orders[idx] = payload.new;
+      renderOrdersAll();
+      renderStatsAll();
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'orders' }, payload => {
+      orders = orders.filter(o => o.id !== payload.old.id);
+      renderOrdersAll();
+      renderStatsAll();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'cafe_shift' }, payload => {
+      if (payload.new) {
         shiftData = { isOpen: payload.new.is_open, openedAt: payload.new.opened_at };
         renderShiftUI();
-      })
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'feedbacks' }, payload => {
-        feedbacks.unshift(payload.new);
-        renderFeedbacksAll();
-      })
-      .subscribe();
-  }
+      }
+    })
+    .subscribe((status) => {
+      console.log("ADMIN realtime subscription status:", status);
+    });
+}
 
   window.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth >= 900) {
