@@ -512,6 +512,12 @@
 
 <div class="app" id="app">
   <div class="dynamic-island"></div>
+  <!-- CAFE CLOSED OVERLAY -->
+  <div id="closed-overlay" style="display:none; position:absolute; inset:0; background:rgba(18,18,20,0.96); z-index:99999; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; color:#fff;">
+    <div style="font-size:48px; margin-bottom:12px;">☕</div>
+    <div style="font-size:18px; font-weight:800; letter-spacing:1px; margin-bottom:8px;">NGOPI DULU IS CLOSED</div>
+    <div style="font-size:12px; color:#ccc; line-height:1.6; max-width:280px;">We are not taking orders right now. Please wait until the shift is opened by the barista!</div>
+  </div>
 
   <!-- SCREEN 1: WELCOME SCREEN -->
   <section class="screen active" id="screen-start">
@@ -784,6 +790,7 @@ let feedbackPrivacyMode = 'public';
 
 async function watchShift() {
   const overlay = document.getElementById('closed-overlay');
+  if (!overlay) return;
   
   // 1. Initial check from Supabase table
   const { data } = await supabase.from('cafe_shift').select('*').eq('id', 1).single();
@@ -1137,10 +1144,11 @@ function handleWaitMinute() {
 }
 
 async function handleLetsGo() {
-  document.getElementById('confirm-modal').classList.remove('open');
+  const confirmModal = document.getElementById('confirm-modal');
+  if (confirmModal) confirmModal.classList.remove('open');
 
   const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const req = document.getElementById('special-request-text').value.trim();
+  const req = document.getElementById('special-request-text') ? document.getElementById('special-request-text').value.trim() : '';
   const orderId = 'ORD-' + Math.floor(100 + Math.random() * 900);
   const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -1154,7 +1162,7 @@ async function handleLetsGo() {
     status: 'Preparing'
   };
 
-  // Insert into Supabase 'orders' table
+  // Submit to Supabase table
   const { error } = await supabase.from('orders').insert([{
     id: currentSubmittedOrder.id,
     customer: currentSubmittedOrder.customer,
@@ -1166,10 +1174,15 @@ async function handleLetsGo() {
   }]);
 
   if (error) {
-    alert("Ordering failed: The café shift is currently closed or offline.");
+    alert("Ordering rejected: The café shift is closed or offline.");
+    const overlay = document.getElementById('closed-overlay');
+    if (overlay) overlay.style.display = 'flex';
     return;
   }
 
+  // Clear cart and transition to guarantee page
+  cart = [];
+  updateCartUI();
   renderGuaranteePage();
   runLoadTransition('guarantee');
 }
