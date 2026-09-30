@@ -863,6 +863,19 @@
             </table>
           </div>
         </div>
+
+        <div class="d-section-box">
+          <div class="d-section-head">
+            <h2 class="d-section-title">Customer Frequency Trends</h2>
+            <div class="m-freq-toggle" style="margin-bottom:0; width:260px;">
+              <button class="m-btn-freq active" id="d-btn-freq-w" onclick="setDesktopFrequency('weekly')">Weekly (Mon-Sun)</button>
+              <button class="m-btn-freq" id="d-btn-freq-m" onclick="setDesktopFrequency('monthly')">Monthly (Calendar)</button>
+            </div>
+          </div>
+          <div style="width: 100%; margin-top: 10px;">
+            <canvas id="d-frequencyChart" width="800" height="220"></canvas>
+          </div>
+        </div>
         <div class="d-section-box">
           <div class="d-section-head"><h2 class="d-section-title">🗄 The Vault (Closed Shift Archives)</h2></div>
           <p style="font-size:11.5px; color:#666; margin-bottom:12px;">Archived revenue and full order history from closed operating shifts.</p>
@@ -1662,6 +1675,23 @@ let realtimeChannel = null;
     drawCategoryChart('m-categoryChart', allOrders);
     drawCategoryChart('d-categoryChart', allOrders);
     drawFrequencyChart('m-frequencyChart', allOrders, mFreqMode);
+    drawFrequencyChart('d-frequencyChart', allOrders, mFreqMode);
+  }
+  
+  function setMobileFrequency(type) {
+    mFreqMode = type;
+    document.getElementById('m-btn-freq-w').classList.toggle('active', type === 'weekly');
+    document.getElementById('m-btn-freq-m').classList.toggle('active', type === 'monthly');
+    drawFrequencyChart('m-frequencyChart', [...orders, ...vault.flatMap(v => v.orders)], mFreqMode);
+  }
+
+  function setDesktopFrequency(type) {
+    mFreqMode = type;
+    const btnW = document.getElementById('d-btn-freq-w');
+    const btnM = document.getElementById('d-btn-freq-m');
+    if (btnW) btnW.classList.toggle('active', type === 'weekly');
+    if (btnM) btnM.classList.toggle('active', type === 'monthly');
+    drawFrequencyChart('d-frequencyChart', [...orders, ...vault.flatMap(v => v.orders)], mFreqMode);
   }
 
   function drawCategoryChart(canvasId, allOrders) {
