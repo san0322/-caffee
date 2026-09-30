@@ -1071,6 +1071,9 @@ let realtimeChannel = null;
       if (!orders.some(o => o.id === payload.new.id)) {
         orders.unshift(payload.new);
         playOrderChime();
+        if (typeof showOrderSystemNotification === 'function') {
+          showOrderSystemNotification(payload.new);
+        }
         renderOrdersAll();
         renderStatsAll();
         if (typeof renderAnalyticsAll === 'function') renderAnalyticsAll();
@@ -1144,6 +1147,9 @@ let realtimeChannel = null;
         switchDesktopTab('dashboard');
       }
 
+      if (typeof requestNotificationPermission === 'function') {
+        requestNotificationPermission();
+      }
       renderAll();
     } else {
       document.getElementById('login-err').style.display = 'block';
@@ -1735,21 +1741,25 @@ let realtimeChannel = null;
       if (vault.length === 0) {
         mWrap.innerHTML = '<div style="font-size:11px; color:#888; text-align:center; padding:20px;">The vault is empty.</div>';
       } else {
-        mWrap.innerHTML = vault.map(v => `
-          <div class="m-vault-card" onclick="openVaultReport('${v.id}')">
-            <div>
-              <div style="font-weight:700; font-size:11.5px; color:#222;">📅 Shift: ${v.dateLabel}</div>
-              <div style="font-size:9px; color:#777; margin-top:2px;">${v.orders.length} orders · RM ${Number(v.revenue).toFixed(2)}</div>
-            </div>
-            <div class="m-vault-actions" onclick="event.stopPropagation()">
-              <button class="btn-dots-mini" onclick="toggleVaultMenuMobile('${v.id}', event)">⋮</button>
-              <div class="m-vault-drop" id="m-vdrop-${v.id}">
-                <button class="m-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
-                <button class="m-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+        mWrap.innerHTML = vault.map(v => {
+          const displayDate = v.date_label || v.dateLabel || 'Archived Shift';
+          const orderCount = Array.isArray(v.orders) ? v.orders.length : 0;
+          return `
+            <div class="m-vault-card" onclick="openVaultReport('${v.id}')">
+              <div>
+                <div style="font-weight:700; font-size:11.5px; color:#222;">📅 Shift: ${displayDate}</div>
+                <div style="font-size:9px; color:#777; margin-top:2px;">${orderCount} orders · RM ${Number(v.revenue || 0).toFixed(2)}</div>
+              </div>
+              <div class="m-vault-actions" onclick="event.stopPropagation()">
+                <button class="btn-dots-mini" onclick="toggleVaultMenuMobile('${v.id}', event)">⋮</button>
+                <div class="m-vault-drop" id="m-vdrop-${v.id}">
+                  <button class="m-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
+                  <button class="m-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+                </div>
               </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
     }
 
@@ -1759,27 +1769,33 @@ let realtimeChannel = null;
       if (vault.length === 0) {
         dWrap.innerHTML = '<div style="font-size:12px; color:#888; text-align:center; padding:20px;">The vault is empty.</div>';
       } else {
-        dWrap.innerHTML = vault.map(v => `
-          <div class="d-vault-card" onclick="openVaultReport('${v.id}')">
-            <div>
-              <div style="font-weight:800; font-size:13px; color:var(--mauve-dark);">📅 Shift Record: ${v.dateLabel}</div>
-              <div style="font-size:11px; color:#666; margin-top:2px;">Opened: ${v.openedAt} · Closed: ${v.closedAt}</div>
-            </div>
-            <div class="d-vault-actions" onclick="event.stopPropagation()">
-              <div style="text-align:right;">
-                <div style="font-weight:800; font-size:14px; color:var(--mauve-dark);">RM ${Number(v.revenue).toFixed(2)}</div>
-                <div style="font-size:10px; color:#777;">${v.orders.length} orders · ${v.customers} customers</div>
+        dWrap.innerHTML = vault.map(v => {
+          const displayDate = v.date_label || v.dateLabel || 'Archived Shift';
+          const openTime = v.opened_at || v.openedAt || '-';
+          const closeTime = v.closed_at || v.closedAt || '-';
+          const orderCount = Array.isArray(v.orders) ? v.orders.length : 0;
+          return `
+            <div class="d-vault-card" onclick="openVaultReport('${v.id}')">
+              <div>
+                <div style="font-weight:800; font-size:13px; color:var(--mauve-dark);">📅 Shift Record: ${displayDate}</div>
+                <div style="font-size:11px; color:#666; margin-top:2px;">Opened: ${openTime} · Closed: ${closeTime}</div>
               </div>
-              <div style="position:relative;">
-                <button class="btn-dots-mini" onclick="toggleVaultMenuDesktop('${v.id}', event)">⋮</button>
-                <div class="d-vault-drop" id="d-vdrop-${v.id}">
-                  <button class="d-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
-                  <button class="d-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+              <div class="d-vault-actions" onclick="event.stopPropagation()">
+                <div style="text-align:right;">
+                  <div style="font-weight:800; font-size:14px; color:var(--mauve-dark);">RM ${Number(v.revenue || 0).toFixed(2)}</div>
+                  <div style="font-size:10px; color:#777;">${orderCount} orders · ${v.customers || 0} customers</div>
+                </div>
+                <div style="position:relative;">
+                  <button class="btn-dots-mini" onclick="toggleVaultMenuDesktop('${v.id}', event)">⋮</button>
+                  <div class="d-vault-drop" id="d-vdrop-${v.id}">
+                    <button class="d-vault-drop-btn" onclick="printVaultRecord('${v.id}', event)">🖨 Print (A4)</button>
+                    <button class="d-vault-drop-btn del-opt" onclick="deleteVaultRecord('${v.id}', event)">🗑 Delete</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       }
     }
   }
@@ -1820,6 +1836,11 @@ let realtimeChannel = null;
     const rec = vault.find(v => v.id === id);
     if (!rec) return;
 
+    const displayDate = rec.date_label || rec.dateLabel || 'Archived Shift';
+    const openTime = rec.opened_at || rec.openedAt || '-';
+    const closeTime = rec.closed_at || rec.closedAt || '-';
+    const ordersList = Array.isArray(rec.orders) ? rec.orders : [];
+
     const printWin = window.open('', '_blank');
     if (!printWin) { alert("Please allow pop-ups to print the A4 report."); return; }
 
@@ -1827,7 +1848,7 @@ let realtimeChannel = null;
       <!DOCTYPE html>
       <html>
       <head>
-        <title>Shift Report - ${rec.dateLabel}</title>
+        <title>Shift Report - ${displayDate}</title>
         <style>
           @page { size: A4 portrait; margin: 15mm; }
           body { font-family: 'Courier New', monospace; color: #111; margin: 0; padding: 0; }
@@ -1841,21 +1862,21 @@ let realtimeChannel = null;
       <body>
         <div class="hdr">
           <h2 style="margin: 0 0 4px 0;">NGOPI DULU</h2>
-          <div>SHIFT PERFORMANCE REPORT (${rec.dateLabel})</div>
-          <div style="font-size:10px; margin-top:4px;">Opened: ${rec.openedAt} · Closed: ${rec.closedAt}</div>
+          <div>SHIFT PERFORMANCE REPORT (${displayDate})</div>
+          <div style="font-size:10px; margin-top:4px;">Opened: ${openTime} · Closed: ${closeTime}</div>
         </div>
         <div class="sum">
-          TOTAL REVENUE: RM ${Number(rec.revenue).toFixed(2)} | CUSTOMERS: ${rec.customers} | ORDERS: ${rec.orders.length}
+          TOTAL REVENUE: RM ${Number(rec.revenue || 0).toFixed(2)} | CUSTOMERS: ${rec.customers || 0} | ORDERS: ${ordersList.length}
         </div>
         <table>
           <thead><tr><th>Time</th><th>Customer</th><th>Items</th><th style="text-align:right;">Price</th></tr></thead>
           <tbody>
-            ${rec.orders.map(o => `
+            ${ordersList.map(o => `
               <tr>
-                <td>${o.time}</td>
+                <td>${o.time || o.order_time || '-'}</td>
                 <td>${o.customer}</td>
                 <td>${Array.isArray(o.items) ? o.items.map(i=>`${i.name} x${i.qty}`).join(', ') : o.items}</td>
-                <td style="text-align:right;">RM ${Number(o.price).toFixed(2)}</td>
+                <td style="text-align:right;">RM ${Number(o.price || 0).toFixed(2)}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -1871,17 +1892,24 @@ let realtimeChannel = null;
   function openVaultReport(id) {
     const rec = vault.find(v => v.id === id);
     if (!rec) return;
-    document.getElementById('vm-title').textContent = `Shift Report — ${rec.dateLabel}`;
-    document.getElementById('vm-open').textContent = rec.openedAt;
-    document.getElementById('vm-close').textContent = rec.closedAt;
-    document.getElementById('vm-rev').textContent = `RM ${Number(rec.revenue).toFixed(2)}`;
-    document.getElementById('vm-orders').innerHTML = rec.orders.map(o => `
-      <div style="border-bottom: 1px solid #ddd; padding: 4px 0;">
-        <b>#${o.id} - ${o.customer}</b>: RM ${Number(o.price).toFixed(2)} (${o.time})
-      </div>
-    `).join('');
 
-    renderVaultShiftChart(rec.orders);
+    const displayDate = rec.date_label || rec.dateLabel || 'Archived Shift';
+    const openTime = rec.opened_at || rec.openedAt || '-';
+    const closeTime = rec.closed_at || rec.closedAt || '-';
+    const ordersList = Array.isArray(rec.orders) ? rec.orders : [];
+
+    document.getElementById('vm-title').textContent = `Shift Report — ${displayDate}`;
+    document.getElementById('vm-open').textContent = openTime;
+    document.getElementById('vm-close').textContent = closeTime;
+    document.getElementById('vm-rev').textContent = `RM ${Number(rec.revenue || 0).toFixed(2)}`;
+    
+    document.getElementById('vm-orders').innerHTML = ordersList.map(o => `
+      <div style="border-bottom: 1px solid #ddd; padding: 4px 0;">
+        <b>#${o.id} - ${o.customer}</b>: RM ${Number(o.price || 0).toFixed(2)} (${o.time || o.order_time || '-'})
+      </div>
+    `).join('') || '<div style="color:#888;">No orders recorded in this shift.</div>';
+
+    renderVaultShiftChart(ordersList);
     document.getElementById('vault-modal').classList.add('open');
   }
   function closeVaultModal() { document.getElementById('vault-modal').classList.remove('open'); }
