@@ -1338,7 +1338,7 @@ let realtimeChannel = null;
         ${formatOrderItemsHTML(o.items)}
       </div>
       ${o.request && o.request.trim() !== '' ? `
-        <div style="background:rgba(255,183,3,0.12); border-left:3px solid #ffb703; padding:8px 10px; border-radius:0 6px 6px 0; margin:8px 0; font-size:12px; color:#ffdd80; font-weight:600;">
+        <div style="background:rgba(255,183,3,0.12); border-left:3px solid #ffb703; padding:8px 10px; border-radius:0 6px 6px 0; margin:8px 0; font-size:12px; color:#111111; font-weight:600;">
           special request: "${o.request}"
         </div>
       ` : ''}
@@ -1371,7 +1371,7 @@ let realtimeChannel = null;
         <td style="max-width:320px;">
           ${formatOrderItemsHTML(o.items)}
           ${o.request && o.request.trim() !== '' ? `
-            <div style="background:rgba(255,183,3,0.12); border-left:3px solid #ffb703; padding:6px 10px; border-radius:0 6px 6px 0; margin-top:6px; font-size:11px; color:#b45309; font-weight:700;">
+            <div style="background:rgba(255,183,3,0.12); border-left:3px solid #ffb703; padding:6px 10px; border-radius:0 6px 6px 0; margin-top:6px; font-size:11px; color:#111111; font-weight:700;">
               special request: "${o.request}"
             </div>
           ` : ''}
@@ -1390,12 +1390,22 @@ let realtimeChannel = null;
     `).join('');
   }
 
-  function updateOrderStatus(id, newStatus) {
+  async function updateOrderStatus(id, newStatus) {
     const target = orders.find(o => o.id === id);
     if (target) {
       target.status = newStatus;
       setStorage('ngopi_orders', orders);
       renderAll();
+
+      // Push real-time status update to Supabase
+      const { error } = await supabase
+        .from('orders')
+        .update({ status: newStatus })
+        .eq('id', id);
+
+      if (error) {
+        console.error("Failed to sync order status to Supabase:", error);
+      }
     }
   }
 
@@ -1429,7 +1439,7 @@ let realtimeChannel = null;
     document.getElementById('modal-order-total').textContent = `RM ${Number(target.price).toFixed(2)}`;
     const itemsFormatted = formatOrderItemsHTML(target.items);
     const noteFormatted = target.request && target.request.trim() !== '' ? `
-      <div style="background:rgba(255,183,3,0.15); border-left:3px solid #ffb703; padding:8px 10px; border-radius:0 6px 6px 0; margin-top:8px; font-size:11.5px; color:#854d0e; font-weight:700;">
+      <div style="background:rgba(255,183,3,0.15); border-left:3px solid #ffb703; padding:8px 10px; border-radius:0 6px 6px 0; margin-top:8px; font-size:11.5px; color:#111111; font-weight:700;">
         special request: "${target.request}"
       </div>
     ` : '';
@@ -1658,6 +1668,10 @@ let realtimeChannel = null;
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    
+    // Set actual resolution matching display width
+    canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 380;
+    canvas.height = 190;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const cats = ['coffee', 'non-coffee', 'matcha', 'soft-cookies', 'bites'];
@@ -1667,7 +1681,8 @@ let realtimeChannel = null;
     allOrders.forEach(o => {
       if (Array.isArray(o.items)) {
         o.items.forEach(i => {
-          const m = menu.find(x => x.name.toLowerCase() === i.name.toLowerCase());
+          // Normalize matching
+          const m = menu.find(x => x.name.trim().toLowerCase() === (i.name || '').trim().toLowerCase());
           const c = m ? m.cat : 'coffee';
           if (totals[c] !== undefined) totals[c] += Number(i.qty || 1);
         });
@@ -1675,63 +1690,102 @@ let realtimeChannel = null;
     });
 
     const vals = cats.map(c => totals[c]);
-    const maxVal = Math.max(...vals, 5);
-    ctx.font = '10px monospace';
+    const maxVal = Math.max(...vals, 1);
+    ctx.font = '600 11px "IBM Plex Mono", monospace';
     ctx.textBaseline = 'middle';
 
     vals.forEach((val, idx) => {
-      const y = 16 + (idx * 32);
-      const w = ((canvas.width - 130) * (val / maxVal));
-      ctx.fillStyle = '#666'; ctx.textAlign = 'right'; ctx.fillText(labels[idx], 80, y + 9);
-      ctx.fillStyle = '#E4D0CE'; ctx.fillRect(90, y, canvas.width - 140, 18);
-      ctx.fillStyle = '#825455'; ctx.fillRect(90, y, Math.max(w, 2), 18);
-      ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.fillText(`${val} sold`, 96 + w, y + 9);
-    });
-  }
+      const y = 14 + (idx * 34);
+      const barTrackWidth = canvas.width - 150;
+      const barFillWidth = Math.max(2, (barTrackWidth * (val / maxVal)));
 
-  function setMobileFrequency(type) {
-    mFreqMode = type;
-    document.getElementById('m-btn-freq-w').classList.toggle('active', type === 'weekly');
-    document.getElementById('m-btn-freq-m').classList.toggle('active', type === 'monthly');
-    drawFrequencyChart('m-frequencyChart', [...orders, ...vault.flatMap(v => v.orders)], mFreqMode);
+      // Label
+      ctx.fillStyle = '#666';
+      ctx.textAlign = 'right';
+      ctx.fillText(labels[idx], 80, y + 10);
+
+      // Background Track
+      ctx.fillStyle = '#E4D0CE';
+      ctx.fillRect(90, y, barTrackWidth, 18);
+
+      // Active Bar
+      ctx.fillStyle = '#825455';
+      ctx.fillRect(90, y, val > 0 ? barFillWidth : 0, 18);
+
+      // Count Text
+      ctx.fillStyle = '#111';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${val} sold`, 98 + (val > 0 ? barFillWidth : 0), y + 10);
+    });
   }
 
   function drawFrequencyChart(canvasId, allOrders, type) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+
+    canvas.width = canvas.parentElement ? canvas.parentElement.clientWidth : 380;
+    canvas.height = 200;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let labels = [], buckets = [];
     if (type === 'weekly') {
       labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       buckets = [0, 0, 0, 0, 0, 0, 0];
-      allOrders.forEach(() => { buckets[(new Date().getDay() + 6) % 7]++; });
+
+      allOrders.forEach(o => {
+        // Parse date from created_at or fallback to shift time
+        const dateObj = o.created_at ? new Date(o.created_at) : new Date();
+        const dayIdx = (dateObj.getDay() + 6) % 7; // Convert Sun=0..Sat=6 to Mon=0..Sun=6
+        buckets[dayIdx]++;
+      });
     } else {
-      labels = ['Day 1-7', 'Day 8-14', 'Day 15-21', 'Day 22-End'];
+      labels = ['1-7th', '8-14th', '15-21st', '22-End'];
       buckets = [0, 0, 0, 0];
-      allOrders.forEach(() => {
-        const d = new Date().getDate();
-        if (d <= 7) buckets[0]++; else if (d <= 14) buckets[1]++; else if (d <= 21) buckets[2]++; else buckets[3]++;
+
+      allOrders.forEach(o => {
+        const dateObj = o.created_at ? new Date(o.created_at) : new Date();
+        const d = dateObj.getDate();
+        if (d <= 7) buckets[0]++;
+        else if (d <= 14) buckets[1]++;
+        else if (d <= 21) buckets[2]++;
+        else buckets[3]++;
       });
     }
 
-    const maxVal = Math.max(...buckets, 5);
-    const bottomY = canvas.height - 24;
-    const chartHeight = canvas.height - 45;
-    const colWidth = (canvas.width - 30) / labels.length;
+    const maxVal = Math.max(...buckets, 1);
+    const bottomY = canvas.height - 28;
+    const chartHeight = canvas.height - 55;
+    const colWidth = (canvas.width - 40) / labels.length;
 
-    ctx.font = '9.5px monospace'; ctx.textAlign = 'center';
+    ctx.font = '600 10.5px "IBM Plex Mono", monospace';
+    ctx.textAlign = 'center';
+
     buckets.forEach((count, i) => {
-      const x = 20 + (i * colWidth) + (colWidth / 4);
+      const x = 20 + (i * colWidth) + (colWidth * 0.15);
+      const barW = colWidth * 0.7;
       const bH = (count / maxVal) * chartHeight;
       const y = bottomY - bH;
-      ctx.fillStyle = '#E7DAC4'; ctx.fillRect(x, bottomY - chartHeight, colWidth / 2, chartHeight);
-      ctx.fillStyle = '#5A3637'; ctx.fillRect(x, y, colWidth / 2, bH);
-      ctx.fillStyle = '#111'; ctx.fillText(count.toString(), x + (colWidth / 4), y - 5);
-      ctx.fillStyle = '#666'; ctx.fillText(labels[i], x + (colWidth / 4), bottomY + 12);
+
+      // Background pillar
+      ctx.fillStyle = '#E7DAC4';
+      ctx.fillRect(x, bottomY - chartHeight, barW, chartHeight);
+
+      // Data bar
+      ctx.fillStyle = '#5A3637';
+      ctx.fillRect(x, y, barW, bH);
+
+      // Count above bar
+      ctx.fillStyle = '#111';
+      ctx.fillText(count.toString(), x + (barW / 2), y - 6);
+
+      // Label below bar
+      ctx.fillStyle = '#555';
+      ctx.fillText(labels[i], x + (barW / 2), bottomY + 16);
     });
   }
+
+
 
   /* The Vault */
   function renderVaultAll() {
@@ -1947,13 +2001,30 @@ let realtimeChannel = null;
     });
   }
 
-  /* Feedback */
+/* Feedback */
+  async function deleteFeedback(id) {
+    if (!confirm("Delete this customer feedback?")) return;
+    const { error } = await supabase.from('feedbacks').delete().eq('id', id);
+    if (!error) {
+      feedbacks = feedbacks.filter(f => f.id !== id);
+      renderFeedbacksAll();
+    } else {
+      alert("Failed to delete feedback: " + error.message);
+    }
+  }
+
   function renderFeedbacksAll() {
     const mWrap = document.getElementById('m-feedback-feed');
     if (mWrap) {
       mWrap.innerHTML = feedbacks.map(f => `
         <div class="m-fb-card">
-          <div class="m-fb-head"><b>${f.sender || 'Anonymous'}</b><span>${f.date} · ${f.time}</span></div>
+          <div class="m-fb-head">
+            <b>${f.sender || 'Anonymous'}</b>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span>${f.date} · ${f.time}</span>
+              <button onclick="deleteFeedback('${f.id}')" style="background:none; border:none; color:var(--bad); font-weight:700; cursor:pointer;">✕</button>
+            </div>
+          </div>
           <div style="font-size:11px; color:#222;">${f.message}</div>
         </div>
       `).join('');
@@ -1962,7 +2033,13 @@ let realtimeChannel = null;
     if (dWrap) {
       dWrap.innerHTML = feedbacks.map(f => `
         <div class="d-fb-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;"><b>${f.sender || 'Anonymous'}</b><span style="font-size:10px; color:#777;">${f.date} · ${f.time}</span></div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <b>${f.sender || 'Anonymous'}</b>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size:10px; color:#777;">${f.date} · ${f.time}</span>
+              <button onclick="deleteFeedback('${f.id}')" style="background:none; border:none; color:var(--bad); font-weight:700; cursor:pointer; font-size:11px;">✕</button>
+            </div>
+          </div>
           <div style="font-size:12px; color:#333;">${f.message}</div>
         </div>
       `).join('');
@@ -1973,17 +2050,37 @@ let realtimeChannel = null;
     const q = document.getElementById('m-feedback-search').value.toLowerCase().trim();
     const f = feedbacks.filter(x => (x.sender && x.sender.toLowerCase().includes(q)) || (x.message && x.message.toLowerCase().includes(q)));
     document.getElementById('m-feedback-feed').innerHTML = f.map(x => `
-      <div class="m-fb-card"><div class="m-fb-head"><b>${x.sender || 'Anonymous'}</b><span>${x.date}</span></div><div style="font-size:11px;">${x.message}</div></div>
+      <div class="m-fb-card">
+        <div class="m-fb-head">
+          <b>${x.sender || 'Anonymous'}</b>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span>${x.date} · ${x.time || ''}</span>
+            <button onclick="deleteFeedback('${x.id}')" style="background:none; border:none; color:var(--bad); font-weight:700; cursor:pointer;">✕</button>
+          </div>
+        </div>
+        <div style="font-size:11px; color:#222;">${x.message}</div>
+      </div>
     `).join('');
   }
 
-  function filterFeedbackDesktop() {
+ function filterFeedbackDesktop() {
     const q = document.getElementById('d-feedback-search').value.toLowerCase().trim();
     const f = feedbacks.filter(x => (x.sender && x.sender.toLowerCase().includes(q)) || (x.message && x.message.toLowerCase().includes(q)));
     document.getElementById('d-fb-grid').innerHTML = f.map(x => `
-      <div class="d-fb-card"><div style="display:flex; justify-content:space-between;"><b>${x.sender || 'Anonymous'}</b><span>${x.date}</span></div><div>${x.message}</div></div>
+      <div class="d-fb-card">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <b>${x.sender || 'Anonymous'}</b>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:10px; color:#777;">${x.date} · ${x.time || ''}</span>
+            <button onclick="deleteFeedback('${x.id}')" style="background:none; border:none; color:var(--bad); font-weight:700; cursor:pointer; font-size:11px;">✕</button>
+          </div>
+        </div>
+        <div style="font-size:12px; color:#333;">${x.message}</div>
+      </div>
     `).join('');
   }
+
+
 
   /* Desktop View Routing */
   function switchDesktopTab(tab) {
