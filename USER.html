@@ -850,6 +850,35 @@ window.addEventListener('storage', (e) => {
 
 let activeOrderChannel = null;
 
+// Request browser notification permission for customer
+function requestCustomerNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+// Show native device notification for status updates
+function showOrderStatusNotification(orderId, status) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    let title = `Order #${orderId} is ${status}!`;
+    let msg = status === 'Ready' 
+      ? 'Your drink is ready for pickup at the counter! ☕' 
+      : 'Thank you for ordering with NGOPI DULU!';
+
+    try {
+      const n = new Notification(title, {
+        body: msg,
+        icon: 'https://cdn-icons-png.flaticon.com/512/924/924514.png',
+        tag: `order-${orderId}-${status}`
+      });
+      n.onclick = () => {
+        window.focus();
+        n.close();
+      };
+    } catch (e) {}
+  }
+}
+
 function watchUserOrder(orderId) {
   if (activeOrderChannel) {
     supabase.removeChannel(activeOrderChannel);
