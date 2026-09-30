@@ -2157,13 +2157,31 @@ let realtimeChannel = null;
 /* Feedback */
   async function deleteFeedback(id) {
     if (!confirm("Delete this customer feedback?")) return;
-    const { error } = await supabase.from('feedbacks').delete().eq('id', id);
-    if (!error) {
-      feedbacks = feedbacks.filter(f => f.id !== id);
-      renderFeedbacksAll();
-    } else {
-      alert("Failed to delete feedback: " + error.message);
+    
+    // Attempt delete with explicit string/number handling
+    const { error } = await supabase
+      .from('feedbacks')
+      .delete()
+      .or(`id.eq.${id},id.eq."${id}"`);
+
+    if (error) {
+      // Fallback direct match if OR syntax is restricted by RLS
+      const { error: retryErr } = await supabase.from('feedbacks').delete().eq('id', id);
+      if (retryErr) {
+        alert("Failed to delete feedback: " + retryErr.message);
+        return;
+      }
     }
+
+    // Remove locally from state
+    feedbacks = feedbacks.filter(f => String(f.id) !== String(id));
+    
+    // Re-render both all and active filtered views
+    renderFeedbacksAll();
+    const mInput = document.getElementById('m-feedback-search');
+    const dInput = document.getElementById('d-feedback-search');
+    if (mInput && mInput.value.trim() !== '') filterFeedbackMobile();
+    if (dInput && dInput.value.trim() !== '') filterFeedbackDesktop();
   }
 
   function renderFeedbacksAll() {
