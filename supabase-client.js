@@ -20,11 +20,41 @@ function playOrderChime() {
   } catch (e) {}
 }
 
-// Tablet Wake-up Auto-Resync
+// Request desktop/mobile system notifications permission
+function requestNotificationPermission() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+// Display system notification when new order arrives
+function showOrderSystemNotification(order) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    try {
+      const n = new Notification(`New Order #${order.id}`, {
+        body: `${order.customer} - RM ${Number(order.price).toFixed(2)}`,
+        icon: 'https://cdn-icons-png.flaticon.com/512/924/924514.png',
+        tag: order.id
+      });
+      n.onclick = () => {
+        window.focus();
+        n.close();
+      };
+    } catch (e) {}
+  }
+}
+
+// Auto-resync when returning to the tab or reopening the device
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') {
     if (typeof refreshActiveData === 'function') {
       refreshActiveData();
     }
+  }
+});
+
+window.addEventListener('focus', () => {
+  if (typeof refreshActiveData === 'function') {
+    refreshActiveData();
   }
 });
