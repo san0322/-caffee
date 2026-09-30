@@ -23,10 +23,25 @@
     --bad:        #E02F2F;
     --warning:    #D97706;
   }
+  .image-drop-box {
+  border: 2px dashed var(--grey-border);
+  border-radius: 8px;
+  background: #fafafa;
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.image-drop-box.drag-over {
+  border-color: var(--mauve);
+  background: #f4eceb;
+}
+
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; width: 100%; }
   body {
+    
     background: #121214;
     color: var(--ink);
     font-family: 'IBM Plex Mono', monospace;
@@ -930,7 +945,18 @@
         <div class="form-group"><label>Product Name</label><input type="text" id="new-item-name" required placeholder="e.g. Spanish Latte"></div>
         <div class="form-group"><label>Category</label><select id="new-item-cat"><option value="coffee">Coffee</option><option value="non-coffee">Non Coffee</option><option value="matcha">Matcha</option><option value="soft-cookies">Soft Cookies</option><option value="bites">Bites</option></select></div>
         <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="new-item-price" required placeholder="15"></div>
-        <div class="form-group"><label>Image URL</label><input type="url" id="new-item-img" required placeholder="https://..."></div>
+        <div class="form-group">
+  <label>Product Image (Drop PNG / JPG)</label>
+  <div id="new-drop-zone" class="image-drop-box" onclick="document.getElementById('new-item-file').click()">
+    <input type="file" id="new-item-file" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="handleImageFileSelect(event, 'new')">
+    <input type="hidden" id="new-item-img" required>
+    <div id="new-drop-prompt" style="text-align:center; padding:12px; color:#777; font-size:11px; cursor:pointer;">
+      <span style="font-size:20px; display:block; margin-bottom:2px;">📁</span>
+      Drag & drop image here, or <b style="color:var(--mauve);">Browse</b>
+    </div>
+    <img id="new-img-preview" style="display:none; max-height:80px; margin:6px auto; object-fit:contain; border-radius:6px;" alt="Preview" />
+  </div>
+</div>
         <div class="form-group"><label>Standard Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="new-item-has-ice" checked> Ice Level</label><label><input type="checkbox" id="new-item-has-sugar" checked> Sugar Level</label></div></div>
         <div class="form-group"><label>Select Paid Add-ons</label><div class="addon-checklist-wrap" id="new-item-addons-list"></div></div>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeAddModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Save</button></div>
@@ -946,7 +972,18 @@
         <div class="form-group"><label>Product Name</label><input type="text" id="edit-item-name" required></div>
         <div class="form-group"><label>Category</label><select id="edit-item-cat"><option value="coffee">Coffee</option><option value="non-coffee">Non Coffee</option><option value="matcha">Matcha</option><option value="soft-cookies">Soft Cookies</option><option value="bites">Bites</option></select></div>
         <div class="form-group"><label>Price (RM)</label><input type="number" step="0.1" id="edit-item-price" required></div>
-        <div class="form-group"><label>Image URL</label><input type="url" id="edit-item-img" required></div>
+        <div class="form-group">
+  <label>Product Image (Drop PNG / JPG)</label>
+  <div id="edit-drop-zone" class="image-drop-box" onclick="document.getElementById('edit-item-file').click()">
+    <input type="file" id="edit-item-file" accept="image/png, image/jpeg, image/jpg" style="display:none;" onchange="handleImageFileSelect(event, 'edit')">
+    <input type="hidden" id="edit-item-img" required>
+    <div id="edit-drop-prompt" style="text-align:center; padding:12px; color:#777; font-size:11px; cursor:pointer;">
+      <span style="font-size:20px; display:block; margin-bottom:2px;">📁</span>
+      Drag & drop image here, or <b style="color:var(--mauve);">Browse</b>
+    </div>
+    <img id="edit-img-preview" style="display:none; max-height:80px; margin:6px auto; object-fit:contain; border-radius:6px;" alt="Preview" />
+  </div>
+</div>
         <div class="form-group"><label>Standard Modifiers</label><div class="modifier-row"><label><input type="checkbox" id="edit-item-has-ice"> Ice Level</label><label><input type="checkbox" id="edit-item-has-sugar"> Sugar Level</label></div></div>
         <div class="form-group"><label>Select Paid Add-ons</label><div class="addon-checklist-wrap" id="edit-item-addons-list"></div></div>
         <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:14px;"><button type="button" onclick="closeEditModal()" style="padding:7px 14px; border:none; border-radius:6px; background:#eee;">Cancel</button><button type="submit" style="padding:7px 14px; border:none; border-radius:6px; background:var(--mauve); color:#fff;">Update</button></div>
@@ -978,6 +1015,71 @@
   </div>
 
 <script>
+
+  // Handle file input changes and drag/drop
+  function handleImageFileSelect(e, targetPrefix) {
+    const file = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+    processImageFile(file, targetPrefix);
+  }
+
+  function processImageFile(file, targetPrefix) {
+    if (!file) return;
+    if (!file.type.match('image/png') && !file.type.match('image/jpeg')) {
+      alert("Please upload a PNG or JPG/JPEG image.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      document.getElementById(`${targetPrefix}-item-img`).value = dataUrl;
+
+      const preview = document.getElementById(`${targetPrefix}-img-preview`);
+      const prompt = document.getElementById(`${targetPrefix}-drop-prompt`);
+      if (preview && prompt) {
+        preview.src = dataUrl;
+        preview.style.display = 'block';
+        prompt.style.display = 'none';
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Set up Drag & Drop Listeners
+  function initDropZones() {
+    ['new', 'edit'].forEach(prefix => {
+      const zone = document.getElementById(`${prefix}-drop-zone`);
+      if (!zone) return;
+
+      ['dragenter', 'dragover'].forEach(evt => {
+        zone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          zone.classList.add('drag-over');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach(evt => {
+        zone.addEventListener(evt, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          zone.classList.remove('drag-over');
+        });
+      });
+
+      zone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const file = dt.files && dt.files[0] ? dt.files[0] : null;
+        processImageFile(file, prefix);
+      });
+    });
+  }
+
+  // Hook init into DOMContentLoaded
+  window.addEventListener('DOMContentLoaded', () => {
+    initDropZones();
+  });
+
   let currentUserRole = null;
   let activeVersion = 'mobile'; // 'mobile' or 'desktop'
   const MENU_VERSION = 'v8_unified_single_code';
@@ -1123,6 +1225,7 @@ let realtimeChannel = null;
     }
     refreshActiveData();
     startRealtimeSubscription();
+    initDropZones();
   });
 
   document.addEventListener('click', (e) => {
@@ -1579,8 +1682,14 @@ let realtimeChannel = null;
 
   function openAddModal() {
     renderAddonChecklist('new-item-addons-list', []);
+    document.getElementById('new-item-img').value = '';
+    const newPrev = document.getElementById('new-img-preview');
+    const newPrompt = document.getElementById('new-drop-prompt');
+    if (newPrev) { newPrev.style.display = 'none'; newPrev.src = ''; }
+    if (newPrompt) newPrompt.style.display = 'block';
     document.getElementById('add-modal').classList.add('open');
   }
+
   function closeAddModal() { document.getElementById('add-modal').classList.remove('open'); }
   function handleCreateItem(e) {
     e.preventDefault();
@@ -1607,12 +1716,26 @@ let realtimeChannel = null;
     document.getElementById('edit-item-name').value = item.name;
     document.getElementById('edit-item-cat').value = item.cat;
     document.getElementById('edit-item-price').value = item.price;
-    document.getElementById('edit-item-img').value = item.img;
+    document.getElementById('edit-item-img').value = item.img || '';
+    
+    // Show current image in preview box
+    document.getElementById('edit-item-img').value = item.img || '';
+    const editPrev = document.getElementById('edit-img-preview');
+    const editPrompt = document.getElementById('edit-drop-prompt');
+    if (item.img) {
+      if (editPrev) { editPrev.src = item.img; editPrev.style.display = 'block'; }
+      if (editPrompt) editPrompt.style.display = 'none';
+    }else {
+      if (editPrev) { editPrev.style.display = 'none'; editPrev.src = ''; }
+      if (editPrompt) editPrompt.style.display = 'block';
+    }
+
     document.getElementById('edit-item-has-ice').checked = !!item.hasIce;
     document.getElementById('edit-item-has-sugar').checked = !!item.hasSugar;
     renderAddonChecklist('edit-item-addons-list', item.addons || []);
     document.getElementById('edit-modal').classList.add('open');
   }
+
   function closeEditModal() { document.getElementById('edit-modal').classList.remove('open'); }
   function handleUpdateItem(e) {
     e.preventDefault();
